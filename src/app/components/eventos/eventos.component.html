@@ -1,0 +1,78 @@
+<div class="spinner-overlay" *ngIf="cargando">
+  <div class="spinner"></div>
+</div>
+
+<section class="Banner ubicar">
+  <div class="banner-container">
+    <img class="imagenSensor" alt="" src="./../../assets/images/img/bannersensor.avif">
+    <div class="logo-overlay">
+      <div class="logo-container">
+        <img class="logo-sensor animated-logo" alt="Sensor Logo" src="../../assets/images/img/sensorImg.png">
+        <div class="logo-glow"></div>
+        <div class="logo-particles">
+          <div class="particle"></div>
+          <div class="particle"></div>
+          <div class="particle"></div>
+          <div class="particle"></div>
+          <div class="particle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<div class=" centrarTxt pt-4">
+  <h2 class="titulo-eventos">Eventos</h2>
+</div>
+
+
+<section class="container-fluid " style="margin-top: 0%; margin-bottom: 1%; ">
+
+
+  <div class="row ">
+
+    <div class="evento-card contenedor8"
+      *ngFor="let evento of eventos">
+      <div class="hover-overlay  rounded-top imgagenperfil" style="background-color: black; width: 100%;">
+
+          <a routerLink="/eventos/evento/{{evento.id}}">
+            <div class="placeholder-imagen">
+              <img class="imagenEvento" *ngIf="evento.getImagenePorTipo(1)" [src]="evento.getImagenePorTipo(1)?.url" alt="Imagen evento" />
+            </div>
+          </a>
+      </div>
+
+      <div class=" rounded-bottom container-fluid  contenedorabajo">
+
+        <div class="contenedorTodaLaInfo">
+          <div class="col-12 tituloEvento">
+            <h2 class="titulos-1 "><strong> <a class="titulos"
+                  routerLink="/eventos/evento/{{evento.id}}">{{evento?.nombre |resumir2}}</a></strong>
+            </h2>
+            <span class="linea-amarilla"></span>
+          </div>
+          <div class="espacioA">
+            <div class="col-12  border-right fechaCiudad ">
+              <p class="fechas "><strong>{{darFecha(evento)}} </strong>-</p>
+              <p class="fechas "><strong>{{ evento?.horaInicio | horas2}} </strong></p>
+            </div>
+            <div class="col-12  border-right fechaCiudad ">
+              <p class="fechas "><strong>{{evento?.ciudad?.nombre }} </strong></p>
+            </div>
+
+          </div>
+          <button routerLink="/eventos/evento/{{evento.id}}" class="btn-comprar">Ver</button>
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="centrar-flex colorLetra" *ngIf="eventos.length==0 && cargando == false">
+      <strong>Ningún Evento Encontrado</strong>
+    </div>
+
+  </div>
+</section>

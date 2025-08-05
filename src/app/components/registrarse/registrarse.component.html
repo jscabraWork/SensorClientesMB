@@ -1,0 +1,116 @@
+
+<div class="registration-container">
+  <div class="registration-card">
+    <div class="card-header">
+      <h2>REGÍSTRATE</h2>
+    </div>
+
+    <form (ngSubmit)="!todoForm.invalid && saveUsuario()" #todoForm="ngForm" class="registration-form">
+      
+      <!-- Nombre -->
+      <div class="form-field">
+        <input type="text" class="input-field" name="nombre" placeholder="Nombre completo" 
+               required minlength="6" pattern="[a-zA-Z\s]+" 
+               [(ngModel)]="usuario.nombre" #nombre="ngModel">
+        <div class="error-message" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched) && usuario.nombre">
+          <small *ngIf="nombre.errors?.['minlength']">El nombre debe tener al menos 6 caracteres</small>
+          <small *ngIf="nombre.errors?.['pattern']">El nombre no puede contener números</small>
+        </div>
+      </div>
+
+      <!-- Tipo documento -->
+      <div class="form-field">
+        <select class="input-field" name="tipoDocumento" required [(ngModel)]="usuario.tipo_documento">
+          <option value="" disabled>Tipo de documento</option>
+          <option value="Cedula">Cédula</option>
+          <option value="Tarjeta de identidad">Tarjeta de Identidad</option>
+          <option value="Pasaporte">Pasaporte</option>
+          <option value="Cedula de Extranjería">Cédula de extranjería</option>
+        </select>
+      </div>
+
+      <!-- Número documento -->
+      <div class="form-field">
+        <input class="input-field" name="numeroDocumento" placeholder="Número de documento" 
+               required [(ngModel)]="usuario.numeroDocumento" #docNumber="ngModel">
+      </div>
+
+      <!-- Confirmar documento -->
+      <div class="form-field">
+        <input class="input-field" id="bloquear2" name="confirmacionDocumento"
+               placeholder="Confirmar número de documento" required 
+               [(ngModel)]="confimarcionDocumento" #confirmDoc="ngModel">
+        <div class="error-message" *ngIf="usuario.numeroDocumento && confimarcionDocumento && (confirmDoc.dirty || confirmDoc.touched) && usuario.numeroDocumento !== confimarcionDocumento">
+          <small>Los números de documento no coinciden</small>
+        </div>
+      </div>
+
+      <!-- Celular -->
+      <div class="form-field">
+        <input type="tel" placeholder="Número de celular" class="input-field" name="celular"
+               required pattern="^\d{10}$" [(ngModel)]="usuario.celular" #celular="ngModel">
+        <div class="error-message" *ngIf="celular.invalid && (celular.dirty || celular.touched) && usuario.celular">
+          <small *ngIf="celular.errors?.['pattern']">Ingresa un número de celular válido (10 dígitos)</small>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-field">
+        <input type="email" placeholder="Correo electrónico" class="input-field" id="email" 
+               name="correo" required [(ngModel)]="usuario.correo" 
+               (input)="validateEmail()" #email="ngModel">
+        <div class="info-message">
+          <small>Verifica que hayas escrito bien tu correo, ahí llegarán tus tickets</small>
+        </div>
+        <div class="error-message" *ngIf="email.invalid && (email.dirty || email.touched) && usuario.correo">
+          <small *ngIf="email.errors?.['email']">Ingresa un correo válido</small>
+        </div>
+      </div>
+
+      <!-- Confirmar email -->
+      <div class="form-field">
+        <input type="email" id="bloquear" placeholder="Confirmar correo electrónico" 
+               class="input-field" name="confirmacionCorreo" required 
+               [(ngModel)]="confimarcionCorreo" #confirmEmail="ngModel">
+        <div class="error-message" *ngIf="usuario.correo && confimarcionCorreo && (confirmEmail.dirty || confirmEmail.touched) && usuario.correo !== confimarcionCorreo">
+          <small>Los correos no coinciden</small>
+        </div>
+      </div>
+
+      <!-- Dirección -->
+      <div class="form-field">
+        <input type="text" placeholder="Dirección" class="input-field" name="direccion"
+               required [(ngModel)]="usuario.direccion" #direccion="ngModel">
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-field">
+        <input type="password" placeholder="Contraseña" class="input-field" name="contrasena"
+               required minlength="6" [(ngModel)]="usuario.contrasena" #password="ngModel">
+        <div class="error-message" *ngIf="password.invalid && (password.dirty || password.touched) && usuario.contrasena">
+          <small *ngIf="password.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</small>
+        </div>
+      </div>
+
+      <!-- Términos y condiciones -->
+      <div class="form-field checkbox-field">
+        <label class="checkbox-container">
+          <input type="checkbox" (change)="aceptarTerminos()" id="terminos" required>
+          <span class="checkmark"></span>
+          <span class="checkbox-text">
+            He leído y acepto los 
+            <a href="https://www.sensorevents.com/politicas-terminos-y-condiciones" target="_blank" class="terms-link">
+              Términos y Condiciones
+            </a>
+          </span>
+        </label>
+      </div>
+
+      <!-- Botón registro -->
+      <button type="submit" class="submit-btn" [disabled]="todoForm.invalid || !aceptoTerminos">
+        Registrarse
+      </button>
+
+    </form>
+  </div>
+</div>

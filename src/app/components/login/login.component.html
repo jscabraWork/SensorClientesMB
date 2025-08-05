@@ -1,0 +1,47 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="card-header">
+      <h2>INICIAR SESIÓN</h2>
+    </div>
+
+    <form (ngSubmit)="handleLogin()" #loginForm="ngForm" class="login-form">      <!-- Email -->
+      <div class="form-field">
+        <input type="email" id="email" name="username" class="input-field" placeholder="Correo electrónico" 
+               [(ngModel)]="usuario.correo" (input)="validateEmail()" required #email="ngModel">
+        <div class="info-message">
+          <small>Ingresa con tu correo registrado</small>
+        </div>
+        <div class="error-message" *ngIf="email.invalid && (email.dirty || email.touched) && usuario.correo">
+          <small *ngIf="email.errors?.['email']">Ingresa un correo válido</small>
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-field">
+        <input type="password" name="password" class="input-field" placeholder="Contraseña"
+               [(ngModel)]="usuario.contrasena" required #password="ngModel">
+        <div class="error-message" *ngIf="password.invalid && (password.dirty || password.touched) && usuario.contrasena">
+          <small *ngIf="password.errors?.['required']">La contraseña es requerida</small>
+        </div>
+      </div>
+      
+      <!-- Error de login -->
+      <div class="error-message" *ngIf="invalidLogin">
+        <small>{{errorMessage}}</small>
+      </div>      <!-- Botón login -->
+      <button type="submit" class="submit-btn" [disabled]="loginForm.invalid">
+        Iniciar Sesión
+      </button>
+    </form>
+    
+    <div class="forgot-password">
+      <a (click)="olvidoContrasenia()">¿Olvidaste tu contraseña?</a>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <button class="create-account-btn" (click)="openDialog()">
+      Crear cuenta nueva
+    </button>
+  </div>
+</div>

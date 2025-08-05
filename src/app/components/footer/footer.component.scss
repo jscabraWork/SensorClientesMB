@@ -1,0 +1,113 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+#footer {
+  width: 100%;
+  background: $color-background;
+  color: $color-white;
+  font-family: $font-alata;
+  margin-top: $spacing-2xl; // equivalente a mt-5
+}
+
+.infoFooter {
+  color: $color-primary;
+  text-decoration: none;
+}
+
+.terminos {
+  color: $color-primary;
+  text-decoration: none;
+  text-decoration: underline;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  justify-items: center;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.centrar {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.txtFooter {
+  font-size: $font-size-md;
+  color: $color-accent;
+  line-height: 65px;
+  
+  @include mobile {
+    margin-top: 10px;
+  }
+}
+
+.bold {
+  font-weight: 700;
+  color: $color-accent;
+}
+
+.light {
+  font-weight: 300;
+}
+
+.cajaFoot {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+  margin-left: 25px;
+}
+
+.linkFoot {
+  color: $color-accent;
+  text-decoration: none;
+}
+
+.imRedes {
+  width: 25px;
+  height: 25px;
+  margin-right: 12px;
+  transition: $transition-fast;
+  
+  &:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.lineaFooter {
+  width: 100%;
+  border: 1px solid $color-primary;
+  margin-top: 80px;
+  
+  @include mobile {
+    width: 90%;
+    margin-left: 0;
+    margin-top: 48px;
+    margin: 0 auto;
+    margin-top: 48px;
+  }
+}
+
+.divFin {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.finFooter {
+  margin-top: 10px;
+  text-align: center;
+  width: 95%;
+  
+  @include mobile {
+    width: 100%;
+  }
+}
+
+@include mobile-small {
+  #footer {
+    text-align: center;
+  }
+}

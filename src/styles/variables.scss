@@ -1,0 +1,70 @@
+// Colores principales
+$color-primary: #ffd903;
+$color-secondary: #ed701c;
+$color-accent: #F7DBA7;
+$color-dark: #0F2335;
+$color-dark-2: #102438;
+$color-black: #000000;
+$color-white: #ffffff;
+$color-background: rgba(0, 0, 0, 1);
+$color-error: #ff6b6b;
+$color-success: #4caf50;
+$color-gray: #666666;
+$color-light-gray: #EAEAEA;
+$color-gray-text: #aaaaaa;
+
+// Tipografías
+$font-roboto: 'Roboto', 'Helvetica Neue', sans-serif;
+$font-lato: 'Lato', sans-serif;
+$font-montserrat: 'Montserrat', sans-serif;
+$font-alata: 'Alata', sans-serif;
+
+// Tamaños de fuente
+$font-size-xs: 11px;
+$font-size-sm: 12px;
+$font-size-base: 14px;
+$font-size-md: 15px;
+$font-size-lg: 17px;
+$font-size-xl: 20px;
+$font-size-2xl: 25px;
+$font-size-3xl: 30px;
+
+// Espaciado
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-2xl: 48px;
+
+// Bordes y radios
+$border-radius-sm: 6px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+$border-radius-round: 50px;
+$border-radius-full: 999px;
+
+// Sombras
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 15px rgba(255, 217, 3, 0.3);
+$shadow-lg: 0 8px 25px rgba(255, 217, 3, 0.4);
+$shadow-primary: 0 2px 5px $color-primary;
+
+// Z-index
+$z-menu: 100;
+$z-overlay: 9;
+$z-modal: 9999;
+$z-spinner: 9999;
+
+// Breakpoints
+$breakpoint-xs: 280px;
+$breakpoint-sm: 420px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 920px;
+$breakpoint-xl: 1200px;
+
+// Transiciones
+$transition-fast: 0.3s ease;
+$transition-medium: 0.5s ease;
+$transition-slow: 1s ease;

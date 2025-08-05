@@ -1,0 +1,170 @@
+/* Estilo para la capa de overlay */
+.mensaje-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Contenedor del mensaje */
+.mensaje-container {
+  background: #151515;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  border: 1px solid #333;
+  overflow: hidden;
+  width: 100%;
+  transform: translateY(0);
+  animation: mensaje-appear 0.3s ease-out;
+}
+
+@keyframes mensaje-appear {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Encabezado del mensaje */
+.mensaje-header {
+  padding: 15px 20px 0;
+  text-align: center;
+  position: relative;
+  background-color: #000;
+}
+
+.mensaje-header h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+.mensaje-divider {
+  margin: 10px auto;
+  height: 2px;
+  width: 100%;
+  background: #ffd903;
+}
+
+/* Cuerpo del mensaje */
+.mensaje-body {
+  padding: 10px 20px;
+  text-align: center;
+}
+
+.mensaje-text {
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 10px 0;
+  color: #ccc;
+  font-weight: 400;
+}
+
+/* Pie del mensaje */
+.mensaje-footer {
+  padding: 8px;
+  text-align: center;
+}
+
+/* Botón del mensaje */
+.mensaje-button {
+  background: #ffd903;
+  color: #000;
+  border: none;
+  border-radius: 30px;
+  padding: 8px 30px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  min-width: 100px;
+}
+
+.mensaje-button:hover {
+  background: #ffde42;
+  transform: translateY(-1px);
+}
+
+.mensaje-button:active {
+  transform: translateY(0);
+  background: #e6c503;
+}
+
+/* Ajustes para material dialog */
+::ng-deep .mat-dialog-container {
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+/* Aseguramos que no se muestre el fondo negro en el backdrop */
+::ng-deep .cdk-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
+::ng-deep .cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Clase para hacer transparente el panel del diálogo */
+::ng-deep .mensaje-dialog-transparent {
+  background: transparent !important;
+}
+
+::ng-deep .mensaje-dialog-transparent .mat-dialog-container {
+  background: transparent !important;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .mensaje-overlay {
+    padding: 10px;
+  }
+
+  .mensaje-container {
+    max-width: 320px;
+    border-radius: 8px;
+  }
+
+  .mensaje-header {
+    padding: 12px 16px 0;
+  }
+  
+  .mensaje-header h4 {
+    font-size: 16px;
+  }
+
+  .mensaje-body {
+    padding: 10px 16px;
+  }
+  
+  .mensaje-text {
+    font-size: 14px;
+    margin: 8px 0;
+  }
+
+  .mensaje-footer {
+    padding: 12px;
+  }
+  
+  .mensaje-button {
+    padding: 6px 20px;
+    font-size: 13px;
+    min-width: 80px;
+  }
+}

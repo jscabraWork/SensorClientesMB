@@ -1,0 +1,147 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule, Router } from '@angular/router';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Md5 } from 'ts-md5';
+
+import { UsuariosDataService } from '../../service/data/usuarios-data.service'; 
+import { Cliente } from './../usuario/cliente.model';
+import { Codigo } from '../../models/codigo.model'; 
+import { MensajeComponent } from '../mensaje/mensaje.component';
+
+@Component({
+  selector: 'app-registrarse',
+  standalone: true,
+  templateUrl: './registrarse.component.html',
+  styleUrls: ['./registrarse.component.scss'],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    MatDialogModule,
+  ]
+})
+export class RegistrarseComponent implements OnInit {
+  usuario: Codigo;
+  confimarcionCorreo: string;
+  confimarcionDocumento: any;
+  aceptoTerminos: boolean;
+  aceptoTratamiento: boolean;
+
+  constructor(
+    private service: UsuariosDataService,
+    private router: Router,
+    public dialog: MatDialog
+  ) {}
+
+  ngOnInit(): void {
+    this.confimarcionCorreo = '';
+    this.confimarcionDocumento = null;
+    this.aceptoTerminos = false;
+    this.aceptoTratamiento = false;
+    this.usuario = new Codigo();
+    this.usuario.tipo_documento = 'Cedula';
+    this.function();
+  }
+
+  validateEmail() {
+    const emailField = document.getElementById('email') as HTMLInputElement;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailPattern.test(this.usuario.correo)) {
+      emailField.style.borderColor = '#666';
+      emailField.style.background = 'linear-gradient(145deg, #2f2f2f, #1f1f1f)';
+    } else {
+      emailField.style.borderColor = '#ff6b6b';
+      emailField.style.background = 'linear-gradient(145deg, #3a2222, #2a1a1a)';
+    }
+  }
+
+  saveUsuario() {
+    if (!this.usuario.correo.includes(' ')) {
+      if (this.aceptoTerminos) {
+        if (this.confimarcionCorreo === this.usuario.correo) {
+          if (this.confimarcionDocumento === this.usuario.numeroDocumento) {
+            if (
+              !this.usuario.numeroDocumento.includes(' ') &&
+              !this.usuario.numeroDocumento.includes('.')
+            ) {
+              const md5 = new Md5();
+              const contra = this.usuario.contrasena;
+              this.usuario.contrasena = md5.appendStr(contra).end().toString();
+
+              this.service.createCliente(this.usuario).subscribe(
+                (response) => {
+                  this.openMensaje(response.mensaje);
+                },
+                (error) => {
+                  this.openMensaje(
+                    'Por favor verifica los datos ingresados, si el problema persiste contacta con el administrador del sistema'
+                  );
+                }
+              );
+            } else {
+              this.openMensaje(
+                'El número de documento no puede contener espacios ni puntos'
+              );
+            }
+          } else {
+            this.openMensaje('Verifica el número de documento');
+          }
+        } else {
+          this.openMensaje('Verifica el correo');
+        }
+      } else {
+        this.openMensaje('Debes aceptar términos y condiciones');
+      }
+    } else {
+      this.openMensaje('El correo no permite espacios en blanco');
+    }
+  }
+
+  function() {
+    const inputs = ['bloquear', 'bloquear2'];
+    inputs.forEach((id) => {
+      const input = document.getElementById(id);
+      if (input) {
+        input.onpaste = (e) => {
+          e.preventDefault();
+          alert('esta acción está prohibida');
+        };
+        input.oncopy = (e) => {
+          e.preventDefault();
+          alert('esta acción está prohibida');
+        };
+      }
+    });
+  }
+
+  aceptarTerminos() {
+    this.aceptoTerminos = !this.aceptoTerminos;
+  }
+
+  openMensaje(mensajeT: string, openD?: string): void {
+    let screenWidth = screen.width;
+    let anchoDialog: string = '500px';
+    let anchomax: string = '80vw';
+    let altoDialog: string = '250';
+    if (screenWidth <= 600) {
+      anchoDialog = '100%';
+      anchomax = '100%';
+      altoDialog = 'auto';
+    }
+    const dialogRef = this.dialog.open(MensajeComponent, {
+      width: anchoDialog,
+      maxWidth: anchomax,
+      height: altoDialog,
+      data: {
+        mensaje: mensajeT
+      }
+    });
+    if (openD === 'closeAll') {
+      dialogRef.afterClosed().subscribe(() => {
+        this.dialog.closeAll();
+      });
+    }
+  }
+}

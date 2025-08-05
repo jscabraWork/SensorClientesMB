@@ -1,0 +1,63 @@
+.contenedor-logout{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.lolo{
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    width: 700px;
+    height: 700px;
+}
+
+.gracias{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    font-family: Alata;
+    font-weight: bold;
+    margin-top: 120px;
+    color: white !important;
+    font-size: 2rem;
+}
+
+.slogan{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-family: Alata;
+    color: #f17714 !important;
+    font-size: 1.5rem;
+    text-decoration: overline;
+}
+
+@media (max-width:750px) {
+    .lolo{
+    height: 100%;
+    width: 100%;
+    }
+
+    .gracias{
+        font-size: 1.5rem;
+        margin-top: 80px;
+    }
+
+    .slogan{
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width:750px) {
+    .gracias{
+        font-size: 1.2rem;
+        margin-top: 80px;
+    }
+}

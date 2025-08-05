@@ -1,0 +1,48 @@
+<div class="spinner-overlay" *ngIf="cargando">
+  <div class="spinner"></div>
+</div>
+<section class="menuFront">
+  <div class="barraNav" [ngClass]="{ 'menu-30': visibleMenuResponsive }">
+    <div class="zona1">
+      <a routerLink="/home" class="menu-r-p1">
+        <img class="logoAT" src="assets/images/img/sensorImg.png" alt="Sensor Logo" />
+      </a>
+      <div class="menu-r-p2">
+        <div class="menu-container" (click)="cambiarVisibilidadMenuResponsive()">
+          <div class="menu-icon">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="menuNav" [ngClass]="{ 'visible': visibleMenuResponsive }">
+      <ul [ngClass]="{ 'flex-ul': visibleMenuResponsive, 'enlacesMenu': !visibleMenuResponsive }" (click)="cambiarVisibilidadMenuResponsive()">
+        <li class="cajasMenu">
+          <a class="colorText" routerLink="home">Inicio</a>
+        </li>
+        
+        <li routerLinkActive="active"  *ngIf="!this.autenticacion.getUsuario();" (click)="openDialog2()" class ="cajasMenu">
+            <a class="colorText">Iniciar Sesión</a>
+          </li>
+        
+        <li *ngIf="!this.autenticacion.getUsuario();" class="cajasMenu">
+          <a (click)="openDialog()" class="colorText">Registrate</a>
+        </li>
+        
+        <li routerLinkActive="inactive" *ngIf="this.autenticacion.getUsuario();" routerLink="/eventos/carrito-de-compras" class ="cajasMenu" >
+          <a class="colorText">Pendientes</a>
+        </li>
+
+        <li routerLinkActive="active"  *ngIf="this.autenticacion.getUsuario();" routerLink="/usuarios/usuario/{{this.autenticacion.getUsuario()}}" class ="cajasMenu">
+          <a class="colorText">Mi Perfil</a>
+        </li>
+
+        <li routerLinkActive="inactive" *ngIf="this.autenticacion.getUsuario();" routerLink="/logout" class ="cajasMenu" >
+          <a class="colorText">Salir</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>

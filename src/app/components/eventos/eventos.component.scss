@@ -1,0 +1,733 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.eventos-container {
+  padding: $spacing-xl;
+  min-height: 80vh;
+  @include flex-center;
+  flex-direction: column;
+}
+
+.titulo-eventos {
+  font-family: $font-alata;
+  font-weight: 700;
+  font-size: $font-size-2xl;
+  color: $color-primary;
+  margin-bottom: $spacing-xl;
+  text-align: center;
+}
+
+.eventos-grid {
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+  color: $color-white;
+  font-family: $font-lato;
+  font-size: $font-size-lg;
+}
+
+.imagenEvento {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #222;
+  display: block;
+}
+
+/* Tarjeta de evento responsiva */
+.evento-card {
+  box-sizing: border-box;
+  padding: 0.8rem;
+  margin: 0;
+  width: 25%;
+  min-width: 270px;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  aspect-ratio: 800/750;
+  background: #1b1b1b;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+
+  @media (max-width: 1200px) {
+    width: 33.3333%;
+    min-width: 220px;
+  }
+
+  @media (max-width: 900px) {
+    width: 50%;
+    min-width: 180px;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    min-width: 140px;
+    max-width: 100%;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px 0 rgba(255,235,59,0.10), 0 2px 8px rgba(0,0,0,0.18);
+    background: linear-gradient(0deg, rgba(255,235,59,0.07) 0%, #111 100%);
+  }
+}
+
+/* --- SOLO CLASES USADAS EN eventos.component.html --- */
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #fff;
+  border-top: 4px solid $color-primary;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.Banner {
+  width: 100%;
+  background: #000;
+}
+
+.imagenSensor {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.centrarTxt {
+  text-align: start;
+  margin-top: 15px;
+  margin-left: 25px;
+}
+
+.btn-comprar {
+  background: linear-gradient(135deg, $color-primary, darken($color-primary, 10%));
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  width:90px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-items: center;
+  text-align: center;
+  flex: end;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 0.5rem;
+
+  &:hover {
+    background: linear-gradient(135deg, lighten($color-primary, 10%), $color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba($color-primary, 0.4);
+  }
+}
+
+.container-fluid {
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.placeholder-imagen {
+  width: 100%;
+  aspect-ratio: 800/750;
+  background: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contenedorabajo {
+  padding: 1rem;
+  background: #000;
+  height: 170px;
+  border-radius: 0 0 8px 8px;
+}
+
+.contenedorTodaLaInfo {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tituloEvento {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.linea-amarilla {
+  width: 100%;
+  height: 1px;
+  background: $color-primary;
+  border-radius: 2px;
+  margin: 0.25rem 0 0.5rem 0;
+  display: block;
+}
+
+.titulos-1 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.titulos {
+  color: $color-primary;
+  font-family: $font-alata;
+  font-size: 1.125rem;
+  text-decoration: none !important;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $color-primary;
+  }
+}
+
+.espacioA {
+  height: calc(100% - 3rem);
+}
+
+.border-right {
+  border-right: 1px solid #444;
+}
+
+.imagenEvento {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #222;
+  display: block;
+}
+
+.evento-card {
+  box-sizing: border-box;
+  padding: 0.8rem;
+  margin: 0;
+  width: 25%;
+  min-width: 270px;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  aspect-ratio: 800 / 750;
+  background: #1b1b1b;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px 0 rgba(255, 235, 59, 0.1),
+                0 2px 8px rgba(0, 0, 0, 0.18);
+    background: linear-gradient(0deg, rgba(255, 235, 59, 0.07) 0%, #111 100%);
+  }
+}
+
+.spinner-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #fff;
+  border-top: 4px solid #ffeb3b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.Banner {
+  width: 100%;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+
+  &:hover .imagenSensor {
+    filter: brightness(0.6) contrast(1.2);
+    transform: scale(1.02);
+  }
+
+  &:hover .logo-sensor {
+    animation-duration: 2s;
+  }
+
+  &:hover .logo-glow {
+    animation-duration: 2s;
+  }
+}
+
+.imagenSensor {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.4) contrast(1.1);
+  transition: all 0.3s ease;
+}
+
+.logo-sensor {
+  width: 200px;
+  max-width: 90vw;
+  filter: drop-shadow(0 0 20px rgba(255, 235, 59, 0.6));
+  animation: logoGlow 2s ease-in-out infinite alternate;
+  z-index: 3;
+  position: relative;
+}
+
+.logo-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 235, 59, 0.3), transparent 70%);
+  border-radius: 50%;
+  animation: glowPulse 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes logoGlow {
+  0% {
+    filter: drop-shadow(0 0 20px rgba(255, 235, 59, 0.6));
+  }
+  100% {
+    filter: drop-shadow(0 0 30px rgba(255, 235, 59, 0.9)) drop-shadow(0 0 40px rgba(255, 235, 59, 0.4));
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+.btn-comprar {
+  background: linear-gradient(135deg, #ffeb3b, #fdd835);
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  width: 90px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 0.5rem;
+  align-self: flex-end;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: linear-gradient(135deg, #fff176, #ffeb3b);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 235, 59, 0.4);
+  }
+}
+
+.titulo-eventos {
+  color: #ffeb3b;
+  font-family: 'Alata', sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.colorLetra {
+  color: #fff;
+  text-align: center;
+  margin: 2rem auto;
+}
+
+.fechaCiudad {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+
+  > p {
+    color: #fff;
+    font-family: 'Alata', sans-serif;
+    font-size: 0.9375rem;
+    margin: 0;
+  }
+}
+
+.titulos {
+  color: #ffeb3b;
+  font-family: 'Alata', sans-serif;
+  font-size: 1.125rem;
+  text-decoration: none !important;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #ffeb3b;
+  }
+}
+
+.placeholder-imagen {
+  width: 100%;
+  aspect-ratio: 800 / 750;
+  background: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fechaCiudad {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+
+  > p {
+    color: #fff;
+    font-family: $font-alata;
+    font-size: 0.9375rem;
+    margin: 0;
+  }
+}
+
+.colorLetra {
+  color: #fff;
+  text-align: center;
+  margin: 2rem auto;
+}
+
+.Banner {
+  width: 100%;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Contenedor del banner con efectos */
+.banner-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+
+  &:hover {
+    .imagenSensor {
+      filter: brightness(0.6) contrast(1.2);
+      transform: scale(1.02);
+    }
+
+    .logo-sensor {
+      animation-duration: 2s;
+    }
+
+    .logo-glow {
+      animation-duration: 2s;
+    }
+  }
+}
+
+/* Imagen de fondo responsiva */
+.imagenSensor {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.4) contrast(1.1);
+  transition: all 0.3s ease;
+}
+
+/* Overlay para el logo */
+.logo-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* Contenedor del logo con efectos */
+.logo-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+/* Logo principal */
+.logo-sensor {
+  width: 200px;
+  height: auto;
+  max-width: 90vw;
+  filter: drop-shadow(0 0 20px rgba($color-primary, 0.6));
+  animation: logoGlow 2s ease-in-out infinite alternate;
+  z-index: 3;
+  position: relative;
+}
+
+/* Efecto de resplandor detrás del logo */
+.logo-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba($color-primary, 0.3) 0%, rgba($color-primary, 0.1) 40%, transparent 70%);
+  border-radius: 50%;
+  animation: glowPulse 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+/* Partículas flotantes */
+.logo-particles {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba($color-primary, 0.8);
+  border-radius: 50%;
+  animation: particleFloat 4s linear infinite;
+
+  &:nth-child(1) {
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+    animation-duration: 4s;
+  }
+
+  &:nth-child(2) {
+    top: 30%;
+    right: 20%;
+    animation-delay: 0.8s;
+    animation-duration: 3.5s;
+  }
+
+  &:nth-child(3) {
+    bottom: 30%;
+    left: 30%;
+    animation-delay: 1.6s;
+    animation-duration: 4.5s;
+  }
+
+  &:nth-child(4) {
+    bottom: 20%;
+    right: 30%;
+    animation-delay: 2.4s;
+    animation-duration: 3.8s;
+  }
+
+  &:nth-child(5) {
+    top: 50%;
+    left: 10%;
+    animation-delay: 3.2s;
+    animation-duration: 4.2s;
+  }
+}
+
+/* Animaciones */
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes logoGlow {
+  0% {
+    filter: drop-shadow(0 0 20px rgba($color-primary, 0.6));
+  }
+  100% {
+    filter: drop-shadow(0 0 30px rgba($color-primary, 0.9)) drop-shadow(0 0 40px rgba($color-primary, 0.4));
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Responsividad */
+@media (max-width: 1200px) {
+  .banner-container {
+    height: 350px;
+  }
+  .logo-glow {
+    width: 180px;
+    height: 180px;
+  }
+  .logo-particles {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner-container {
+    height: 280px;
+  }
+  .logo-glow {
+    width: 150px;
+    height: 150px;
+  }
+  .logo-particles {
+    width: 200px;
+    height: 200px;
+  }
+  .particle {
+    width: 3px;
+    height: 3px;
+  }
+  
+  .titulo-eventos {
+    font-size: $font-size-2xl;
+  }
+}
+
+@media (max-width: 576px) {
+  .banner-container {
+    height: 220px;
+  }
+  .logo-glow {
+    width: 120px;
+    height: 120px;
+  }
+
+  .logo-sensor {
+    width: 120px;
+  }
+  .logo-particles {
+    width: 150px;
+    height: 150px;
+  }
+  .particle {
+    width: 2px;
+    height: 2px;
+  }
+
+  .titulos {
+    font-size: 1rem;
+  }
+  .fechaCiudad > p {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .banner-container {
+    height: 180px;
+  }
+  .logo-glow {
+    width: 100px;
+    height: 100px;
+  }
+  .logo-particles {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 910px) {
+  .contenedor8 {
+    width: calc(33.333% - 1rem) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .contenedor8 {
+    width: calc(50% - 1rem) !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .contenedor8 {
+    width: calc(100% - 1rem) !important;
+  }
+}

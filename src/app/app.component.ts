@@ -1,13 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { MenuComponent } from './components/menu/menu.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [CommonModule, RouterOutlet, MenuComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'SensorClientesMB';
+  visibleMenuResponsive: boolean = false;
+
+  actualizarValor(evento: boolean) {
+    this.visibleMenuResponsive = evento;
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onScrollEvent(event: any) {
+    if (this.visibleMenuResponsive && window.innerWidth < 920) {
+      window.scrollTo(0, 0); // Deshabilitar scroll cuando el menú está activo
+    }
+  }
 }
