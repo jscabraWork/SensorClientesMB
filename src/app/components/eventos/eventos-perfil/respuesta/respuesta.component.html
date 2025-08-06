@@ -1,1 +1,111 @@
-<p>respuesta works!</p>
+<div class="spinner-overlay" *ngIf="!orden">
+  <div class="spinner"></div>
+</div>
+
+<div class="container fade-in" *ngIf="orden">
+  
+  <!-- Header principal -->
+  <div class="header-respuesta">
+    <h1 class="titulo-principal">Respuesta de la Transacción</h1>
+    <div class="nombre-evento" *ngIf="evento?.nombre">
+      {{evento.nombre}}
+    </div>
+    
+    <!-- Estado de la transacción -->
+    <div class="estado-container" 
+         [ngClass]="{
+           'estado-aprobada': orden?.estado == 1,
+           'estado-rechazada': orden?.estado == 2,
+           'estado-proceso': orden?.estado == 3
+         }">
+      
+      <img class="icono-estado" 
+           [src]="getIconoEstado()" 
+           [alt]="getTextoEstado()">
+      
+      <div class="estado-texto">
+        {{getTextoEstado()}}
+      </div>
+    </div>
+
+    <!-- Mensaje informativo según estado -->
+    <div class="mensaje-estado">
+      <!-- Mensaje para estado EN PROCESO -->
+      <div *ngIf="orden?.estado == 3" class="mensaje-proceso">
+        <p>Tu pago está en proceso, pronto será confirmado. Si no se confirma dentro de 30 minutos intenta la compra nuevamente o contacta a soporte.</p>
+      </div>
+
+      <!-- Mensaje para estado APROBADO -->
+      <div *ngIf="orden?.estado == 1" class="mensaje-aprobado">
+        <p>¡Tu compra ha sido confirmada! Tus tickets llegarán al correo registrado</p>
+        <button class="btn-accion" (click)="volverAlInicio()">Volver al inicio</button>
+      </div>
+
+      <!-- Mensaje para estado RECHAZADO -->
+      <div *ngIf="orden?.estado == 2" class="mensaje-rechazado">
+        <p>Tu compra no pudo ser confirmada. Intenta comprar nuevamente o contacta a soporte.</p>
+        <button class="btn-accion" (click)="intentarNuevamente()">Intentar nuevamente</button>
+      </div>
+    </div>
+
+    <!-- Información de auto-refresh (solo si está en proceso) -->
+    <div class="auto-refresh-info" *ngIf="orden?.estado == 3">
+      <p>Actualizando automáticamente cada 15 segundos...</p>
+      <p>Próxima actualización en: <span class="countdown">{{countdown}}</span> segundos</p>
+    </div>
+
+  </div>
+
+  <!-- Botón de refrescar manual (solo si no está en proceso) -->
+  <div class="refresh-container" *ngIf="orden?.estado == 3">
+    <button class="btn-refresh" (click)="refrescarManual()">
+      <img class="icono-refresh" src="assets/images/Vectores/refresh.svg" alt="Refrescar">
+      Actualizar Estado
+    </button>
+  </div>
+
+  <!-- Footer con logo de PlaceToPay -->
+<section class="footer-respuesta">
+  <img class="logo-placetopay" 
+       src="https://static.placetopay.com/placetopay-logo.svg" 
+       alt="PlaceToPay">
+</section>
+
+  <!-- Detalles de la transacción -->
+  <div class="detalles-container slide-in">
+    <h2 class="detalles-titulo">Detalles de la Transacción</h2>
+    
+    <table class="tabla-detalles">
+      <tr>
+        <td>Referencia</td>
+        <td>{{orden?.idTRXPasarela || 'N/A'}}</td>
+      </tr>
+      <tr>
+        <td>Fecha</td>
+        <td>{{(orden?.creationDate | date:'dd/MM/yyyy HH:mm') || 'N/A'}}</td>
+      </tr>
+      <tr>
+        <td>Estado</td>
+        <td>{{getTextoEstado()}}</td>
+      </tr>
+      <tr *ngIf="banco">
+        <td>Banco</td>
+        <td>{{banco}}</td>
+      </tr>
+      <tr>
+        <td>Recibo</td>
+        <td>{{orden?.id || 'N/A'}}</td>
+      </tr>
+      <tr *ngIf="valor">
+        <td>Total</td>
+        <td>{{valor | currency:'COP':'symbol':'1.0-0'}}</td>
+      </tr>
+    </table>
+  </div>
+
+  
+
+  
+
+</div>
+

@@ -1,0 +1,72 @@
+<div class="reset-container" *ngIf="valido">
+  <div class="reset-card">
+    <div class="card-header">
+      <h2>RESTABLECER CONTRASEÑA</h2>
+    </div>
+
+    <form (ngSubmit)="!todoForm.invalid && saveContrasena()" #todoForm="ngForm" class="reset-form">
+      <!-- Nueva contraseña -->
+      <div class="form-field">
+        <input type="password" id="new-password" name="new-password" class="input-field" 
+               placeholder="Nueva contraseña" [(ngModel)]="contrasena" 
+               required minlength="6" #newPassword="ngModel"
+               (input)="validatePassword()">
+        <div class="info-message">
+          <small>La contraseña debe tener al menos 6 caracteres</small>
+        </div>
+        <div class="error-message" *ngIf="newPassword.invalid && (newPassword.dirty || newPassword.touched) && contrasena">
+          <small *ngIf="newPassword.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</small>
+          <small *ngIf="newPassword.errors?.['required']">La contraseña es requerida</small>
+        </div>
+      </div>
+
+      <!-- Confirmar contraseña -->
+      <div class="form-field">
+        <input type="password" id="confirm-password" name="confirm-password" class="input-field" 
+               placeholder="Confirmar contraseña" [(ngModel)]="contrasenaConfirmar" 
+               required #confirmPassword="ngModel"
+               (input)="validatePassword()">
+        <div class="error-message" *ngIf="contrasena && contrasenaConfirmar && (confirmPassword.dirty || confirmPassword.touched) && contrasena !== contrasenaConfirmar">
+          <small>Las contraseñas no coinciden</small>
+        </div>
+      </div>
+      
+      <!-- Mensaje de error si existe -->
+      <div class="error-message" *ngIf="errorMessage">
+        <small>{{errorMessage}}</small>
+      </div>
+
+      <!-- Botón de cambio -->
+      <button type="submit" class="submit-btn" [disabled]="todoForm.invalid || contrasena !== contrasenaConfirmar">
+        Cambiar Contraseña
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Mensaje para enlace inválido -->
+<div class="reset-container" *ngIf="!valido">
+  <div class="reset-card">
+    <div class="error-content">
+      <div class="error-icon">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <line x1="15" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2"/>
+          <line x1="9" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+      
+      <h2 class="error-title">Enlace no válido</h2>
+      <p class="error-message">El enlace de recuperación no es válido o ha expirado. Por favor solicita un nuevo enlace de recuperación.</p>
+      
+      <div class="error-actions">
+        <button class="action_button2" routerLink="/home">
+          Volver al inicio
+        </button>
+        <button class="action_button" routerLink="/olvido">
+          Solicitar nuevo enlace
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

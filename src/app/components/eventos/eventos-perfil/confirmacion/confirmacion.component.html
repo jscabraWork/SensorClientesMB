@@ -1,1 +1,21 @@
-<p>confirmacion works!</p>
+<div class="mensaje-overlay">
+  <div class="mensaje-container">
+    <div class="mensaje-header">
+      <h4>Mensaje de All Tickets</h4>
+      <div class="mensaje-divider"></div>
+    </div>
+    
+    <div class="mensaje-body">
+      <p class="mensaje-text">{{ mensaje }}</p>
+    </div>
+    
+    <div class="mensaje-footer">
+      <button class="mensaje-button mensaje-button-cancel" (click)="confirmar(false)">
+        No
+      </button>
+      <button class="mensaje-button mensaje-button-confirm" (click)="confirmar(true)">
+        Sí
+      </button>
+    </div>
+  </div>
+</div>

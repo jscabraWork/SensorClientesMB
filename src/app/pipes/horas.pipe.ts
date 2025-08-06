@@ -2,7 +2,7 @@ import { PipeTransform, Pipe } from '@angular/core';
 
 @Pipe({
     name: 'horas',
-    standalone: false
+    standalone: true
 })
 export class HoraPipe implements PipeTransform{
 
@@ -91,8 +91,8 @@ export class HoraPipe implements PipeTransform{
         {
             return 'Por confirmar'
         }
-        
-        
 
+        // Return a default value if none of the above conditions are met
+        return '';
     }
 }

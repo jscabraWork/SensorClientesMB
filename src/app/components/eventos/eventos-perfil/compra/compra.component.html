@@ -1,1 +1,138 @@
-<p>compra works!</p>
+<div class="spinner-overlay" *ngIf="cargando">
+  <div class="spinner"></div>
+</div>
+
+<section>
+  <div>
+    <div class="container-principal">
+      <div class="txtNombre">
+        <div class="cuadroContent">
+
+          <div class="txtNombre">
+
+            <h2 class="titulo-evento3">{{evento?.nombre}}</h2>
+            <hr class="linea-naranja4" />
+
+            <br>
+
+            <div class="infoEventCompra">
+
+
+            <div class="espacioText">
+              <div class="alineacionText">
+                <div class="lineH2">
+                  <div class="detalle2"><strong class="bold">Fecha del Evento: </strong> {{darFecha(evento)}}  </div>
+                </div>
+                <div class="lineH2">
+                  <div class="detalle2"><strong class="bold">Fecha Finalización: </strong> {{evento?.fechaFin | date}}
+                  </div>
+                </div>
+                <div class="lineH2">
+                  <div class="detalle2"><strong class="bold">Hora Finalización: </strong> {{ evento?.horaFin | horas }}
+                  </div>
+                </div>
+                <div class="lineH2">
+                  <div class="detalle2"><strong class="bold">Artistas: </strong> {{ evento?.artistas ? evento?.artistas : "Por confirmar" }}
+                  </div>
+                </div>
+          </div>
+          </div>
+          <div class="contenedorImagen">
+            <img
+              [src]="darURL(5) && darURL(5) !== '' ? darURL(5) : darURL(1)"
+              [ngClass]="(darURL(5) && darURL(5) !== '') ? 'eventImg1' : 'eventImg'"
+              alt="">
+          </div>
+            </div>
+          </div>
+
+          <!-- Llamado al componente mapa si el evento tiene un mapa asignado -->
+          <div style="width: 100%!important;" *ngIf="evento?.mapa_id && !evento?.soldOut">
+            <app-mapa
+            [mapaId]="evento.mapa_id"
+            [eventoId]="evento.id"
+            [cliente]="cliente"
+            [localidades]="localidades"
+            [mensaje]="mensaje"
+            [modalLogin]="openDialog">
+          </app-mapa>
+          </div>
+
+
+
+          <div  *ngIf="evento.mapa_id == null && !evento?.soldOut">
+
+            <div class="tblCpra esconder">
+
+              <table class="compra-table">
+                <thead>
+                  <tr>
+                    <th class="titulosTablas">Localidad</th>
+                    <th class="titulosTablas">Precio incluido servicio</th>
+                    <th class="titulosTablas">Cantidad</th>
+                    <th class="titulosTablas">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let localidad of localidades; let i = index">
+                    <td>{{localidad.nombre}}
+
+                    </td>
+                    <td>{{(localidad.precio + localidad.servicio_iva + localidad.servicio)*localidad.cantidadPersonasPorTicket| currency:'COP'}}
+                    </td>
+
+                    <td>
+                      <div class="custom-quantity-selector">
+                        <button class="quantity-btn minus" (click)="decrement(i)" [disabled]="cantidades[i] <= 0">-</button>
+                        <select [(ngModel)]="cantidades[i]" [disabled]="validar(i)" (change)="agregarBoletasACompra(i)" class="yellow-select">
+                          <option [ngValue]="0">0</option>
+                          <option [ngValue]="1">1</option>
+                          <option [ngValue]="2">2</option>
+                          <option [ngValue]="3">3</option>
+                          <option [ngValue]="4">4</option>
+                          <option [ngValue]="5">5</option>
+                          <option [ngValue]="6">6</option>
+                        </select>
+                        <button class="quantity-btn plus" (click)="increment(i)" [disabled]="cantidades[i] >= 6">+</button>
+                      </div>
+
+                    </td>
+                    <td>{{(localidad.precio + localidad.servicio+ localidad.servicio_iva)*cantidades[i]*localidad.cantidadPersonasPorTicket|
+                      currency:'COP'}}
+
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+            <div class="boxTotal">
+              <div class="cajaTotales">
+                <div class="txtBoxTotal">
+                  <div class="montserrat colorLetra"> <strong class="total">Total: </strong> {{valorTotal |
+                    currency:'COP'}} </div>
+                  <div class="montserrat colorLetra"><strong class="total">Cantidad: </strong> {{cantidadTotal}} </div>
+                </div>
+                <div class="botonFinal">
+                <button class="action_button btnBoxToatl"
+                (click)="AbrirCarrito()">COMPRAR</button>
+              </div>
+              </div>
+            </div>
+
+          </div>
+
+          <section class="sold-out-section" *ngIf="evento?.soldOut">
+            <img class="soldoutImg" src="../../../assets/images/img/SOLDOUT.png" alt="">
+      </section>
+
+    </div>
+    </div>
+
+        </div>
+
+        </div>
+
+
+
+</section>

@@ -2,7 +2,7 @@ import { PipeTransform, Pipe } from '@angular/core';
 
 @Pipe({
     name: 'horas2',
-    standalone: false
+    standalone: true
 })
 export class HoraPipe2 implements PipeTransform{
 

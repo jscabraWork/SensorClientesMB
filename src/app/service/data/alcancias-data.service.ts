@@ -13,5 +13,5 @@ export class AlcanciasDataService extends CommonDataService<Alcancia>{
 
   protected override atributoListado =`cliente`;
 
-  constructor(protected http:HttpClient) { super(http)}
+  constructor(protected override http:HttpClient) { super(http)}
 }

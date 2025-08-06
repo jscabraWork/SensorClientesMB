@@ -1,0 +1,47 @@
+<section class="dialog-container">
+  <div class="dialog-row fondo1">
+    <div class="dialog-col">
+      <mat-icon class="float-right rounded margin-top-2 padding-left-3 padding-right-3 botonesCerrar" mat-button mat-dialog-close>
+        cancel_presentation</mat-icon>
+    </div>
+    <div class="dialog-col margin-top-3 margin-bottom-3 fondo1">
+      <div class="centrarTexto">
+        <h3 class="colorLetras"><strong>Tus Datos</strong></h3>
+        <h5><strong>Mantente actualizado para un mejor servicio</strong></h5>
+      </div>
+      <hr>
+
+      <form class="fondoNegro border rounded padding-3" #todoForm="ngForm">
+
+        <fieldset class="form-group">
+          <input type="text" class="form-control" placeholder="Nombre" name="nombre" required="required"
+            [(ngModel)]="usuario.nombre">
+        </fieldset>
+
+        <fieldset class="form-group">
+          <input type="email" placeholder="Correo" class="form-control" name="correo" required="required"
+            [(ngModel)]="usuario.correo">
+        </fieldset>
+
+        <fieldset class="form-group">
+          <input type="password" placeholder="Contraseña" class="form-control" name="contrasena" required="required"
+            [(ngModel)]="usuario.contrasena">
+        </fieldset>
+
+        <fieldset class="form-group">
+
+          <input type="tel" placeholder="Celular" class="form-control" name="celular" required="required"
+            [(ngModel)]="usuario.celular">
+        </fieldset>
+
+
+
+        <div style="text-align: center;">
+          <button class="btn botonLogin margin-top-2" type="submit" (click)="saveUsuario()"
+            >Guardar</button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

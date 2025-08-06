@@ -1,1 +1,160 @@
-<p>carrito-final works!</p>
+<div class="spinner-overlay" *ngIf="cargando">
+  <div class="spinner"></div>
+</div>
+
+<section class="carritoFin">
+  <h1 class="titulo-principal">Carrito de Compras</h1>
+  
+  <div class="txtNombre">
+    <div class="seccion">
+
+      <div class="contenedorFlex">
+
+        <div class="espacioDetalle">
+          <div>
+            <div class="montserrat tituloEvent">
+              {{evento?.nombre}}
+            </div>
+          </div>
+          <div class="contenedorFlex2 margin-top-3">
+            <div class="cuadroG">
+              <div class="contenTxt">
+                <div class="  lineH lineH2">
+                  <div class="detalle2"><strong class="bold">Fecha del Evento: </strong> {{darFecha(evento)}}  </div>
+                </div>
+                <div class="  lineH2 ">
+                  <div class="detalle2"><strong class="bold">Fecha Finalización: </strong> {{evento?.fechaFin | date}}
+                  </div>
+                </div>
+                <div class="  lineH2">
+                  <div class="detalle2"><strong class="bold">Hora Finalización: </strong> {{ evento?.horaFin | horas }}
+                  </div>
+                </div>
+                <div class="  lineH2">
+                  <div class="detalle2"><strong class="bold">Artistas: </strong> {{ evento?.artistas ? evento?.artistas : "Por confirmar" }}
+                  </div>
+                </div>
+                <div class="  lineH2">
+                  <div class="detalle3">Compra de <strong class="bold">{{tickets.length}}</strong>Tickets en la localidad <strong class="bold">{{localidad.nombre}}</strong></div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+        </div>
+        <div class="ImgEvento">
+          <img class="eventImg" src="{{darURL()}}" alt="">
+        </div>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+
+  <div class="txtNombre3">
+    
+    <h2 class="titulo-seccion">Resumen de tu Compra</h2>
+    <p class="texto-informativo">Revisa los detalles de tu pedido antes de proceder al pago</p>
+    <section class="tabCompra">
+      <table>
+        <tr >
+          <th class="fondoTabla">Cantidad</th>
+          <th class="fondoTabla">Etapa</th>
+          <th class="fondoTabla">Localidad</th>
+          <th class="fondoTabla">Precio incluido Servicio</th>
+        </tr>
+        <tr>
+          <td class="fondoTablaDato">{{tickets.length}}</td>
+          <td class="fondoTablaDato">{{localidad?.etapa?.nombre}}</td>
+          <td
+          class="fondoTablaDato">{{localidad?.nombre}}
+          </td>
+          <td class="fondoTablaDato"> ${{ totalPrecioTickets | number: '1.0-0' }}</td>
+        </tr>
+      </table>
+    </section>
+
+    <div class="boxTotal" *ngIf="adicionales?.length>0">
+      <h3 class="titulo-seccion">Servicios Adicionales</h3>
+      <p class="texto-informativo">Mejora tu experiencia con estos servicios opcionales</p>
+      
+      <div class="cajaTotales3 padding-3">
+        <h3 class="font-vaca montserrat cantTq fs-18">¿Deseas agregar alguno de estos servicios?</h3>
+
+        <table>
+          <tr >
+            <th class="fondoTabla">Nombre</th>
+            <th class="fondoTabla">Precio por ticket:</th>
+            <th class="fondoTabla">Agregar</th>
+          </tr>
+          <tr *ngFor="let adicion of adicionales;let i=index">
+            <td class="fondoTablaDato">{{adicion?.nombre}}</td>
+            <td class="fondoTablaDato">${{adicion?.precio + adicion?.servicio + adicion?.servicioIva | number: '1.0-0'}}</td>
+            <td class="fondoTablaDato">
+              <button class="btnBoxToatl2" (click)="agregarAdicion(adicion)" *ngIf="!adicionSeleccionado(adicion)"
+              type="submit">Adicionar</button>
+              <span class="texto-ya-agregado" *ngIf="adicionSeleccionado(adicion)">✓ Ya agregado</span>
+            </td>
+          </tr>
+
+        </table>
+      </div>
+    </div>
+
+
+    <div class="boxTotal" *ngIf="orden?.tipo==4">
+      <h3 class="titulo-seccion">Contribución a tu Alcancía</h3>
+      <p class="texto-informativo">Indica el monto que deseas aportar (valor mínimo requerido mostrado abajo)</p>
+      
+      <div class="cajaTotales2 padding-3">
+        <h3 class="font-vaca montserrat cantTq fs-18">¿Cuál es el monto qué deseas aportar a tu alcancía? (mínimo
+          {{valorTotalEstable*0.2|currency:'COP'}})</h3>
+
+        <form #todoForm="ngForm" class="w100">
+          <fieldset class="form-group">
+            <input type="number" name="valorVaca" required="required" class="input-vaca form-control"
+              placeholder="Valor minimo" [(ngModel)]="valorTotal" (input)="formatoNumero()">
+          </fieldset>
+        </form>
+      </div>
+    </div>
+
+
+
+    <div class="boxTotal" *ngIf="!cuponAgregado">
+      <h3 class="titulo-seccion">Código de Descuento</h3>
+      <p class="texto-informativo">¿Tienes un cupón? Ingrésalo aquí para obtener descuentos especiales</p>
+      
+      <div class="cajaTotales2 padding-3">
+        <div class="tituloCupon">Código de descuento</div>
+        <form #todoForm="ngForm" class="w100" (ngSubmit)="validarCupon()">
+          <fieldset class="form-group">
+            <input type="string" name="cuponCodigo" required="required" class="input-vaca form-control"
+              [(ngModel)]="cuponCodigo">
+          </fieldset>
+          <fieldset class="cajaBoton">
+            <button class="btnBoxToatl2 margin-top-1"> APLICAR</button>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+
+    <div class="boxTotal">
+      <h3 class="titulo-seccion">Finalizar Compra</h3>
+      <p class="texto-informativo">Procede al pago de forma segura. Serás redirigido a nuestra pasarela de pagos</p>
+      
+      <div class="cajaTotales">
+        <button class="action_button btnBoxToatl" (click)="ptp()"> PAGAR</button>
+
+      </div>
+    </div>
+
+
+  </div>
+
+
+</section>

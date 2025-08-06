@@ -1,0 +1,31 @@
+<div class="spinner-overlay" *ngIf="cargando">
+  <div class="spinner"></div>
+</div>
+<section class="alcancias-container">
+    <div class="alcancias-row rounded">
+      <div class="alcancia-col" style="text-align: center;" *ngIf="alcancias.length==0">
+        <h4 class="textoSinInfo"> <strong> No tienes ninguna alcancía, compra una  con Sensor.</strong></h4>
+      </div>
+      <div class="alcancia-col eventoFondo margin-top-3" *ngFor="let alcancia of alcancias;let i =index">
+
+        <h5 class="textoTitulo"><strong>Evento: </strong>{{eventos[i].nombre}}</h5>
+        <h5 class="textoInfo"><strong>Localidad Tickets: </strong>{{localidades[i].nombre}}</h5>
+        <h5 class="textoInfo"><strong>Numero de Ticket:</strong> {{cantidadTickets[i]}} </h5>
+        <h5 class="textoInfo"><strong>Valor Total: $</strong>{{alcancia?.precioTotal | number: '1.0-0'}}</h5>
+        <h5 class="textoInfo"><strong>Valor Faltante: $</strong>{{alcancia?.precioTotal-alcancia?.precioParcialPagado |
+          number: '1.0-0'}}</h5>
+
+        <fieldset class="form-group padding-left-2">
+          <input type="number" name="valorVaca" required="required" class="input-vaca form-control"
+            placeholder="Aporte alcancia" [(ngModel)]="valorTotal[i]">
+        </fieldset>
+
+        <h5 class="textoInfo"><strong>Valor a pagar: $</strong>{{valorTotal[i] | number: '1.0-0'}}</h5>
+        <div class="button-section padding-left-md-4 padding-bottom-3 margin-top-3">
+          <button class="payment-btn action_button" (click)="pago(i,alcancia.id)"> Pagar</button>
+        </div>
+      </div>
+
+
+    </div>
+  </section>

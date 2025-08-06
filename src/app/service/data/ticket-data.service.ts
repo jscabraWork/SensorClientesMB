@@ -20,7 +20,7 @@ export class TicketDataService extends CommonDataService<Ticket>{
   
   protected override atributoListado="clientes";
 
-  constructor(protected http:HttpClient) {
+  constructor(protected override http:HttpClient) {
     super(http)
    }
 

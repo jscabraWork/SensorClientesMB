@@ -1,0 +1,238 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/';
+
+.spinner-overlay {
+  @include spinner-overlay;
+}
+
+.spinner {
+  @include spinner;
+}
+
+.profile-container {
+  background-color: $color-background;
+  padding: $spacing-lg 0;
+  min-height: 80vh;
+}
+
+.profile-header {
+  padding: 0 $spacing-lg;
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  @include mobile {
+    padding: 0 $spacing-md;
+  }
+}
+
+.user-info {
+  text-align: center;
+  margin-bottom: $spacing-xl;
+  
+  .user-name {
+    color: $color-primary;
+    font-family: $font-alata;
+    font-size: $font-size-3xl;
+    font-weight: 700;
+    margin: 0;
+    
+    @include mobile {
+      font-size: $font-size-2xl;
+    }
+    
+    @include mobile-small {
+      font-size: $font-size-xl + 2px;
+    }
+  }
+}
+
+.profile-menu {
+  margin-bottom: $spacing-lg;
+  
+  .menu-container {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    
+    @include mobile {
+      flex-direction: column;
+      gap: $spacing-sm;
+    }
+  }
+  
+  .menu-item {
+    background: transparent;
+    border: none;
+    color: $color-white;
+    font-family: $font-montserrat;
+    font-weight: 600;
+    font-size: $font-size-base;
+    padding: $spacing-md $spacing-lg;
+    cursor: pointer;
+    transition: all $transition-fast;
+    border-bottom: 2px solid transparent;
+    
+    &:hover {
+      color: $color-primary;
+      background-color: rgba($color-primary, 0.1);
+    }
+    
+    &.active {
+      color: $color-primary;
+      border-bottom-color: $color-primary;
+      background-color: rgba($color-primary, 0.05);
+    }
+    
+    @include mobile {
+      text-align: center;
+      padding: $spacing-sm $spacing-md;
+      border-radius: $border-radius-md;
+      border-bottom: none;
+      
+      &.active {
+        background-color: rgba($color-primary, 0.15);
+      }
+    }
+  }
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba($color-primary, 0.5), transparent);
+  margin: 0 auto;
+  width: 80%;
+  
+  @include mobile {
+    width: 90%;
+  }
+}
+
+.profile-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-lg;
+  
+  @include mobile {
+    padding: 0 $spacing-md;
+  }
+}
+
+.content-section {
+  margin-top: $spacing-xl;
+}
+
+.info-card {
+  background: #151515;
+  border: 1px solid rgba($color-primary, 0.3);
+  border-radius: $border-radius-xl;
+  padding: $spacing-xl;
+  
+  @include mobile {
+    padding: $spacing-lg;
+    border-radius: $border-radius-lg;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-xl;
+    padding-bottom: $spacing-md;
+    border-bottom: 1px solid rgba($color-primary, 0.2);
+    
+    @include mobile {
+      flex-direction: column;
+      gap: $spacing-md;
+      text-align: center;
+    }
+    
+    h3 {
+      color: $color-primary;
+      font-family: $font-alata;
+      font-size: $font-size-2xl;
+      margin: 0;
+      
+      @include mobile {
+        font-size: $font-size-xl;
+      }
+    }
+  }
+}
+
+.edit-btn {
+  @include button-secondary;
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-sm $spacing-md;
+  font-size: $font-size-sm;
+  
+  mat-icon {
+    color: inherit;
+    font-size: $font-size-base;
+  }
+  
+  @include mobile {
+    font-size: $font-size-xs;
+    padding: $spacing-xs $spacing-sm;
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-lg;
+  
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  padding: $spacing-md;
+  background: rgba($color-white, 0.02);
+  border-radius: $border-radius-md;
+  border: 1px solid rgba($color-primary, 0.1);
+  
+  .info-label {
+    color: $color-gray-text;
+    font-family: $font-montserrat;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .info-value {
+    color: $color-white;
+    font-family: $font-alata;
+    font-size: $font-size-md;
+    font-weight: 400;
+    word-break: break-word;
+  }
+  
+  @include mobile {
+    padding: $spacing-sm;
+  }
+}
+
+// Animation
+.info-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

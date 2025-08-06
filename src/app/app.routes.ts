@@ -18,6 +18,18 @@ export const routes: Routes = [
     loadComponent: () => import('./components/logout/logout.component').then(m => m.LogoutComponent)
   },
   {
+    path: 'error',
+    loadComponent: () => import('./components/error/error.component').then(m => m.ErrorComponent)
+  },
+  {
+    path: 'recuperar-contrasena/:id',
+    loadComponent: () => import('./components/recuperar-contrasena/recuperar-contrasena.component').then(m => m.RecuperarContrasenaComponent)
+  },
+  {
+    path: 'usuario-perfil',
+    loadComponent: () => import('./components/usuario/usuario-perfil/usuario-perfil.component').then(m => m.UsuarioPerfilComponent)
+  },
+  {
     path: 'eventos',
     children: [
       {

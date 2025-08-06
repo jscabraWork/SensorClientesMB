@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import localeES from '@angular/common/locales/es';
-
 import { Ticket } from '../../../../models/ticket.model';
 import { Evento } from '../../evento.model';
 import { OrdenDataService } from '../../../../service/data/orden-data.service';
@@ -18,6 +17,7 @@ import { Cupon } from '../../../../models/cupon.model';
 import { AdicionalesDataService } from '../../../../service/data/adicionales-data.service';
 import { Adicionales } from '../../../../models/adicionales.model';
 import { AuthService } from '../../../../service/seguridad/auth.service';
+import { HoraPipe } from '../../../../pipes/horas.pipe';
 
 @Component({
   selector: 'app-carrito-final',
@@ -25,7 +25,8 @@ import { AuthService } from '../../../../service/seguridad/auth.service';
   imports: [
     CommonModule,
     FormsModule,
-    MatDialogModule
+    MatDialogModule,
+    HoraPipe
   ],
   templateUrl: './carrito-final.component.html',
   styleUrl: './carrito-final.component.scss'

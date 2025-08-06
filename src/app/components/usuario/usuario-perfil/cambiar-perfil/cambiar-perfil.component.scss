@@ -1,0 +1,87 @@
+@import '../../../../../styles/variables.scss';
+@import '../../../../../styles/mixins.scss';
+
+// Original styles from SensorClientes
+.arriba {
+  background: linear-gradient(#666, #333);
+  width: 100%;
+  color: white;
+}
+
+.botonesCerrar {
+  color: rgba(255, 217, 3, 1);
+}
+
+.colorLetras {
+  color: rgba(255, 217, 3, 1);
+}
+
+.centrarTexto {
+  text-align: center;
+}
+
+.botonLogin {
+  background: linear-gradient(#F9B84A, rgba(255, 217, 3, 1));
+  width: 100%;
+  color: white;
+}
+
+.fondo1 {
+  background: white;
+}
+
+.form-group {
+  margin: 10px auto;
+}
+
+// Bootstrap replacement styles
+.dialog-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.dialog-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+}
+
+.dialog-col {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding: 0 15px;
+}
+
+.float-right {
+  float: right;
+}
+
+.rounded {
+  border-radius: $border-radius;
+}
+
+.border {
+  border: 1px solid $border-color;
+}
+
+.form-control {
+  @include input-field;
+  width: 100%;
+}
+
+.btn {
+  @include button-primary;
+}
+
+.fondoNegro {
+  background-color: $color-dark;
+}
+
+// Mobile responsive
+@include mobile {
+  .dialog-container {
+    padding: 0 10px;
+  }
+}

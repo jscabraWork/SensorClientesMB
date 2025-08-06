@@ -1,1 +1,74 @@
-<p>compras-pendientes works!</p>
+<div class="spinner-overlay" *ngIf="cargando">
+  <div class="spinner"></div>
+</div>
+<section>
+  <div class="contenedorTitulo">
+    <h2 class="titulo-evento3">Mis compras pendientes</h2>
+    <hr class="linea-naranja4" />
+  </div>
+  <br>
+  <div class="contenedoresPendientes">
+    <div class="contenedor" *ngFor="let evento of eventos; let i=index">
+      <div class="informacionContenedor">
+        <div class="imagen-izquierda">
+          <img class="imagenEvento" [src]="darImagenTipo1(evento)" alt="Imagen del evento">
+        </div>
+        <div class="detallesInfo">
+          <h3 class="titulo">{{evento.nombre}}</h3>
+          <hr class="linea-naranja5" />
+          <div class="fechaContenedor">
+            <img class="imagenFecha" src="../../../../../assets/images/Vectores/calendar.svg" alt="">
+            <span class="fecha">{{ evento?.fecha ? (evento?.fecha | date:'medium') : "Por confirmar" }}</span>
+          </div>
+          <div>
+            <p class="detalle" *ngFor="let ticket of ticketsPorOrden[i]">
+              <span class="circuloPendiente"></span>
+              <span class="descripcion">
+                Ticket - {{ticket.numero_dentro_de_evento?ticket.numero_dentro_de_evento:ticket.id}} - {{localidades[i].nombre}} - {{localidades[i].etapa.nombre}}
+              </span>
+              <span class="lineaPrecios"></span>
+              <span class="precio">{{((+ticket.precio || 0) + (+ticket.servicio || 0) + (+ticket.servicio_iva || 0)) | currency:'COP' }}</span>
+            </p>
+          </div>
+          <!-- Servicios adicionales -->
+          <div *ngIf="getServiciosPorOrden(ordenes[i].id).length > 0">
+            <p class="adicionalesTitulo">Servicios adicionales</p>
+            <p class="detalle mb-1" *ngFor="let servicio of getServiciosPorOrden(ordenes[i].id)">
+              <span class="circuloPendiente"></span>
+              <span class="descripcion">{{servicio.nombre}}</span>
+              <span class="lineaPrecios"></span>
+              <span class="precio">{{(servicio.precio+servicio.servicioIva+servicio.servicio)*ticketsPorOrden[i].length | currency:'COP'}}</span>
+            </p>
+          </div>
+
+          <div class="mt-3" *ngIf="ordenes[i].seguro && ordenes[i].seguro>0">
+
+            <p class="detalle mb-1">
+              <span class="circuloPendiente"></span>
+              <span class="descripcion">Seguro Metlife</span>
+              <span class="lineaPrecios"></span>
+              <span class="precio">{{ordenes[i].seguro | currency:'COP'}}</span>
+            </p>
+          </div>
+
+          <!-- Aviso de transacción pendiente -->
+          <div *ngIf="transaccionesPendientes?.[i]">
+              <span class="mensajeAdvertencia">Tienes una transacción en proceso con {{transaccionesPendientes[i].metodoNombre}}, espera unos minutos antes de intentar nuevamente.</span>
+          </div>
+
+          <div class="cantidad-total">
+            <span class="cantidad">Cantidad: {{ticketsPorOrden[i].length}}</span>
+            <div class="totalDescuento">
+              <span class="total" *ngIf="getCuponDeOrden(ordenes[i].id)">Código de Descuento: {{getCuponDeOrden(ordenes[i].id).codigoVenta}}</span>
+              <span class="total">Total: {{getTotalGeneral(i, ordenes[i].id) | currency:'COP'}}</span>
+            </div>
+          </div>
+          <div class="pagarContainer">
+            <button class="botonPagar" (click)="confirmarPago(i)">PAGAR</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
