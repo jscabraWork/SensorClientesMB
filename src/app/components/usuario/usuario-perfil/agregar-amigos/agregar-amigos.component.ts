@@ -12,7 +12,7 @@ import { OrdenDataService } from '../../../../service/data/orden-data.service';
 import { PtpDataService } from '../../../../service/data/ptp-data.service';
 import { Ticket } from '../../../../models/ticket.model';
 import { TicketDataService } from '../../../../service/data/ticket-data.service';
-import { Evento } from '../../../eventos/evento.model';
+import { Evento } from '../../../../models/evento.model';
 import { Localidad } from '../../../../models/localidad.model';
 import { ClientesPagoDataService } from '../../../../service/data/clientes-pago-data.service';
 

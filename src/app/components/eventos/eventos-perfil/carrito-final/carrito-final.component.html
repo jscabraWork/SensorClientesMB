@@ -106,18 +106,19 @@
     </div>
 
 
-    <div class="boxTotal" *ngIf="orden?.tipo==4">
+    <div class="boxTotal" *ngIf="orden?.tipo==3">
       <h3 class="titulo-seccion">Contribución a tu Alcancía</h3>
       <p class="texto-informativo">Indica el monto que deseas aportar (valor mínimo requerido mostrado abajo)</p>
       
       <div class="cajaTotales2 padding-3">
         <h3 class="font-vaca montserrat cantTq fs-18">¿Cuál es el monto qué deseas aportar a tu alcancía? (mínimo
-          {{valorTotalEstable*0.2|currency:'COP'}})</h3>
+          {{aporteMinimo| currency:'COP ':'symbol':'1.0-0'}})</h3>
 
         <form #todoForm="ngForm" class="w100">
           <fieldset class="form-group">
             <input type="number" name="valorVaca" required="required" class="input-vaca form-control"
-              placeholder="Valor minimo" [(ngModel)]="valorTotal" (input)="formatoNumero()">
+              placeholder="Valor mínimo" [(ngModel)]="aporteAlcancia" (blur)="validarAporte()" 
+              [min]="aporteMinimo" step="1000">
           </fieldset>
         </form>
       </div>

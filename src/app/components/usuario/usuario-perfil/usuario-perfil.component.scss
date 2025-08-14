@@ -12,7 +12,6 @@
 .profile-container {
   background-color: $color-background;
   padding: $spacing-lg 0;
-  min-height: 80vh;
 }
 
 .profile-header {
@@ -35,6 +34,7 @@
     font-size: $font-size-3xl;
     font-weight: 700;
     margin: 0;
+    margin-top: 2rem;
     
     @include mobile {
       font-size: $font-size-2xl;

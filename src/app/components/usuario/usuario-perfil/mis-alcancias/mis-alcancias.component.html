@@ -2,30 +2,46 @@
   <div class="spinner"></div>
 </div>
 <section class="alcancias-container">
-    <div class="alcancias-row rounded">
-      <div class="alcancia-col" style="text-align: center;" *ngIf="alcancias.length==0">
-        <h4 class="textoSinInfo"> <strong> No tienes ninguna alcancía, compra una  con Sensor.</strong></h4>
-      </div>
-      <div class="alcancia-col eventoFondo margin-top-3" *ngFor="let alcancia of alcancias;let i =index">
+  <div class="alcancias-row rounded">
+    <div class="alcancia-col" style="text-align: center;" *ngIf="!misAlcancias || misAlcancias.length==0">
+      <h4 class="textoSinInfo"><strong>No tienes ninguna alcancía, compra una con Sensor.</strong></h4>
+    </div>
+    
+    <div class="alcancia-col eventoFondo margin-top-3" *ngFor="let misAlcancia of misAlcancias; let i = index">
+      <div class="alcancia-layout">
+        <div *ngIf="misAlcancia.imagen" class="alcancia-image">
+          <img [src]="misAlcancia.imagen" [alt]="misAlcancia.eventoNombre">
+        </div>
+        <div class="alcancia-info">
+          <h5 class="textoTitulo"><strong>Evento: </strong>{{misAlcancia.eventoNombre}}</h5>
+          <h5 class="textoInfo"><strong>Localidad: </strong>{{misAlcancia.localidad || 'N/A'}}</h5>
+          <h5 class="textoInfo"><strong>Etapa: </strong>{{misAlcancia.tickets?.[0]?.tarifa?.nombre || 'General'}}</h5>
+          <h5 class="textoInfo"><strong>Número de Tickets:</strong> {{misAlcancia.tickets?.length || 0}}</h5>
+          <h5 class="textoInfo"><strong>Valor Total: </strong>{{misAlcancia.precioTotal | currency:'COP ':'symbol':'1.0-0'}}</h5>
+          <h5 class="textoInfo"><strong>Valor Pagado: </strong>{{misAlcancia.precioParcialPagado | currency:'COP ':'symbol':'1.0-0'}}</h5>
+          <h5 class="textoInfo"><strong>Valor Faltante: </strong>{{getValorFaltante(misAlcancia) | currency:'COP ':'symbol':'1.0-0'}}</h5>
+          
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width]="(misAlcancia.precioParcialPagado / misAlcancia.precioTotal * 100) + '%'"></div>
+            </div>
+            <span class="progress-text">{{(misAlcancia.precioParcialPagado / misAlcancia.precioTotal * 100) | number:'1.0-0'}}%</span>
+          </div>
+          
+          <div class="form-group">
+            <label class="textoInfo">Valor de aporte para tu alcancía:</label>
+            <fieldset>
+              <input type="number" name="valorAlcancia" required="required" class="input-alcancia form-control"
+                placeholder="Aporte alcancia" [(ngModel)]="valorTotal[i]">
+            </fieldset>
+          </div>
 
-        <h5 class="textoTitulo"><strong>Evento: </strong>{{eventos[i].nombre}}</h5>
-        <h5 class="textoInfo"><strong>Localidad Tickets: </strong>{{localidades[i].nombre}}</h5>
-        <h5 class="textoInfo"><strong>Numero de Ticket:</strong> {{cantidadTickets[i]}} </h5>
-        <h5 class="textoInfo"><strong>Valor Total: $</strong>{{alcancia?.precioTotal | number: '1.0-0'}}</h5>
-        <h5 class="textoInfo"><strong>Valor Faltante: $</strong>{{alcancia?.precioTotal-alcancia?.precioParcialPagado |
-          number: '1.0-0'}}</h5>
-
-        <fieldset class="form-group padding-left-2">
-          <input type="number" name="valorVaca" required="required" class="input-vaca form-control"
-            placeholder="Aporte alcancia" [(ngModel)]="valorTotal[i]">
-        </fieldset>
-
-        <h5 class="textoInfo"><strong>Valor a pagar: $</strong>{{valorTotal[i] | number: '1.0-0'}}</h5>
-        <div class="button-section padding-left-md-4 padding-bottom-3 margin-top-3">
-          <button class="payment-btn action_button" (click)="pago(i,alcancia.id)"> Pagar</button>
+          <h5 class="textoInfo"><strong>Valor a pagar: </strong>{{valorTotal[i] | currency:'COP ':'symbol':'1.0-0'}}</h5>
+          <div class="button-section">
+            <button class="payment-btn action_button" (click)="pago(i, misAlcancia.alcancia.id)">Pagar</button>
+          </div>
         </div>
       </div>
-
-
     </div>
-  </section>
+  </div>
+</section>

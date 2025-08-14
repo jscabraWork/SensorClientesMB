@@ -30,6 +30,14 @@ export const routes: Routes = [
     loadComponent: () => import('./components/usuario/usuario-perfil/usuario-perfil.component').then(m => m.UsuarioPerfilComponent)
   },
   {
+    path: 'compras-pendientes',
+    loadComponent: () => import('./components/eventos/eventos-perfil/compras-pendientes/compras-pendientes.component').then(m => m.ComprasPendientesComponent)
+  },
+  {
+    path: 'carrito-final/:idOrden',
+    loadComponent: () => import('./components/eventos/eventos-perfil/carrito-final/carrito-final.component').then(m => m.CarritoFinalComponent)
+  },
+  {
     path: 'eventos',
     children: [
       {

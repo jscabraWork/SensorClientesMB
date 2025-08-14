@@ -90,7 +90,7 @@ export class CarritoFinalComponent extends BaseComponent {
 
   handleResponse(response: any): void {
     this.orden = response.orden;
-    
+
     if (this.orden.estado !== 3) {
       this.mostrarError("No tienes ninguna orden de compra pendiente");
       this.router.navigate(['/home']);
@@ -127,16 +127,16 @@ export class CarritoFinalComponent extends BaseComponent {
       this.mostrarSeguro = true;
     }
 
-    // Para localidades tipo 2 (alcancías), establecer aporte mínimo
-    if (this.localidad && this.localidad.tipo === 2) {
-      this.aporteMinimo = this.localidad.aporteMinimo;
+    // Para alcancías (orden tipo 3), calcular aporte mínimo multiplicado por cantidad de tickets
+    if (this.orden.tipo === 3) { // Alcancía
+      this.aporteMinimo = this.localidad.aporteMinimo * this.tickets.length;
       this.aporteAlcancia = this.aporteMinimo;
     }
 
     // Solo calcular seguro opcional si no es obligatorio
     if (this.configSeguro && this.configSeguro.valorMaximo > 0 && 
         this.orden.valorOrden <= this.configSeguro.valorMaximo && 
-        this.orden.tipo !== 4) {
+        this.orden.tipo !== 3) {
       this.mostrarSeguro = true;
       this.valorSeguro = Math.ceil(this.orden.valorOrden * (this.configSeguro.porcentaje / 100) / 100) * 100;
     }
@@ -149,7 +149,7 @@ export class CarritoFinalComponent extends BaseComponent {
     if (this.pagar) return;
     
     // Validar aporte mínimo para alcancías
-    if (this.localidad?.tipo === 2) {
+    if (this.orden?.tipo === 3) {
       if (this.aporteAlcancia < this.aporteMinimo) {
         this.mostrarError(`El aporte mínimo es ${this.aporteMinimo.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}`);
         return;
@@ -159,7 +159,7 @@ export class CarritoFinalComponent extends BaseComponent {
     this.iniciarCarga();
     this.pagar = true;
     
-    const aporteParaEnviar = this.localidad?.tipo === 2 ? this.aporteAlcancia : undefined;
+    const aporteParaEnviar = this.orden?.tipo === 3 ? this.aporteAlcancia : undefined;
     
     this.authService.guardarSesionEnLocalStorage();
     this.ptpService.getPeticionPTP(this.orden.id, this.seguro, aporteParaEnviar).subscribe({
@@ -228,7 +228,7 @@ export class CarritoFinalComponent extends BaseComponent {
   }
 
   private calcularTotalTickets(): number {
-    if (this.localidad?.tipo === 2) {
+    if (this.orden?.tipo === 3) {
       // Para alcancías, usar el aporte
       return this.aporteAlcancia;
     }
@@ -255,12 +255,23 @@ export class CarritoFinalComponent extends BaseComponent {
   }
 
   validarCupon(): void {
-    // Implementar lógica de validación de cupón
-    if (this.cuponCodigo.trim()) {
-      // Por ahora solo marcamos como agregado
-      this.cuponAgregado = true;
-    }
+  if (!this.cuponCodigo.trim()) {
+    this.mostrarError("Debes ingresar un código de cupón");
+    return;
   }
+
+  this.iniciarCarga();
+  this.service.aplicarCupon(this.cuponCodigo, this.orden.id).subscribe({
+    next: (response) => {
+      this.cuponAgregado = true;
+      this.mostrarMensaje(response.mensaje || "Cupón aplicado correctamente");
+      this.finalizarCarga();
+    },
+    error: (err) => {
+      this.manejarError(err, "No se pudo aplicar el cupón");
+    }
+  });
+}
 
   agregarAdicion(adicion: any): void {
     // Implementar lógica para agregar adicionales

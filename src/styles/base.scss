@@ -11,7 +11,13 @@
 html, body {
   height: 100%;
   margin: 0;
-  
+  overflow-x: hidden; // Previene scroll horizontal en móvil
+}
+
+body {
+  // Evita el bounce en iOS
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 // Clases utilitarias comunes

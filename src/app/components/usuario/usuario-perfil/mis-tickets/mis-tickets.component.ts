@@ -6,8 +6,10 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Evento } from '../../../../models/evento.model';
 import { Localidad } from '../../../../models/localidad.model';
 import { Ticket } from '../../../../models/ticket.model';
+import { MisTicketsDto } from '../../../../models/mistickets.model';
 import { TicketDataService } from '../../../../service/data/ticket-data.service';
 import { MensajeComponent } from '../../../mensaje/mensaje.component';
+import { QrDataService } from '../../../../service/data/qr-data.service';
 
 @Component({
   selector: 'app-mis-tickets',
@@ -27,30 +29,22 @@ export class MisTicketsComponent implements OnInit {
   @Input()
   numeroDocumento: string = '';
 
-  tickets: Ticket[] = [];
-  localidades: Localidad[] = [];
-  eventos: Evento[] = [];
+  misTickets: MisTicketsDto[] = [];
 
   constructor(
     private ticketsDataService: TicketDataService, 
+    private qrDataService: QrDataService,
     public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.tickets = [];
-    this.eventos = [];
-    this.localidades = [];
+    this.misTickets = [];
     this.cargando = true;
     
-    this.ticketsDataService.listarPorAtributo(this.numeroDocumento).subscribe({
-      next: response => {
+    this.ticketsDataService.getMisTicketsByCliente(this.numeroDocumento).subscribe({
+      next: (misTickets: MisTicketsDto[]) => {
         this.cargando = false;
-
-        if (!response.mensaje) {
-          this.tickets = response.tickets;
-          this.localidades = response.infoEventos.body.localidades;
-          this.eventos = response.infoEventos.body.eventos;
-        }
+        this.misTickets = misTickets;
       },
       error: error => {
         this.cargando = false;
@@ -82,14 +76,47 @@ export class MisTicketsComponent implements OnInit {
   }
 
   enviarQR(ticketId: number): void {
-    this.openMensaje('QR Enviado a su correo exitosamente. Revise Spam');
-    this.ticketsDataService.mandarQR(ticketId).subscribe({
+    this.qrDataService.enviarQR(ticketId, this.numeroDocumento).subscribe({
       next: () => {
-        // QR sent successfully
+        this.openMensaje('QR Enviado a su correo exitosamente. Revise Spam');
       },
       error: (error) => {
-        this.openMensaje('Ocurrió un error al enviar el QR');
+        if (error.error?.error) {
+          this.openMensaje(error.error.error);
+        } else {
+          this.openMensaje('Ocurrió un error al enviar el QR');
+        }
       }
     });
+  }
+
+  getEstadoTexto(estado: number): string {
+    switch (estado) {
+      case 0: return 'DISPONIBLE';
+      case 1: return 'VENDIDO';
+      case 2: return 'RESERVADO';
+      case 3: return 'EN PROCESO';
+      case 4: return 'NO DISPONIBLE';
+      default: return 'DESCONOCIDO';
+    }
+  }
+
+  getEstadoColor(estado: number): string {
+    switch (estado) {
+      case 0: return '#28a745'; // Verde
+      case 1: return '#17a2b8'; // Azul
+      case 2: return '#ffc107'; // Amarillo
+      case 3: return '#fd7e14'; // Naranja
+      case 4: return '#dc3545'; // Rojo
+      default: return '#6c757d'; // Gris
+    }
+  }
+
+  getUtilizadoTexto(utilizado: boolean): string {
+    return utilizado ? 'UTILIZADO' : 'DISPONIBLE';
+  }
+
+  getUtilizadoColor(utilizado: boolean): string {
+    return utilizado ? '#dc3545' : '#28a745'; // Rojo si utilizado, verde si disponible
   }
 }

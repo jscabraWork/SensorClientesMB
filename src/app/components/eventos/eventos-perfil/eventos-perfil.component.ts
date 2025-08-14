@@ -216,7 +216,9 @@ export class EventosPerfilComponent extends BaseComponent {
       this.ordenService.crearOrdenClienteCompra(this.cantidadTotal, this.idLocalidad, tipo, this.evento.id, this.cliente).subscribe({
         next: response => {
           if (response.ordenId) {
-            this.router.navigate([`/eventos/carrito/${response.ordenId}`]);
+            this.router.navigate([`/eventos/carrito/${response.ordenId}`]).then(() => {
+              window.scrollTo(0, 0);
+            });
           } else if (response.mensaje) {
             this.finalizarCarga();
             this.mostrarError(response.mensaje);
@@ -317,7 +319,9 @@ export class EventosPerfilComponent extends BaseComponent {
       next: response => {
         console.log(response);
         if (response.ordenId) {
-          this.router.navigate([`/eventos/carrito/${response.ordenId}`]);
+          this.router.navigate([`/eventos/carrito/${response.ordenId}`]).then(() => {
+            window.scrollTo(0, 0);
+          });
         } else if (response.mensaje) {
           this.finalizarCarga();
           this.mostrarError(response.mensaje);

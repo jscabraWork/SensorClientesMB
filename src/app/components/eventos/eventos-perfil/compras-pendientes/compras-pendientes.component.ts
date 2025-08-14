@@ -10,12 +10,14 @@ import { Cupon } from '../../../../models/cupon.model';
 import { Localidad } from '../../../../models/localidad.model';
 import { Orden } from '../../../../models/orden.model';
 import { Ticket } from '../../../../models/ticket.model';
+import { ComprasPendientesDto } from '../../../../models/compras-pendientes.model';
 import { EventoDataService } from '../../../../service/data/evento-data.service';
 import { OrdenDataService } from '../../../../service/data/orden-data.service';
 import { HardcodedAutheticationService } from '../../../../service/hardcoded-authetication.service';
 import { AuthService } from '../../../../service/seguridad/auth.service';
 import { MensajeComponent } from '../../../mensaje/mensaje.component';
 import { ConfirmacionComponent } from '../confirmacion/confirmacion.component';
+import { TransaccionDataService } from '../../../../service/data/transaccion-data.service';
 
 @Component({
   selector: 'app-compras-pendientes',
@@ -31,177 +33,60 @@ import { ConfirmacionComponent } from '../confirmacion/confirmacion.component';
 })
 export class ComprasPendientesComponent implements OnInit {
   cliente: ClientePagos = new ClientePagos();
-  precioTotal: number[] = [];
-  ordenes: Orden[] = [];
-  eventos: Evento[] = [];
-  localidades: Localidad[] = [];
-  eventosConLocalidades: any[] = [];
-  ticketsPorOrden: Ticket[][] = [];
-  transaccionesPendientes: any[] = [];
-  orden: Orden = new Orden();
-  serviciosPorOrden: { [ordenId: number]: Adicionales[] } = {};
-  cuponesPorOrden: { [ordenId: number]: Cupon } = {};
-
-  correo: string = '';
+  comprasPendientes: ComprasPendientesDto[] = [];
   cargando: boolean = false;
 
   constructor(
     private dialog: MatDialog,
     private ordenService: OrdenDataService,
-    private route: ActivatedRoute,
     private router: Router,
-    private eventoService: EventoDataService,
-    private authService: HardcodedAutheticationService
+    private authService: HardcodedAutheticationService,
+    private transaccionService: TransaccionDataService,
   ) {}
 
   ngOnInit(): void {
-    this.correo = this.authService.getUsuario();
-    this.ordenesEnProcesoPorCliente();
+    const numeroDocumento = this.authService.getCC();
+    if (numeroDocumento) {
+      this.cargarComprasPendientes(numeroDocumento);
+    }
   }
 
-  // Método para manejar el click en pagar
-  confirmarPago(indiceOrden: number): void {
-    const transaccionPendiente = this.transaccionesPendientes?.[indiceOrden];
-    
-    if (transaccionPendiente) {
-      // Mostrar confirmación si hay transacción pendiente
-      this.openMensajeConfirmacion(
-        `Esta orden tiene un pago en proceso con ${transaccionPendiente.metodoNombre}, ¿deseas continuar?`,
-        () => this.procederConPago(indiceOrden)
-      );
-    } else {
-      // Proceder directamente con el pago
-      this.procederConPago(indiceOrden);
-    }
+  cargarComprasPendientes(numeroDocumento: string): void {
+    this.cargando = true;
+    this.ordenService.getComprasPendientesByCliente(numeroDocumento).subscribe({
+      next: (compras: ComprasPendientesDto[]) => {
+        this.comprasPendientes = compras || [];
+        this.cargando = false;
+      },
+      error: (error) => {
+        this.cargando = false;
+        this.openMensaje('Error al cargar las compras pendientes');
+      }
+    });
   }
 
   // Método para proceder con el pago
-  procederConPago(indiceOrden: number): void {
-    const ordenId = this.ordenes[indiceOrden].id;
-    // Redirigir al carrito con el ID de la orden
-    this.router.navigate(['/eventos/carrito', ordenId]);
-  }
-
-  // Método para mostrar mensaje con confirmación
-  openMensajeConfirmacion(mensaje: string, onConfirm: () => void): void {
-    let screenWidth = screen.width;
-    let anchoDialog: string = '500px';
-    let anchomax: string = '80vw';
-    let altoDialog: string = '250';
-    if (screenWidth <= 600) {
-      anchoDialog = '100%';
-      anchomax = '100%';
-      altoDialog = 'auto';
-    }
-    
-    const dialogRef = this.dialog.open(ConfirmacionComponent, {
-      width: anchoDialog,
-      maxWidth: anchomax,
-      height: altoDialog,
-      data: {
-        mensaje: mensaje
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        onConfirm();
-      }
-    });
-  }
-
-  ordenesEnProcesoPorCliente(): void {
-    this.cargando = true;
-    this.ordenService.getAllOrdenesEnProcesoByClienteId(this.correo).subscribe({
-      next: response => {
-        console.log(response);
-
-        if (response == null || response.mensaje === 'No tienes ordenes pendientes') {
-          this.cargando = false;
-          this.openMensaje("No tienes compras pendientes,ve a la pagina principal");
+  procederConPago(compra: ComprasPendientesDto): void {
+    this.transaccionService.verificarTransaccionEnProceso(compra.orden.id).subscribe({
+      next: (response: any) => {
+        if (response.mensaje.includes('tiene una transacción en proceso')) {
+          // Mostrar mensaje y luego redirigir
+          this.openMensaje(response.mensaje, () => {
+            this.router.navigate(['/carrito-final', compra.orden.id]);
+          });
         } else {
-          this.ordenes = response.ordenes;
-          this.ticketsPorOrden = response.ticketsPorOrden;
-          this.eventos = response.info.eventos;
-          this.localidades = response.info.localidades;
-          this.serviciosPorOrden = response.servicioOrdenes;
-          this.cuponesPorOrden = response.cupones;
-          this.transaccionesPendientes = response.transaccionesPendientes;
-          this.cargando = false;
+          // Redirigir directamente
+          this.router.navigate(['/carrito-final', compra.orden.id]);
         }
       },
-      error: err => {
-        this.cargando = false;
-        this.openMensaje("Error,vuelve a la pagina principal");
+      error: (error) => {
+        this.openMensaje('Error al verificar el estado de la transacción');
       }
     });
   }
 
-  darImagenTipo1(evento: Evento) {
-    const primeraImagenTipo1 = evento.imagenes?.find(imagen => imagen.tipo === 1);
-    var urlPrimeraImagenTipo1 = "";
-    if (primeraImagenTipo1) {
-      urlPrimeraImagenTipo1 = primeraImagenTipo1.url;
-    }
-    return urlPrimeraImagenTipo1;
-  }
 
-  // getTotalTickets(i: number): number {
-  //   const cupon = this.getCuponDeOrden(this.ordenes[i].id);
-  //   let total: number = 0;
-
-  //   if (cupon != null) {
-  //     total = this.ticketsPorOrden[i].reduce((total, ticket) => {
-  //       let precioTicket: number = 0;
-  //       if (ticket.precio != 0) {
-  //         precioTicket = (+ticket.precio || 0) + (+ticket.servicio || 0) + (+ticket.servicio_iva || 0);
-  //         ticket.precio = cupon.precio;
-  //         ticket.servicio_iva = cupon.iva;
-  //         ticket.servicio = cupon.servicio;
-  //       }
-  //       return total + precioTicket;
-  //     }, 0);
-  //   }
-  //   else {
-  //     total = this.ticketsPorOrden[i].reduce((total, ticket) => {
-  //       const precioTicket = (+ticket.precio || 0) + (+ticket.servicio || 0) + (+ticket.servicio_iva || 0);
-  //       return total + precioTicket;
-  //     }, 0);
-  //   }
-  //   return total;
-  // }
-
-  getServiciosPorOrden(ordenId: number): Adicionales[] {
-    if (this.serviciosPorOrden) {
-      return this.serviciosPorOrden[ordenId] || [];
-    }
-    else {
-      return [];
-    }
-  }
-
-  getCuponDeOrden(ordenId: number): Cupon | null {
-    if (!this.cuponesPorOrden) {
-      return null;
-    }
-    const cupon = this.cuponesPorOrden[ordenId];
-    return cupon || null;
-  }
-
-  getTotalServicios(ordenId: number): number {
-    return this.getServiciosPorOrden(ordenId).reduce((total, servicio) => total + (+servicio.precio + servicio.servicio + servicio.servicioIva || 0), 0);
-  }
-
-  // getTotalGeneral(i: number, ordenId: number): number {
-  //   let total: number = 0;
-  //   total += this.getTotalTickets(i) + (this.getTotalServicios(ordenId) * this.ticketsPorOrden[i].length);
-  //   if (this.ordenes[i].seguro && this.ordenes[i].seguro > 0) {
-  //     total += this.ordenes[i].seguro;
-  //   }
-  //   return total;
-  // }
-
-  openMensaje(mensajeT: string, openD?: string): void {
+  openMensaje(mensajeT: string, callback?: () => void): void {
     let screenWidth = screen.width;
     let anchoDialog: string = '500px';
     let anchomax: string = '80vw';
@@ -219,5 +104,11 @@ export class ComprasPendientesComponent implements OnInit {
         mensaje: mensajeT,
       },
     });
+
+    if (callback) {
+      dialogRef.afterClosed().subscribe(() => {
+        callback();
+      });
+    }
   }
 }

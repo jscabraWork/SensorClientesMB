@@ -13,13 +13,13 @@
 
       <div class="dias-detalle">
         <p class="precio-info">
-          Precio: <strong>{{localidad.precio | currency:'COP '}}</strong>
+          Precio: <strong>{{localidad.precio | currency:'COP ':'symbol':'1.0-0'}}</strong>
         </p>
         <p class="precio-info">
-          Servicio: <strong>{{localidad.servicio | currency:'COP '}}</strong>
+          Servicio: <strong>{{localidad.servicio | currency:'COP ':'symbol':'1.0-0'}}</strong>
         </p>
         <p class="precio-info">
-          IVA: <strong>{{localidad.iva | currency:'COP '}}</strong>
+          IVA: <strong>{{localidad.iva | currency:'COP ':'symbol':'1.0-0'}}</strong>
         </p>
       </div>
 
@@ -40,7 +40,7 @@
           </button>
         </div>
       </div>
-      <div class="precio-total">Total: <strong>{{ localidad.precioTotal | currency:'COP' }}</strong></div>
+      <div class="precio-total"><strong>{{ localidad.precioTotal | currency:'COP ':'symbol':'1.0-0' }}</strong></div>
     </div>
   </div>
 </div>
@@ -50,7 +50,7 @@
   <div class="resumen-content">
     <div class="resumen-info">
       <span class="resumen-cantidad">{{getCantidadTotal()}} boleta(s) - {{getLocalidadSeleccionada()?.nombre}}</span>
-      <span class="resumen-total">Total: ${{calcularTotalGeneral() | number}}</span>
+      <span class="resumen-total">Total: ${{calcularTotalGeneral() | currency:'COP ':'symbol':'1.0-0'}}</span>
     </div>
     <button class="btn-reservar" (click)="onComprar()">
       COMPRAR

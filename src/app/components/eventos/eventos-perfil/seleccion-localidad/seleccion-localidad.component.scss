@@ -18,6 +18,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: v.$spacer-3;
+  justify-content: flex-start;
 }
 
 .localidad-item {
@@ -26,10 +27,11 @@
   background: v.$color-white;
   transition: all 0.2s ease;
   overflow: hidden;
-  flex: 1;
-  min-width: 300px;
-  max-width: 400px;
+  width: 300px;
+  max-height: 400px;
   padding: v.$spacer-3;
+  display: flex;
+  flex-direction: column;
 
   &:hover {
     border-color: v.$color-primary;
@@ -42,13 +44,14 @@
 
 .localidad-info {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: v.$spacer-2;
+  margin-top: auto;
   
   @media (max-width: v.$breakpoint-md) {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     gap: v.$spacer-2;
   }
 }
@@ -125,7 +128,7 @@
   color: v.$color-dark;
   white-space: nowrap;
   margin-top: v.$spacer-2;
-  margin-left: v.$spacer-3;
+  text-align: center;
 }
 
 // Selector de Cantidad por Item
@@ -139,7 +142,6 @@
   padding: v.$spacer-1 v.$spacer-2;
   min-width: 100px;
   height: fit-content;
-  margin-left: v.$spacer-3;
 }
 
 .btn-cantidad {
@@ -158,7 +160,7 @@
   transition: all 0.2s ease;
 
   &:hover:not(:disabled) {
-    background: v.$color-secondary;
+    background: v.$color-accent;
   }
 
   &:disabled {
@@ -235,7 +237,7 @@
   letter-spacing: 1px;
 
   &:hover {
-    background: v.$color-secondary;
+    background: v.$color-accent;
     transform: translateY(-2px);
     box-shadow: v.$shadow-md;
   }

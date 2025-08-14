@@ -1,6 +1,13 @@
 @import '../styles/variables';
 @import '../styles/mixins';
 
+.contenedor-general {
+  min-height: 100vh;
+  min-height: 100dvh; // Dynamic viewport height for better mobile support
+  display: flex;
+  flex-direction: column;
+}
+
 .menuFront {
   position: relative;
 }
@@ -10,8 +17,12 @@
 }
 
 .contenedor-info {
-  min-height: 50vh;
+  flex: 1;
   margin-top: 60px;
+  
+  @include mobile {
+    margin-top: 50px;
+  }
 }
 
 .menuNav {

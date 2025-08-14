@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CommonDataService } from '../commons/common-data.service';
 import { Ticket } from '../../models/ticket.model';
+import { MisTicketsDto } from '../../models/mistickets.model';
 import { API_URL_PAGOS } from '../../app.constants';
 
 
@@ -16,7 +17,8 @@ export class TicketDataService extends CommonDataService<Ticket>{
   
   protected override baseEndpoint=`${API_URL_PAGOS}/tickets`;
 
-  
+  protected baseEndpointClientes=`${API_URL_PAGOS}/clientes`;
+
   protected override atributoListado="clientes";
 
   constructor(protected override http:HttpClient) {
@@ -40,7 +42,9 @@ export class TicketDataService extends CommonDataService<Ticket>{
     return this.http.get<void>(`${this.baseEndpoint}/enviar-qr/${ticketId}`);
   }
 
-  
+  getMisTicketsByCliente(numeroDocumento: string): Observable<MisTicketsDto[]> {
+    return this.http.get<MisTicketsDto[]>(`${this.baseEndpointClientes}/mis-tickets/${numeroDocumento}`);
+  }
 
 }
 

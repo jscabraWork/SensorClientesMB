@@ -15,7 +15,7 @@ export class OrdenDataService {
 
   private apiOrdenesPromotores=`${API_URL_PAGOS}/ordenes-promotores`;
 
-  private apiOrdenesAlcancias=`${API_URL_PAGOS}/ordenes-alcancia`;
+  private apiOrdenesAlcancias=`${API_URL_PAGOS}/ordenes_alcancias`;
 
 
 
@@ -72,17 +72,21 @@ export class OrdenDataService {
     return this.http.get<any>(`${this.apiOrdenes}/orden/respuesta/${pIdOrden}`);
   }
 
-  crearOrdenAlcanciaCompra(idEvento:number,pIdAlcancia:number,cliente:ClientePagos){
-
+  crearOrdenAporte(pAlcanciaId: number, pAporte: number) {
     const params = new HttpParams()
-
-    .set('idEvento',idEvento.toString())
-    .set('pIdAlcancia',pIdAlcancia.toString());
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-   return this.http.post<any>(`${this.apiOrdenesAlcancias}/crear`,cliente,{params,headers});
+      .set('pAlcanciaId', pAlcanciaId.toString())
+      .set('pAporte', pAporte.toString());
+    
+    return this.http.post<any>(`${this.apiOrdenesAlcancias}/crear-aporte`, null, { params });
   }
 
+  aplicarCupon(pCuponId: string, pOrdenId: number) {
+    const params = new HttpParams()
+      .set('pCuponId', pCuponId)
+      .set('pOrdenId', pOrdenId.toString());
+
+    return this.http.post<any>(`${this.apiOrdenes}/aplicar-cupon`, null, { params });
+  }
 
 
 
@@ -95,6 +99,10 @@ export class OrdenDataService {
 
   validarOrdenPtp(pIdOrden){
     return this.http.get<any>(`${this.apiOrdenes}/manejo-orden/${pIdOrden}`);
+  }
+
+  getComprasPendientesByCliente(numeroDocumento: string) {
+    return this.http.get<any[]>(`${this.apiOrdenes}/compras-pendientes/${numeroDocumento}`);
   }
 
 

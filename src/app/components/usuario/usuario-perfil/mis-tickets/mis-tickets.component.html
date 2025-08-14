@@ -3,22 +3,32 @@
 </div>
 <section class="tickets-container shadow">
   <div class="tickets-row">
-    <div class="empty-col eventoFondo" style="text-align: center;" *ngIf="tickets.length==0">
-      <h4 class="textoSinInfo"> <strong> No tienes ningún Ticket, compra una con Sensor.</strong></h4>
+    <div class="empty-col eventoFondo" style="text-align: center;" *ngIf="misTickets.length==0">
+      <h4 class="textoSinInfo"> <strong> No tienes ningún Ticket, compra uno con Sensor.</strong></h4>
     </div>
-    <div class="ticket-col margin-bottom-2 info-ticket" *ngFor="let ticket of tickets;let i =index">
-      <h5 class="textoTitulo"><strong>Evento: {{eventos[i].nombre}}</strong></h5>
-      <h5 class="textoInfo"><strong>Localidad Tickets: {{localidades[i].nombre}}</strong> </h5>
-      <h5 class="textoInfo"><strong>Ticket No:</strong>
-        {{ticket.numero_dentro_de_evento?ticket.numero_dentro_de_evento:ticket.id}}</h5>
-
-      <h5 class="textoInfo"><strong>Valor: </strong>{{ticket?.precio + ticket?.servicio
-        +ticket?.servicio_iva|currency:'COP'}}</h5>
-
-      <!-- <div class="botones-tickets">
-        <button class="action_button rounded" routerLink="amigos-ticket/{{ticket.id}}">Gestionar</button>
-      </div> -->
-
+    <div class="ticket-col margin-bottom-2 info-ticket" *ngFor="let misTicket of misTickets">
+      <div class="ticket-layout">
+        <div *ngIf="misTicket.imagen" class="ticket-image">
+          <img [src]="misTicket.imagen" [alt]="misTicket.eventoNombre">
+        </div>
+        <div class="ticket-info">
+          <h5 class="textoTitulo"><strong>Evento: {{misTicket.eventoNombre}}</strong></h5>
+          <h5 class="textoInfo"><strong>Localidad: {{misTicket.localidad}}</strong></h5>
+          <h5 class="textoInfo"><strong>Ticket ID:</strong> {{misTicket.ticket.id}}</h5>
+          <h5 class="textoInfo" *ngIf="misTicket.ticket.numero"><strong>Ticket No:</strong> {{misTicket.ticket.numero}}</h5>
+          <h5 class="textoInfo" *ngIf="misTicket.ticket.tarifa"><strong>Valor: </strong>{{misTicket.ticket.precio | currency:'COP ':'symbol':'1.0-0'}}</h5>
+          <h5 class="textoInfo"><strong>Estado: </strong><span [style.color]="getUtilizadoColor(misTicket.utilizado)">{{getUtilizadoTexto(misTicket.utilizado)}}</span></h5>
+        </div>
+      </div>
+      
+      <div class="botones-tickets">
+        <button 
+          class="action_button rounded" 
+          (click)="enviarQR(misTicket.ticket.id)"
+          [disabled]="misTicket.ticket.estado !== 1">
+          Enviar QR
+        </button>
+      </div>
     </div>
   </div>
 </section>
