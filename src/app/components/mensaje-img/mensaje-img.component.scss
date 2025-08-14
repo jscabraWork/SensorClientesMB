@@ -1,0 +1,34 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+// Container styles (replacing Bootstrap classes)
+.mensaje-img-container {
+  width: 100%;
+  padding: $spacing-md;
+}
+
+.mensaje-img-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.mensaje-img-content {
+  flex: 0 0 100%; // col-12 equivalent
+  max-width: 100%;
+  @include flex-center;
+}
+
+// Component specific styles
+.mensaje-img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border-radius: $border-radius-sm;
+  box-shadow: $shadow-sm;
+  transition: all $transition-fast;
+  
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}

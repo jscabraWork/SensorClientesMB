@@ -1,1 +1,67 @@
-<p>eventos-perfil works!</p>
+<div class="spinner-overlay" *ngIf="cargando">
+  <div class="spinner"></div>
+</div>
+
+<!--BANNER-->
+<section class="contenedorFoto" content="width=device-width m-xs-5">
+    <img class="placeholder-imagen" *ngIf="darURL(2)" [src]="darURL(2)" alt="Banner evento" style="width: 100%; height: auto; object-fit: cover;" />
+</section>
+<div class="contenedorLinea">
+  <hr class="linea-naranja4" />
+</div>
+
+<section class="container-fluid  mt-1  eventoVideo">
+  <div class="pl-1 pr-1 sinPadding">
+    <div class="row largo sinVideo">
+
+      <div class="col-12 col-md-12 col-lg-6">
+        <div class="txtNombre">
+          <h2 class="titulo-evento3">{{evento?.nombre}}</h2>
+        </div>
+        <div class="alineacionText">
+          <div class="col-12  flotar lineH">
+            <div class="detalle1"><strong class="bold">Fecha del Evento: </strong>  {{ darFecha(evento,true) }}</div>
+          </div>
+          <div class="col-12   flotar lineH">
+            <div class="detalle1"><strong class="bold">Hora inicio: </strong> {{ evento?.dias?.[0]?.horaInicio | horas}}
+            </div>
+          </div>
+          <div class="col-12   flotar lineH">
+            <div class="detalle1"><strong class="bold">Hora finalización: </strong>{{ evento?.dias?.[0]?.horaFin | horas }}</div>
+          </div>
+          <div class="col-12   flotar lineH">
+            <div class="detalle1"><strong class="bold">Artistas: </strong> {{ evento?.artistas ? evento?.artistas : "Por confirmar" }}</div>
+          </div>
+          <div class="col-12   flotar lineH">
+            <div class="detalle1"><strong class="bold">Ciudad: </strong> {{evento?.venue?.ciudad?.nombre}}</div>
+          </div>
+          <div class="col-12   flotar lineH">
+            <div class="detalle1"><strong class="bold">Lugar: </strong> {{ evento?.venue?.nombre ? evento?.venue?.nombre : "Por confirmar" }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-12 col-sm-12 col-lg-6  vid " *ngIf="!evento?.video">
+        <div *ngIf="!evento?.video " class="   qrImagen ">
+          <div class="contenedorImagen">
+              <img class="placeholder-imagen2" *ngIf="darURL(3)" [src]="darURL(3)" alt="Imagen secundaria evento"/>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="col-12 contenederoBlanco2 ">
+        <div *ngIf="mapaUrl && mapaUrl !== 'no'" class="mapI">
+          <iframe *ngIf='mapaUrl' [src]='mapaUrl' width="100%"
+            style="border:0; height: 100%;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+</section>
+
+<section class="tablaEventoPerfil marGen" *ngIf="evento?.dias?.length > 0">
+  <app-seleccion-localidad 
+    [dias]="evento.dias" 
+    (comprar)="onComprarLocalidad($event)">
+  </app-seleccion-localidad>
+</section>

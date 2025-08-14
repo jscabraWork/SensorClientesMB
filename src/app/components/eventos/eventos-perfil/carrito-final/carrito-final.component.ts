@@ -1,22 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { ConfigSeguro } from '../../../../models/configSeguro.model';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import localeES from '@angular/common/locales/es';
-import { Ticket } from '../../../../models/ticket.model';
-import { Evento } from '../../evento.model';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { BaseComponent } from '../../../../common-ui/base.component';
 import { OrdenDataService } from '../../../../service/data/orden-data.service';
-import { PtpDataService } from '../../../../service/data/ptp-data.service';
-import { MensajeComponent } from '../../../mensaje/mensaje.component';
-import { ConfirmacionComponent } from '../confirmacion/confirmacion.component';
-import { Localidad } from '../../../../models/localidad.model';
-import { Orden } from '../../../../models/orden.model';
-import { CuponDataService } from '../../../../service/data/cupon-data.service';
-import { Cupon } from '../../../../models/cupon.model';
-import { AdicionalesDataService } from '../../../../service/data/adicionales-data.service';
-import { Adicionales } from '../../../../models/adicionales.model';
+import { EventoDataService } from '../../../../service/data/evento-data.service';
+import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../../../service/seguridad/auth.service';
+import { PtpDataService } from '../../../../service/data/ptp-data.service';
+import { Evento } from '../../../../models/evento.model';
+import { Ticket } from '../../../../models/ticket.model';
+import { Localidad } from '../../../../models/localidad.model';
+import { ConfirmacionComponent } from '../confirmacion/confirmacion.component';
+import { CountdownModule } from 'ngx-countdown';
+import localeES from '@angular/common/locales/es';
+import { Orden } from '../../../../models/orden.model';
+import { Dia } from '../../../../models/dia.model';
 import { HoraPipe } from '../../../../pipes/horas.pipe';
 
 @Component({
@@ -24,149 +24,201 @@ import { HoraPipe } from '../../../../pipes/horas.pipe';
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     FormsModule,
-    MatDialogModule,
+    CountdownModule,
     HoraPipe
   ],
   templateUrl: './carrito-final.component.html',
   styleUrl: './carrito-final.component.scss'
 })
-export class CarritoFinalComponent implements OnInit {
-  idOrden: string
-  evento: Evento
-  tickets: Ticket[]
-  pagar: boolean
-  valorTotal: number
-  localidad: Localidad
-  description: string
-  tax: number
-  valorTotalEstable: number
-  orden: Orden
-  cuponCodigo: string
-  cupon: Cupon
-  adicionales: Adicionales[]
-  adicionalesSeleccionados: Adicionales[]
-  cargando: boolean;
-  mostrarSeguro: boolean
-  servicios: Adicionales[]
-  valorSeguro: number
-  seguro: boolean
-  cuponAgregado: Cupon;
+export class CarritoFinalComponent extends BaseComponent {
+
+  orden: Orden = new Orden()
+  evento: Evento = new Evento()
+  dia: Dia | null = null
+  tickets: Ticket[] = []
+  localidad: Localidad | null = null
+  configSeguro: ConfigSeguro | null = null
+  pagar: boolean = false
+  mostrarSeguro: boolean = false
+  valorSeguro: number = 0
+  seguro: boolean = false
+  aporteAlcancia: number = 0
+  aporteMinimo: number = 0
+  cuponAgregado: boolean = false
+  cuponCodigo: string = ''
+  adicionales: any[] = []
+  totalPrecioTickets: number = 0
+  valorTotalEstable: number = 0
+  
+  override pathVariableName = 'idOrden';
 
   constructor(
     private service: OrdenDataService,
-    private route: ActivatedRoute,
+    private eventoService: EventoDataService,
     private router: Router,
     private ptpService: PtpDataService,
-    private dialog: MatDialog,
-    private servicioCupon: CuponDataService,
-    private servicioAdicionales: AdicionalesDataService,
-    private authService: AuthService
-  ) { }
-
-  ngOnInit(): void {
-    this.valorSeguro = 0
-    this.mostrarSeguro = false
-    this.seguro = false
-    this.valorTotal = 0
-    this.valorTotalEstable = 0
-    this.tax = 0
-    this.evento = new Evento()
-    this.pagar = false
-    this.localidad = new Localidad();
-    this.tickets = []
-    this.adicionales = []
-    this.adicionalesSeleccionados = []
-    this.orden = new Orden();
-    this.cargando = true;
-
-    this.route.paramMap.subscribe(params => {
-      this.idOrden = params.get('idOrden')
-      this.service.getInformacionCarritoDeCompras(this.idOrden).subscribe(response => {
-        if(response){
-          this.handleResponse(response);
-          this.cargando = false;
-        }else{
-          this.cargando = false;
-          this.openMensaje("No tienes ninguna orden de compra pendiente")
-        }
-      })
-    })
+    private authService: AuthService,
+    dialog: MatDialog,
+    route: ActivatedRoute
+  ){
+    super(dialog, route);
   }
 
-  handleResponse(response: any) {
-    this.orden = response.orden
-
-    if(this.orden.estado != 3){
-      this.orden = null
-      this.cargando = false
-      this.openMensaje("No tienes ninguna orden de compra pendiente")
-      this.router.navigate(['/home'])
-    }else{
-      this.tickets = response.tickets
-      this.evento = response.evento
-      this.localidad = response.localidad
-      this.adicionales = response.servicios
-      this.cuponAgregado = response.cupon
+  override cargarDatos(): void {
+    if (!this.pathVariable) {
+      this.mostrarError("ID de orden no válido");
+      return;
     }
 
-    if(this.adicionales.length > 0){
-      this.adicionales.forEach(a => {
-        this.adicionalesSeleccionados.push(a)
-      })
+    this.iniciarCarga();
+    this.service.getInformacionCarritoDeCompras(this.pathVariable).subscribe({
+      next: (response) => {
+        if (response) {
+          this.handleResponse(response);
+        } else {
+          this.mostrarError("No tienes ninguna orden de compra pendiente");
+        }
+        this.finalizarCarga();
+      },
+      error: (err) => {
+        this.manejarError(err, "Sucedio un error por favor vuelva a intentar");
+      }
+    });
+  }
+
+  handleResponse(response: any): void {
+    this.orden = response.orden;
+    
+    if (this.orden.estado !== 3) {
+      this.mostrarError("No tienes ninguna orden de compra pendiente");
+      this.router.navigate(['/home']);
+      return;
     }
 
-    if (this.tickets.length > 0) {
-      for (let i = 0; i < this.tickets.length; i++) {
-        let ticket = this.tickets[i]
-        this.valorTotal += ticket.precio + ticket.servicio + ticket.servicio_iva + this.totalAdicionales()
-        this.valorTotalEstable += ticket.precio + ticket.servicio + ticket.servicio_iva
-        this.tax = ticket.servicio_iva
+    this.tickets = response.tickets;
+    this.evento = response.evento;  // Cambio: evento sin 's'
+    this.localidad = response.localidad;
+    this.configSeguro = response.configSeguro || null;
+
+    // Cargar el evento completo usando getEventoVenta para obtener los días e imágenes
+    if (this.evento && this.evento.id) {
+      this.eventoService.getEventoVenta(this.evento.id.toString()).subscribe({
+        next: (response) => {
+          const eventoCompleto = response.evento;
+          // Mantener los datos básicos del evento del carrito pero agregar días e imágenes
+          this.evento = { ...this.evento, ...eventoCompleto };
+          // Si tiene días, tomar el primer día para fechaFin y horaFin
+          if (eventoCompleto.dias && eventoCompleto.dias.length > 0) {
+            this.dia = eventoCompleto.dias[0];
+          }
+        },
+        error: (error) => {
+          console.error('Error al cargar evento completo:', error);
+        }
+      });
+    }
+
+    // Verificar si la orden ya tiene seguro obligatorio
+    if (this.orden.valorSeguro && this.orden.valorSeguro > 0) {
+      this.seguro = true;
+      this.valorSeguro = this.orden.valorSeguro;
+      this.mostrarSeguro = true;
+    }
+
+    // Para localidades tipo 2 (alcancías), establecer aporte mínimo
+    if (this.localidad && this.localidad.tipo === 2) {
+      this.aporteMinimo = this.localidad.aporteMinimo;
+      this.aporteAlcancia = this.aporteMinimo;
+    }
+
+    // Solo calcular seguro opcional si no es obligatorio
+    if (this.configSeguro && this.configSeguro.valorMaximo > 0 && 
+        this.orden.valorOrden <= this.configSeguro.valorMaximo && 
+        this.orden.tipo !== 4) {
+      this.mostrarSeguro = true;
+      this.valorSeguro = Math.ceil(this.orden.valorOrden * (this.configSeguro.porcentaje / 100) / 100) * 100;
+    }
+
+    // Calcular el precio total de los tickets
+    this.totalPrecioTickets = this.calcularTotalTickets();
+  }
+
+  ptp(): void {
+    if (this.pagar) return;
+    
+    // Validar aporte mínimo para alcancías
+    if (this.localidad?.tipo === 2) {
+      if (this.aporteAlcancia < this.aporteMinimo) {
+        this.mostrarError(`El aporte mínimo es ${this.aporteMinimo.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}`);
+        return;
       }
     }
+    
+    this.iniciarCarga();
+    this.pagar = true;
+    
+    const aporteParaEnviar = this.localidad?.tipo === 2 ? this.aporteAlcancia : undefined;
+    
+    this.authService.guardarSesionEnLocalStorage();
+    this.ptpService.getPeticionPTP(this.orden.id, this.seguro, aporteParaEnviar).subscribe({
+      next: response => {
+        window.location.href = response.processUrl;
+      },
+      error: error => {
+        this.pagar = false;
+        this.manejarError(error, "Sucedio un error por favor vuelva a intentar");
+      }
+    });
+  }
 
-    this.servicioAdicionales.getAllAdicionalesDeLocalidad(this.tickets[0].localidadId).subscribe(response => {
-      this.adicionales = response.lista
-    })
-    this.description = this.tickets.length + ' Tickets para ' +
-      this.evento.nombre +
-      ' En la localidad ' + this.localidad.nombre;
-    this.cargando = false
+  openConfirmacion(mensaje: string): void {
+    if (!this.seguro && this.mostrarSeguro && this.orden.tipo !== 4) {
+      const dialogRef = this.dialog.open(ConfirmacionComponent, {
+        data: { mensaje: mensaje }
+      });
 
-    if (this.valorTotal <= 3000000 && this.orden.tipo != 4) {
-      this.mostrarSeguro = true
-      this.valorSeguro = Math.ceil(this.valorTotal * 0.043 / 100) * 100;
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.cambiarEstadoSeguro();
+        }
+        this.ptp();
+      });
+    } else {
+      this.ptp();
     }
+  }
 
-    if(this.cuponAgregado){
-      this.calcularDescuentoCupon(response.cupon);
-    }
-    this.valorTotal += this.orden.seguro
-    if(this.orden.seguro > 0){
-      this.seguro = true
-      this.valorSeguro = this.orden.seguro
-    }
+  cambiarEstadoSeguro(): void {
+      this.seguro = !this.seguro;
+  
   }
 
   darFecha(evento: Evento): string {
-    if(evento.fecha == null){
+
+    if(evento.fechaApertura==null){
       return 'Por confirmar'
     }
 
     registerLocaleData(localeES, 'es');
     let dataPipe: DatePipe = new DatePipe('es');
-    let Word = dataPipe.transform(evento.fecha, 'EEE dd');
+    let Word = dataPipe.transform(evento.fechaApertura, 'EEE dd');
     Word = Word[0].toUpperCase() + Word.substr(1).toLowerCase();
 
-    let Word2 = dataPipe.transform(evento.fecha, 'MMM');
+    let Word2 = dataPipe.transform(evento.fechaApertura, 'MMM');
     Word2 = Word2[0].toUpperCase() + Word2.substr(1).toLowerCase();
 
-    let fecha = Word + " de " + Word2 + " de " + dataPipe.transform(evento.fecha, 'yyyy');
+
+    let fecha = Word + " de " + Word2 + " de " + dataPipe.transform(evento.fechaApertura, 'yyyy');
 
     return fecha
   }
 
   darURL() {
+    if (!this.evento?.imagenes) {
+      return "";
+    }
     const primeraImagenTipo1 = this.evento.imagenes.find(imagen => imagen.tipo === 1);
     var urlPrimeraImagenTipo1 = "";
     if (primeraImagenTipo1) {
@@ -175,196 +227,51 @@ export class CarritoFinalComponent implements OnInit {
     return urlPrimeraImagenTipo1
   }
 
-  ptp() {
-    if (this.pagar == false) {
-      this.cargando = true;
-      this.pagar = true;
-      let valorSeguroFinal = 0;
-      if(this.seguro) {
-        valorSeguroFinal = this.valorSeguro;
-      }
+  private calcularTotalTickets(): number {
+    if (this.localidad?.tipo === 2) {
+      // Para alcancías, usar el aporte
+      return this.aporteAlcancia;
+    }
+    // Para órdenes normales, calcular basado en tickets y tarifas
+    let total = 0;
+    const tarifa = this.localidad?.tarifa;
+    if (tarifa) {
+      const precioUnitario = tarifa.precio + tarifa.servicio + tarifa.iva;
+      total = precioUnitario * this.tickets.length;
+    }
+  
+    return total;
+  }
 
-      if(this.orden.tipo == 4 && this.valorTotal < this.valorTotalEstable * 0.2){
-        this.openMensaje("El valor a pagar es inferior al valor mínimo para tu alcancía")
-        this.pagar = false;
-        this.cargando = false;
-        return;
-      }
+  get valorTotal(): number {
+    const totalTickets = this.calcularTotalTickets();
+    return this.seguro ? totalTickets + this.valorSeguro : totalTickets;
+  }
 
-      this.authService.guardarSesionEnLocalStorage();
-
-      this.ptpService.getPeticionPTP(this.idOrden, this.valorTotal, this.description, this.tax, valorSeguroFinal).subscribe({
-        next: response => {
-          window.location.href = response.processUrl;
-        },
-        error: error => {
-          this.openMensaje("Sucedio un error por favor vuleva a intentar");
-          this.pagar = false;
-          this.cargando = false;
-        }
-      });
+  validarAporte(): void {
+    if (this.aporteAlcancia < this.aporteMinimo) {
+      this.aporteAlcancia = this.aporteMinimo;
     }
   }
 
-  get totalPrecioTickets(): number {
-    if (!this.tickets) return 0;
-    return this.tickets.reduce(
-      (total, ticket) => total + ticket.precio + ticket.servicio + ticket.servicio_iva,
-      0
-    );
-  }
-
-  openMensaje(mensajeT: string, openD?: string): void {
-    let screenWidth = screen.width;
-    let anchoDialog: string = '500px';
-    let anchomax: string = '80vw';
-    let altoDialog: string = '250';
-    if (screenWidth <= 600) {
-      anchoDialog = '100%';
-      anchomax = '100%';
-      altoDialog = 'auto';
-    }
-    const dialogRef = this.dialog.open(MensajeComponent, {
-      width: anchoDialog,
-      maxWidth: anchomax,
-      height: altoDialog,
-      data: {
-        mensaje: mensajeT
-      }
-    });
-  }
-
-  openConfirmacion(mensaje: string): void {
-    if ( this.valorTotal >= this.valorTotalEstable * 0.2) {
-      if(!this.seguro && this.orden.tipo != 4){
-        const dialogRef = this.dialog.open(ConfirmacionComponent, {
-          data: { mensaje: mensaje }
-        });
-
-        dialogRef.afterClosed().subscribe((result => {
-          if (result) {
-            this.cambiarEstadoSeguro()
-          }
-          this.ptp();
-          this.cargando = true
-        }))
-      }
-      else{
-        this.ptp()
-      }
-    }
-    else if (this.valorTotal > this.valorTotalEstable) {
-      this.openMensaje("El valor a pagar es superior al valor total de la alcancia")
-    }
-    else if (this.valorTotal < this.valorTotalEstable * 0.2) {
-      this.openMensaje("El valor a pagar es inferior al valor mínimo para tu alcancia")
+  validarCupon(): void {
+    // Implementar lógica de validación de cupón
+    if (this.cuponCodigo.trim()) {
+      // Por ahora solo marcamos como agregado
+      this.cuponAgregado = true;
     }
   }
 
-  formatoNumero() {
-    this.valorTotal = parseFloat(this.valorTotal.toString().replace(/[^0-9.]/g, ''));
+  agregarAdicion(adicion: any): void {
+    // Implementar lógica para agregar adicionales
   }
 
-  validarCupon() {
-    this.servicioCupon.validarCupon(this.cuponCodigo, this.tickets[0].localidadId, this.tickets.length).subscribe(
-      {
-        next: response => {
-          this.manejarCupon(response)
-        },
-        error: error => {
-          this.openMensaje('No se encuentra para esta localidad un cupon con el codigo ' + this.cuponCodigo);
-        }
-      }
-    )
+  adicionSeleccionado(adicion: any): boolean {
+    // Implementar lógica para verificar si el adicional está seleccionado
+    return false;
   }
 
-  manejarCupon(response: any) {
-    if (response.mensaje) {
-      this.openMensaje(response.mensaje);
-    } else {
-      this.cupon = response.cupon
-
-      this.service.crearOrdenCupon(this.idOrden, this.cupon.codigoVenta).subscribe({
-        next: response => {
-          this.calcularDescuentoCupon(this.cupon);
-          this.cuponAgregado = this.cupon
-          this.openMensaje('Se aplico tu cupón ' + this.cuponCodigo);
-        }, error: error => {
-
-        }
-      })
-    }
-  }
-
-  cambiarEstadoSeguro() {
-    this.seguro = !this.seguro
-
-    if (this.seguro) {
-      this.valorTotal += this.valorSeguro
-    }
-    else {
-      this.valorTotal -= this.valorSeguro
-    }
-  }
-
-  agregarAdicion(adicion: Adicionales) {
-    this.service.crearOrdenAdicional(this.idOrden, adicion).subscribe({
-      next: response => {
-        this.tickets.forEach(t => {
-          t.precio += adicion.precio
-          t.servicio += adicion.servicio
-          t.servicio_iva += adicion.servicioIva
-          this.valorTotal += adicion.precio + adicion.servicio + adicion.servicioIva
-        })
-
-        this.adicionalesSeleccionados.push(adicion)
-        this.localidad.nombre += ` + ${adicion.nombre}`
-        this.openMensaje("Agregado el servicio")
-
-        this.valorSeguro = Math.ceil(this.valorTotal * 0.043 / 100) * 100;
-        if (this.seguro) {
-          this.valorTotal += this.valorSeguro
-        }
-      }, error: error => {
-        this.openMensaje("Sucedio un error por favor vuelva a intentarlo")
-      }
-    })
-  }
-
-  adicionSeleccionado(adicion: Adicionales): boolean {
-    return this.adicionalesSeleccionados.some(seleccionado => seleccionado.id === adicion.id);
-  }
-
-  totalAdicionales(): number {
-    return this.adicionalesSeleccionados.reduce((total, adicional) => {
-        return total + adicional.precio + adicional.servicio + adicional.servicioIva;
-    }, 0);
-  }
-
-  calcularDescuentoCupon(cupon: Cupon){
-    this.valorTotal = 0
-
-    for (let i = 0; i < this.tickets.length; i++) {
-      if(this.tickets[i].precio > 0){
-        this.tickets[i].precio = cupon.precio
-        this.tickets[i].servicio = cupon.servicio
-        this.tickets[i].servicio_iva = cupon.iva
-      }
-      this.valorTotal = this.valorTotal + this.tickets[i].precio + this.tickets[i].servicio + this.tickets[i].servicio_iva
-    }
-    
-    this.adicionalesSeleccionados.forEach(a => {
-      this.tickets.forEach(t => {
-        this.valorTotal += a.precio + a.servicio + a.servicioIva
-        t.precio += a.precio
-        t.servicio += a.servicio
-        t.servicio_iva += a.servicioIva
-      })
-    })
-
-    this.valorSeguro = Math.ceil(this.valorTotal * 0.043 / 100) * 100;
-    if (this.seguro) {
-      this.valorTotal += this.valorSeguro
-    }
+  formatoNumero(): void {
+    // Implementar formateo de número
   }
 }

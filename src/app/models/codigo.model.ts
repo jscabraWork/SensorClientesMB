@@ -1,6 +1,6 @@
 
 export class Codigo {
-
+   
     id:number;
     numeroDocumento: string;
     nombre: string;
@@ -15,8 +15,8 @@ export class Codigo {
     publicidad: boolean;
 
     tipo:string;
+    
 
 
-
-
+    
 }

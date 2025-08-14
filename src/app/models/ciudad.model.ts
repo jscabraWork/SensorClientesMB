@@ -1,9 +1,8 @@
-import { Foto } from "./foto.model";
+import { Venue } from "./venue.model";
 
-export interface Ciudad {
-    id: number,
-    nombre:string,
-    imagen:Foto,
-    temperatura:number,
-    visible:boolean
-}
+export class Ciudad {
+    id: number;
+    nombre: string;
+    venues: Venue[] = []
+  }
+

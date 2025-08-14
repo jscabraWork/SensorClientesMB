@@ -1,4 +1,5 @@
-import { Evento } from './../eventos/evento.model';
+import { Evento } from "./evento.model";
+
 export class Organizador {
     nombre: string;
     numeroDocumento: string;
@@ -6,8 +7,5 @@ export class Organizador {
     usuario:string;
     contrasena: string;
     tipo: string;
-    eventos:Evento []
-        
-           
-
+    eventos:Evento []        
 }

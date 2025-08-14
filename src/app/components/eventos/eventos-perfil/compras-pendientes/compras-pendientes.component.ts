@@ -3,7 +3,7 @@ import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Evento } from '../../evento.model';
+import { Evento } from '../../../../models/evento.model';
 import { Adicionales } from '../../../../models/adicionales.model';
 import { ClientePagos } from '../../../../models/cliente-pagos.model';
 import { Cupon } from '../../../../models/cupon.model';
@@ -146,30 +146,30 @@ export class ComprasPendientesComponent implements OnInit {
     return urlPrimeraImagenTipo1;
   }
 
-  getTotalTickets(i: number): number {
-    const cupon = this.getCuponDeOrden(this.ordenes[i].id);
-    let total: number = 0;
+  // getTotalTickets(i: number): number {
+  //   const cupon = this.getCuponDeOrden(this.ordenes[i].id);
+  //   let total: number = 0;
 
-    if (cupon != null) {
-      total = this.ticketsPorOrden[i].reduce((total, ticket) => {
-        let precioTicket: number = 0;
-        if (ticket.precio != 0) {
-          precioTicket = (+ticket.precio || 0) + (+ticket.servicio || 0) + (+ticket.servicio_iva || 0);
-          ticket.precio = cupon.precio;
-          ticket.servicio_iva = cupon.iva;
-          ticket.servicio = cupon.servicio;
-        }
-        return total + precioTicket;
-      }, 0);
-    }
-    else {
-      total = this.ticketsPorOrden[i].reduce((total, ticket) => {
-        const precioTicket = (+ticket.precio || 0) + (+ticket.servicio || 0) + (+ticket.servicio_iva || 0);
-        return total + precioTicket;
-      }, 0);
-    }
-    return total;
-  }
+  //   if (cupon != null) {
+  //     total = this.ticketsPorOrden[i].reduce((total, ticket) => {
+  //       let precioTicket: number = 0;
+  //       if (ticket.precio != 0) {
+  //         precioTicket = (+ticket.precio || 0) + (+ticket.servicio || 0) + (+ticket.servicio_iva || 0);
+  //         ticket.precio = cupon.precio;
+  //         ticket.servicio_iva = cupon.iva;
+  //         ticket.servicio = cupon.servicio;
+  //       }
+  //       return total + precioTicket;
+  //     }, 0);
+  //   }
+  //   else {
+  //     total = this.ticketsPorOrden[i].reduce((total, ticket) => {
+  //       const precioTicket = (+ticket.precio || 0) + (+ticket.servicio || 0) + (+ticket.servicio_iva || 0);
+  //       return total + precioTicket;
+  //     }, 0);
+  //   }
+  //   return total;
+  // }
 
   getServiciosPorOrden(ordenId: number): Adicionales[] {
     if (this.serviciosPorOrden) {
@@ -192,14 +192,14 @@ export class ComprasPendientesComponent implements OnInit {
     return this.getServiciosPorOrden(ordenId).reduce((total, servicio) => total + (+servicio.precio + servicio.servicio + servicio.servicioIva || 0), 0);
   }
 
-  getTotalGeneral(i: number, ordenId: number): number {
-    let total: number = 0;
-    total += this.getTotalTickets(i) + (this.getTotalServicios(ordenId) * this.ticketsPorOrden[i].length);
-    if (this.ordenes[i].seguro && this.ordenes[i].seguro > 0) {
-      total += this.ordenes[i].seguro;
-    }
-    return total;
-  }
+  // getTotalGeneral(i: number, ordenId: number): number {
+  //   let total: number = 0;
+  //   total += this.getTotalTickets(i) + (this.getTotalServicios(ordenId) * this.ticketsPorOrden[i].length);
+  //   if (this.ordenes[i].seguro && this.ordenes[i].seguro > 0) {
+  //     total += this.ordenes[i].seguro;
+  //   }
+  //   return total;
+  // }
 
   openMensaje(mensajeT: string, openD?: string): void {
     let screenWidth = screen.width;

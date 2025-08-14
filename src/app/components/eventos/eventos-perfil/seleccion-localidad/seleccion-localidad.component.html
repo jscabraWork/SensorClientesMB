@@ -1,0 +1,59 @@
+<!-- Selección de Localidades -->
+<div class="localidades-section">
+  <div class="localidades-lista">
+    <div 
+      *ngFor="let localidad of localidadesUnicas; trackBy: trackByLocalidad" 
+      class="localidad-item"
+      [class.selected]="getCantidad(localidad.nombre) > 0">
+      
+      <div class="localidad-header">
+        <h4 class="localidad-nombre"><strong>{{localidad.nombre}}</strong></h4>
+        <small class="localidad-descripcion"> <strong>{{localidad.etapa || 'General'}}</strong></small>
+      </div>
+
+      <div class="dias-detalle">
+        <p class="precio-info">
+          Precio: <strong>{{localidad.precio | currency:'COP '}}</strong>
+        </p>
+        <p class="precio-info">
+          Servicio: <strong>{{localidad.servicio | currency:'COP '}}</strong>
+        </p>
+        <p class="precio-info">
+          IVA: <strong>{{localidad.iva | currency:'COP '}}</strong>
+        </p>
+      </div>
+
+      <div class="localidad-info">
+        <div class="cantidad-selector">
+          <button 
+            class="btn-cantidad"
+            (click)="ajustarCantidad(localidad.nombre, -1)"
+            [disabled]="getCantidad(localidad.nombre) <= 0 || (getCantidadTotal() > 0 && getCantidad(localidad.nombre) === 0)">
+            -
+          </button>
+          <span class="cantidad-display">{{getCantidad(localidad.nombre)}}</span>
+          <button 
+            class="btn-cantidad"
+            (click)="ajustarCantidad(localidad.nombre, 1)"
+            [disabled]="getCantidad(localidad.nombre) >= 7 || (getCantidadTotal() > 0 && getCantidad(localidad.nombre) === 0)">
+            +
+          </button>
+        </div>
+      </div>
+      <div class="precio-total">Total: <strong>{{ localidad.precioTotal | currency:'COP' }}</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- Resumen de Compra -->
+<div class="resumen-compra">
+  <div class="resumen-content">
+    <div class="resumen-info">
+      <span class="resumen-cantidad">{{getCantidadTotal()}} boleta(s) - {{getLocalidadSeleccionada()?.nombre}}</span>
+      <span class="resumen-total">Total: ${{calcularTotalGeneral() | number}}</span>
+    </div>
+    <button class="btn-reservar" (click)="onComprar()">
+      COMPRAR
+    </button>
+  </div>
+</div>

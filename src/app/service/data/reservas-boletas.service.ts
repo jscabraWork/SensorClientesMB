@@ -1,6 +1,4 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {  API_URL_PROMOTORES } from '../../app.constants';
 
 
 @Injectable({
@@ -8,11 +6,8 @@ import {  API_URL_PROMOTORES } from '../../app.constants';
 })
 export class ReservasBoletasService {
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
 
 
-  getReservaPorId(pIdReserva){
-    return this.http.get<any>(`${API_URL_PROMOTORES}/reservas/${pIdReserva}`)
-  }
 }

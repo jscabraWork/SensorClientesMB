@@ -23,11 +23,11 @@
                   <div class="detalle2"><strong class="bold">Fecha del Evento: </strong> {{darFecha(evento)}}  </div>
                 </div>
                 <div class="  lineH2 ">
-                  <div class="detalle2"><strong class="bold">Fecha Finalización: </strong> {{evento?.fechaFin | date}}
+                  <div class="detalle2"><strong class="bold">Fecha Finalización: </strong> {{dia?.fechaFin | date}}
                   </div>
                 </div>
                 <div class="  lineH2">
-                  <div class="detalle2"><strong class="bold">Hora Finalización: </strong> {{ evento?.horaFin | horas }}
+                  <div class="detalle2"><strong class="bold">Hora Finalización: </strong> {{ dia?.horaFin | horas }}
                   </div>
                 </div>
                 <div class="  lineH2">
@@ -35,7 +35,7 @@
                   </div>
                 </div>
                 <div class="  lineH2">
-                  <div class="detalle3">Compra de <strong class="bold">{{tickets.length}}</strong>Tickets en la localidad <strong class="bold">{{localidad.nombre}}</strong></div>
+                  <div class="detalle3">Compra de <strong class="bold">{{tickets.length}}</strong>Tickets en la localidad <strong class="bold">{{localidad?.nombre}}</strong></div>
                 </div>
               </div>
             </div>
@@ -69,11 +69,11 @@
         </tr>
         <tr>
           <td class="fondoTablaDato">{{tickets.length}}</td>
-          <td class="fondoTablaDato">{{localidad?.etapa?.nombre}}</td>
+          <td class="fondoTablaDato">{{localidad?.nombre}}</td>
           <td
           class="fondoTablaDato">{{localidad?.nombre}}
           </td>
-          <td class="fondoTablaDato"> ${{ totalPrecioTickets | number: '1.0-0' }}</td>
+          <td class="fondoTablaDato"> ${{ (localidad?.tarifa?.precio + localidad?.tarifa?.servicio + localidad?.tarifa?.iva) | number: '1.0-0' }}</td>
         </tr>
       </table>
     </section>

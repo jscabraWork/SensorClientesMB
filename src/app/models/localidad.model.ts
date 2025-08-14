@@ -1,23 +1,16 @@
-
-import { Etapa } from "../components/eventos/eventos-perfil/etapa.model";
+import { Dia } from "./dia.model"
+import { Tarifa } from "./tarifa.model"
 
 export class Localidad {
-    id:number;
-    nombre: string;
-    precio:number;
-    estado:number;
-    servicio:number;
-    servicio_iva:number;
-    efectivo:boolean;
-    maximoVender:number;
-    vaca:boolean;
-    visibleMin:boolean;
-    precioMin:number;
-    vendidoMin:number;
-	soldout:boolean;
-    precioProximaEtapa:number;
-    pagoMinimo:number;
-    tipo:number;
-    etapa:Etapa;
-    cantidadPersonasPorTicket:number;
+    id: number
+    nombre: string
+    descripcion: string | null = null
+    tipo: number
+    tarifas: Tarifa[] = []
+    dias: Dia[] = []
+    aporteMinimo: number;
+
+    // Datos para la compra
+    // Este atributo es auxiliar para la compra
+    tarifa: Tarifa | null = null
 }

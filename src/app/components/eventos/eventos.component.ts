@@ -7,9 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import localeES from '@angular/common/locales/es';
 
 import { EventoDataService } from '../../service/data/evento-data.service';
-import { Evento } from './evento.model';
+import { Evento } from '../../models/evento.model';
 import { Ciudad } from '../../models/ciudad.model';
 import { MensajeComponent } from '../mensaje/mensaje.component';
+import { ResumirPipe2 } from '../../pipes/resumir2.pipe';
+import { HoraPipe2 } from '../../pipes/horas2.pipe';
 
 @Component({
   selector: 'app-eventos',
@@ -19,7 +21,9 @@ import { MensajeComponent } from '../mensaje/mensaje.component';
     FormsModule,
     RouterModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    ResumirPipe2,
+    HoraPipe2
   ],
   templateUrl: './eventos.component.html',
   styleUrl: './eventos.component.scss'
@@ -67,9 +71,10 @@ export class EventosComponent implements OnInit {
   }
 
   cargarEventos(){
-    this.eventoDataService.getAllEventosVisibles().subscribe(
+    this.eventoDataService.getAllEventosVisibles(2).subscribe(
       {
         next: response => {
+          console.log("response", response);
           this.cargando = false;
           if(response && response.length < 0){
             this.cargando = false;
@@ -133,28 +138,9 @@ export class EventosComponent implements OnInit {
     return urlPrimeraImagenTipo1
   }
 
-  darFecha(evento: Evento): string {
-    if(evento.fecha==null){
-      return 'Por confirmar'
-    }
-
-    registerLocaleData(localeES, 'es');
-    let dataPipe: DatePipe = new DatePipe('es');
-    let Word = dataPipe.transform(evento.fecha, 'EEE dd');
-    Word = Word[0].toUpperCase() + Word.substr(1).toLowerCase();
-
-    let Word2 = dataPipe.transform(evento.fecha, 'MMM');
-    Word2 = Word2[0].toUpperCase() + Word2.substr(1).toLowerCase();
-
-    let fecha = Word + " de " + Word2 + " de " + dataPipe.transform(evento.fecha, 'yyyy');
-
-    return fecha
-  }
-
   handleSuccesfullGet(response: any) {
-    this.eventos = response.eventos.map((e: any) => Object.assign(new Evento(), e));
-    this.imagenesTipo4 = response.eventos.imagenes
-    this.ciudades = response.ciudades;
+    this.eventos = response.map((e: any) => Object.assign(new Evento(), e));
+    this.ciudades = [];
     this.imagenesTipo4 = [];
 
     this.eventos.forEach(evento => {
@@ -172,7 +158,7 @@ export class EventosComponent implements OnInit {
     });
 
     this.ciudades = this.eventos
-      .map(evento => evento.ciudad)
+      .map(evento => evento.venue.ciudad)
       .filter((ciudad, index,self) =>
         self.findIndex(c => c.id === ciudad.id)=== index)
 
@@ -187,6 +173,26 @@ export class EventosComponent implements OnInit {
     this.router.navigate([`/eventos/evento/${eventoId}`])
   }
 
+  darFecha(evento: Evento): string {
+
+    if(evento.fechaApertura==null){
+      return 'Por confirmar'
+    }
+
+    registerLocaleData(localeES, 'es');
+    let dataPipe: DatePipe = new DatePipe('es');
+    let Word = dataPipe.transform(evento.fechaApertura, 'EEE dd');
+    Word = Word[0].toUpperCase() + Word.substr(1).toLowerCase();
+
+    let Word2 = dataPipe.transform(evento.fechaApertura, 'MMM');
+    Word2 = Word2[0].toUpperCase() + Word2.substr(1).toLowerCase();
+
+
+    let fecha = Word + " de " + Word2 + " de " + dataPipe.transform(evento.fechaApertura, 'yyyy');
+
+    return fecha
+  }
+  
   openMensaje(mensajeT: string, openD?: string): void {
     let screenWidth = screen.width;
     let anchoDialog: string = '500px';

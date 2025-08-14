@@ -11,17 +11,18 @@ export class PtpDataService {
 
   constructor(private http: HttpClient) { }
 
-  getPeticionPTP(idOrden,valorTotal,descripcion:string,tax,seguro){
+  getPeticionPTP(idOrden: number, seguro: boolean, aporteAlcancia?: number){
 
     let url = respuesta +"/eventos/respuesta/"+idOrden;
 
     const formData: FormData= new FormData();
-    formData.append('idOrden', idOrden);
-    formData.append('valorTotal',valorTotal);
-    formData.append('descripcion',descripcion);
-    formData.append('url',url);
-    formData.append('tax',tax);
-    formData.append('seguro',seguro);
+    formData.append('idOrden', idOrden.toString());
+    formData.append('url', url);
+    formData.append('seguro', seguro.toString());
+    
+    if (aporteAlcancia !== undefined && aporteAlcancia !== null) {
+      formData.append('aporteAlcancia', aporteAlcancia.toString());
+    }
 
     return this.http.post<any>(`${this.apiPagos}/crear-link`, formData);
 

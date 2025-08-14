@@ -37,6 +37,24 @@ $spacing-lg: 24px;
 $spacing-xl: 32px;
 $spacing-2xl: 48px;
 
+// Espaciados (versión simplificada y funcional)
+$spacer: 1rem;
+$spacer-0: 0;
+$spacer-1: $spacer * 0.25;
+$spacer-2: $spacer * 0.5;
+$spacer-3: $spacer;
+$spacer-4: $spacer * 1.5;
+$spacer-5: $spacer * 3;
+
+// Mapa de espaciados 
+$spacers: (
+  "0": $spacer-0,
+  "1": $spacer-1,
+  "2": $spacer-2,
+  "3": $spacer-3,
+  "4": $spacer-4,
+  "5": $spacer-5
+);
 // Bordes y radios
 $border-radius-sm: 6px;
 $border-radius-md: 8px;
@@ -53,9 +71,9 @@ $shadow-primary: 0 2px 5px $color-primary;
 
 // Z-index
 $z-menu: 100;
-$z-overlay: 9;
+$z-overlay: 1000;
 $z-modal: 9999;
-$z-spinner: 9999;
+$z-spinner: 10000;
 
 // Breakpoints
 $breakpoint-xs: 280px;

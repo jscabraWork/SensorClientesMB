@@ -87,6 +87,7 @@ export class HoraPipe2 implements PipeTransform{
             if(valor=='Por confirmar'){
                 return valor
             }
+            return valor; // valor por defecto si no coincide con ningún caso
         }
         else
         {

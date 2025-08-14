@@ -3,42 +3,39 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MensajeComponent } from '../../../mensaje/mensaje.component';
-import { Evento } from '../../evento.model';
-import { Foto } from '../../../../models/foto.model';
+import { Evento } from '../../../../models/evento.model';
 import { Orden } from '../../../../models/orden.model';
 import { firstValueFrom } from 'rxjs';
 
 import { EventoDataService } from '../../../../service/data/evento-data.service';
 import { OrdenDataService } from '../../../../service/data/orden-data.service';
-import { HardcodedAutheticationService } from '../../../../service/hardcoded-authetication.service';
 import { AuthService } from '../../../../service/seguridad/auth.service';
 
 @Component({
   selector: 'app-respuesta',
   templateUrl: './respuesta.component.html',
-  styleUrls: ['./respuesta.component.css'],
+  styleUrls: ['./respuesta.component.scss'],
   standalone: true,
   imports: [
     CommonModule,
-    MatDialogModule,
-    MensajeComponent
+    MatDialogModule
   ]
 })
 export class RespuestaComponent implements OnInit, OnDestroy {
-  refPayco: string = '';
+  refPayco: string = ''
   transactionResponse: any;
-  url: Foto;
-  pixel: boolean = false;
-  pixel2: boolean = false;
-  pixel3: boolean = false;
-  orden: Orden;
-  transacciones: any[] = [];
-  eventoId: number;
-  ordenId;
-  banco: string;
-  valor: number;
-  evento: Evento;
-
+  pixel: boolean = false
+  pixel2: boolean = false
+  pixel3: boolean = false
+  orden: Orden
+  transacciones:any []
+  eventoId: number
+  ordenId
+  banco:string
+  valor:number
+  cargando:boolean
+  evento: Evento
+  
   // Variables para auto-refresh
   private autoRefreshInterval: any;
   private countdownInterval: any;
@@ -48,24 +45,33 @@ export class RespuestaComponent implements OnInit, OnDestroy {
   constructor(
     private ordenService: OrdenDataService,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
     private authService: AuthService,
     private eventoService: EventoDataService,
+    private router: Router,
     private dialog: MatDialog
-  ) {}
+  ) {
 
-  ngOnInit(): void {
-    this.authService.cargarSesionDesdeLocalStorage();
-
-    this.activatedRoute.paramMap.subscribe(async params => {
-      this.ordenId = params.get('idOrden');
-      await this.validarOrden();
-      await this.refrescar();
-      this.cargarEvento();
-    });
   }
 
-  async validarOrden() {
+  ngOnInit(): void {
+    // Esperar a que se complete la carga de la sesión
+    this.authService.cargarSesionDesdeLocalStorage();
+
+    // Solo continuar si la sesión se cargó correctamente o si ya estamos autenticados
+      this.activatedRoute.paramMap.subscribe(async params => {
+        this.ordenId = params.get('idOrden');
+        
+        // Validar orden antes de ejecutar cualquier otra operación
+        //await this.validarOrden();
+        await this.refrescar();
+        this.cargarEvento();
+
+      });
+
+  }
+
+  // Método para validar la orden antes de cualquier operación
+  async validarOrden(){
     try {
       await this.ordenService.validarOrdenPtp(this.ordenId).toPromise();
     } catch (error) {
@@ -76,18 +82,22 @@ export class RespuestaComponent implements OnInit, OnDestroy {
   async refrescar() {
     try {
       const response = await firstValueFrom(this.ordenService.getRespuestaOrden(this.ordenId));
+
+      console.log(response)
       this.orden = response.orden;
       this.transacciones = response.transacciones;
-      this.eventoId = response.orden.eventoId;
+      this.eventoId = response.orden.eventoId
 
       if (this.transacciones.length > 0) {
-        this.banco = this.transacciones[this.transacciones.length - 1].metodoNombre;
-        this.valor = this.transacciones[this.transacciones.length - 1].amount;
+        this.banco = this.transacciones[this.transacciones.length-1].metodoNombre;
+        this.valor = this.transacciones[this.transacciones.length-1].amount;
       }
-
+      
+      // Solo iniciar auto-refresh si está en proceso y no está ya activo
       if (this.orden?.estado === 3 && !this.isAutoRefreshActive) {
         this.startAutoRefresh();
       } else if (this.orden?.estado !== 3 && this.isAutoRefreshActive) {
+        // Si ya no está en proceso, detener el auto-refresh
         this.clearAutoRefresh();
       }
     } catch (error) {
@@ -97,6 +107,7 @@ export class RespuestaComponent implements OnInit, OnDestroy {
   }
 
   cargarEvento() {
+    // Obtener el perfil del evento
     this.eventoService.getById(this.eventoId).subscribe({
       next: evento => {
         this.evento = evento;
@@ -111,6 +122,7 @@ export class RespuestaComponent implements OnInit, OnDestroy {
     this.clearAutoRefresh();
   }
 
+  // Métodos para el manejo de estados y iconos
   getTextoEstado(): string {
     switch (this.orden?.estado) {
       case 1:
@@ -137,29 +149,34 @@ export class RespuestaComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Auto-refresh para transacciones en proceso
   private startAutoRefresh(): void {
+    // Si ya hay un auto-refresh activo, limpiar primero para evitar duplicación
     if (this.isAutoRefreshActive) {
       this.clearAutoRefresh();
     }
-
+    
     if (this.orden?.estado === 3) {
       this.isAutoRefreshActive = true;
       this.resetCountdown();
-
+      
+      // Countdown timer separado
       this.countdownInterval = setInterval(() => {
         this.countdown--;
         if (this.countdown <= 0) {
-          this.resetCountdown();
+          this.resetCountdown(); // Resetear cuando llegue a 0
         }
       }, 1000);
 
+      // Auto-refresh cada 15 segundos
       this.autoRefreshInterval = setInterval(async () => {
-        this.resetCountdown();
+        this.resetCountdown(); // Resetear el contador antes de refrescar
         await this.refrescar();
       }, 15000);
     }
   }
-
+  
+  // Método separado para resetear el countdown
   private resetCountdown(): void {
     this.countdown = 15;
   }
@@ -176,25 +193,28 @@ export class RespuestaComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Refresh manual - disponible siempre
   async refrescarManual(): Promise<void> {
+    // Reiniciar el contador antes de refrescar
     if (this.isAutoRefreshActive && this.orden?.estado === 3) {
       this.resetCountdown();
     }
     await this.refrescar();
   }
 
+  // Métodos de navegación
   volverAlInicio(): void {
     this.router.navigate(['/']);
   }
-
+  
   intentarNuevamente(): void {
     this.router.navigate(['/eventos/evento', this.eventoId]);
   }
 
-  mensaje(mensaje: string, salir?: boolean): void {
+  mensaje(mensaje, salir?): void {
     const dialogRef = this.dialog.open(MensajeComponent, {
       width: '600px',
-      maxHeight: '250px',
+      maxHeight:'250px' ,
       data: {
         mensaje: mensaje,
       }
@@ -202,8 +222,9 @@ export class RespuestaComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (salir) {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/home'])
       }
     });
   }
+
 }

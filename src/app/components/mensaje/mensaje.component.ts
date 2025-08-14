@@ -25,6 +25,10 @@ export class MensajeComponent implements OnInit {
     this.dialogRef.addPanelClass('mensaje-dialog-transparent');
   }
 
+  cerrar() {
+    this.dialogRef.close();
+  }
+
   ngOnInit(): void {
     this.mensaje = this.data.mensaje;
   }

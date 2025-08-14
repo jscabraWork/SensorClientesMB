@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
-import { Evento } from '../../../eventos/evento.model';
+import { Evento } from '../../../../models/evento.model';
 import { MensajeComponent } from '../../../mensaje/mensaje.component';
 import { Alcancia } from '../../../../models/alcancia.model';
 import { AlcanciasDataService } from '../../../../service/data/alcancias-data.service';
@@ -82,47 +82,47 @@ export class MisAlcanciasComponent implements OnInit {
     }
   }
 
-  pago(i: number, id: number): void {
-    if (this.pagar === false) {
-      const valorFaltante = this.alcancias[i].precioTotal - this.alcancias[i].precioParcialPagado;
+  // pago(i: number, id: number): void {
+  //   if (this.pagar === false) {
+  //     const valorFaltante = this.alcancias[i].precioTotal - this.alcancias[i].precioParcialPagado;
       
-      if (this.valorTotal[i] < 30000 && valorFaltante > 30000) {
-        this.openMensaje('El mínimo valor a ingresar es $30.000');
-      } else if (valorFaltante >= this.valorTotal[i]) {
-        this.pagar = true;
-        this.ordenService.crearOrdenAlcanciaCompra(this.eventos[i].id, id, this.cliente)
-          .subscribe({
-            next: response => {
-              this.codigoOrden = response.idOrden;
-              this.ptpService.getPeticionPTP(
-                this.codigoOrden,
-                this.valorTotal[i],
-                this.description[i],
-                0,
-                0
-              ).subscribe({
-                next: response => {
-                  window.location.href = response.processUrl;
-                },
-                error: error => {
-                  this.pagar = false;
-                  this.openMensaje('Sucedió un error, por favor vuelva a intentar');
-                }
-              });
-            },
-            error: error => {
-              this.pagar = false;
-              this.openMensaje('Sucedió un error, por favor vuelva a intentar');
-            }
-          });
-      } else if (valorFaltante <= this.valorTotal[i]) {
-        const valorFormateado = valorFaltante.toLocaleString();
-        this.openMensaje(`El valor máximo a ingresar es de $${valorFormateado}`);
-      }
-    } else {
-      this.openMensaje('Cargando');
-    }
-  }
+  //     if (this.valorTotal[i] < 30000 && valorFaltante > 30000) {
+  //       this.openMensaje('El mínimo valor a ingresar es $30.000');
+  //     } else if (valorFaltante >= this.valorTotal[i]) {
+  //       this.pagar = true;
+  //       this.ordenService.crearOrdenAlcanciaCompra(this.eventos[i].id, id, this.cliente)
+  //         .subscribe({
+  //           next: response => {
+  //             this.codigoOrden = response.idOrden;
+  //             this.ptpService.getPeticionPTP(
+  //               this.codigoOrden,
+  //               this.valorTotal[i],
+  //               this.description[i],
+  //               0,
+  //               0
+  //             ).subscribe({
+  //               next: response => {
+  //                 window.location.href = response.processUrl;
+  //               },
+  //               error: error => {
+  //                 this.pagar = false;
+  //                 this.openMensaje('Sucedió un error, por favor vuelva a intentar');
+  //               }
+  //             });
+  //           },
+  //           error: error => {
+  //             this.pagar = false;
+  //             this.openMensaje('Sucedió un error, por favor vuelva a intentar');
+  //           }
+  //         });
+  //     } else if (valorFaltante <= this.valorTotal[i]) {
+  //       const valorFormateado = valorFaltante.toLocaleString();
+  //       this.openMensaje(`El valor máximo a ingresar es de $${valorFormateado}`);
+  //     }
+  //   } else {
+  //     this.openMensaje('Cargando');
+  //   }
+  // }
 
   openMensaje(mensajeT: string, openD?: string): void {
     let screenWidth = screen.width;

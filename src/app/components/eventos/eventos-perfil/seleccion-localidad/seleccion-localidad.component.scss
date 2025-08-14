@@ -1,0 +1,246 @@
+@use '../../../../../styles/variables' as v;
+
+// Lista de Localidades
+.localidades-section {
+  margin-bottom: v.$spacer-5;
+}
+
+.section-title {
+  font-family: v.$font-montserrat;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: v.$color-dark;
+  margin-bottom: v.$spacer-3;
+}
+
+.localidades-lista {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: v.$spacer-3;
+}
+
+.localidad-item {
+  border: 1px solid v.$color-light-gray;
+  border-radius: v.$border-radius-md;
+  background: v.$color-white;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  padding: v.$spacer-3;
+
+  &:hover {
+    border-color: v.$color-primary;
+  }
+
+  &.selected {
+    border-color: v.$color-primary;
+  }
+}
+
+.localidad-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: v.$spacer-2;
+  
+  @media (max-width: v.$breakpoint-md) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: v.$spacer-2;
+  }
+}
+
+.localidad-main {
+  flex: 1;
+}
+
+.localidad-header {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacer-2;
+  margin-bottom: v.$spacer-3;
+}
+
+.localidad-nombre {
+  font-family: v.$font-montserrat;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: v.$color-dark;
+  margin: 0;
+}
+
+.localidad-descripcion {
+  color: v.$color-gray-text;
+  font-size: 0.85rem;
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.dias-detalle {
+  background: v.$color-light-gray;
+  padding: v.$spacer-2;
+  border-radius: v.$border-radius-sm;
+  margin-bottom: v.$spacer-3;
+}
+
+.dia-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: v.$spacer-1 0;
+  
+  &:not(:last-child) {
+    border-bottom: 1px solid v.$color-gray;
+  }
+  
+  .dia-fecha {
+    color: v.$color-secondary;
+    font-size: 0.75rem;
+    font-weight: 500;
+    flex: 1;
+  }
+  
+  .dia-hora{
+    color: v.$color-secondary;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: right;
+  }
+}
+
+.precio-info {
+  margin: v.$spacer-1 0;
+  color: v.$color-dark;
+  font-size: 0.9rem;
+}
+
+.precio-total {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: v.$color-dark;
+  white-space: nowrap;
+  margin-top: v.$spacer-2;
+  margin-left: v.$spacer-3;
+}
+
+// Selector de Cantidad por Item
+.cantidad-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: v.$spacer-2;
+  background: v.$color-light-gray;
+  border-radius: 15px;
+  padding: v.$spacer-1 v.$spacer-2;
+  min-width: 100px;
+  height: fit-content;
+  margin-left: v.$spacer-3;
+}
+
+.btn-cantidad {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: v.$color-primary;
+  color: v.$color-black;
+  border-radius: 100%;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: v.$color-secondary;
+  }
+
+  &:disabled {
+    background: v.$color-gray-text;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.cantidad-display {
+  min-width: 20px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: v.$color-dark;
+}
+
+// Resumen de Compra
+.resumen-compra {
+  position: sticky;
+  bottom: 0;
+  background: v.$color-white;
+  border-top: 2px solid v.$color-light-gray;
+  padding: v.$spacer-3 0;
+  margin-top: v.$spacer-4;
+  box-shadow: v.$shadow-md;
+  border-radius: v.$border-radius-md;
+}
+
+.resumen-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 v.$spacer-4;
+
+  @media (max-width: v.$breakpoint-md) {
+    flex-direction: column;
+    gap: v.$spacer-3;
+    text-align: center;
+  }
+}
+
+.resumen-info {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacer-1;
+}
+
+.resumen-cantidad {
+  font-size: 0.9rem;
+  color: v.$color-gray-text;
+}
+
+.resumen-total {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: v.$color-dark;
+}
+
+.btn-reservar {
+  background: v.$color-primary;
+  color: v.$color-black;
+  border: none;
+  padding: v.$spacer-3 v.$spacer-5;
+  border-radius: v.$border-radius-md;
+  font-family: v.$font-montserrat;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  &:hover {
+    background: v.$color-secondary;
+    transform: translateY(-2px);
+    box-shadow: v.$shadow-md;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}

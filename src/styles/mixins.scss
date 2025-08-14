@@ -131,10 +131,10 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 153vw;
   min-height: 100vh;
   height: 100vh;
-  z-index: $z-overlay;
+  z-index: 9;
   background-color: $color-black;
   opacity: $opacity;
 }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
-import { Evento } from '../../../eventos/evento.model';
+import { Evento } from '../../../../models/evento.model';
 import { Localidad } from '../../../../models/localidad.model';
 import { Ticket } from '../../../../models/ticket.model';
 import { TicketDataService } from '../../../../service/data/ticket-data.service';

@@ -7,7 +7,7 @@ import { Md5 } from 'ts-md5';
 
 import { UsuariosDataService } from '../../service/data/usuarios-data.service'; 
 import { Cliente } from './../usuario/cliente.model';
-import { Codigo } from '../../models/codigo.model'; 
+import { Codigo } from '../../models/codigo.model';
 import { MensajeComponent } from '../mensaje/mensaje.component';
 
 @Component({

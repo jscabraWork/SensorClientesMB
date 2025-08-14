@@ -163,7 +163,6 @@ export class AuthService {
       usuario: sessionStorage.getItem('usuario'),
       usuarioEntidad: sessionStorage.getItem('usuarioEntidad')
     };
-    localStorage.setItem('tempSession', JSON.stringify(sessionData));
   }
 
   //Carga la session desde el localstoreage y luego lo elimina, es asíncrono

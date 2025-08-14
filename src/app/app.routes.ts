@@ -37,6 +37,10 @@ export const routes: Routes = [
         loadComponent: () => import('./components/eventos/eventos-perfil/eventos-perfil.component').then(m => m.EventosPerfilComponent)
       },
       {
+        path: 'evento/:id/promotor/:idPromotor',
+        loadComponent: () => import('./components/eventos/eventos-perfil/eventos-perfil.component').then(m => m.EventosPerfilComponent)
+      },
+      {
         path: ':id/cortesia/:codigoId',
         loadComponent: () => import('./components/eventos/eventos-perfil/codigo-cortesia/codigo-cortesia.component').then(m => m.CodigoCortesiaComponent)
       },
@@ -45,12 +49,12 @@ export const routes: Routes = [
         loadComponent: () => import('./components/eventos/eventos-perfil/carrito-final/carrito-final.component').then(m => m.CarritoFinalComponent)
       },
       {
-        path: 'evento/:id/compra/:codigoVenta/promotor',
-        loadComponent: () => import('./components/eventos/eventos-perfil/compra/compra.component').then(m => m.CompraComponent)
-      },
-      {
         path: 'respuesta/:idOrden',
         loadComponent: () => import('./components/eventos/eventos-perfil/respuesta/respuesta.component').then(m => m.RespuestaComponent)
+      },
+      {
+        path: 'evento/:id/seleccion-localidad',
+        loadComponent: () => import('./components/eventos/eventos-perfil/seleccion-localidad/seleccion-localidad.component').then(m => m.SeleccionLocalidadComponent)
       },
       {
         path: 'carrito-de-compras',

@@ -1,0 +1,411 @@
+/* Solo las clases realmente usadas en el HTML proporcionado */
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid rgba(255, 217, 3, 1);
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.contenedorFoto {
+  display: flex;
+  justify-content: center;
+}
+
+.placeholder-imagen {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.placeholder-imagen2 {
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.contenedorLinea {
+  display: flex;
+  justify-content: center;
+}
+
+.linea-naranja4 {
+  border: 2px solid rgba(255, 217, 3, 1);
+  width: 90%;
+  margin-bottom: 0 !important;
+}
+
+.eventoVideo {
+  width: 100%;
+}
+
+.sinPadding {
+  padding: 0 !important;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.largo {
+  width: 100%;
+}
+
+.sinVideo {
+  width: 100%;
+}
+
+.txtNombre {
+  height: 60px;
+  margin-top: 35px;
+  margin-left: 50px;
+}
+
+.titulo-evento3 {
+  font-family: Montserrat;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 25px;
+  color: rgba(255, 217, 3, 1);
+  text-transform: uppercase;
+  margin-top: 30px;
+}
+
+.alineacionText {
+  margin-left: 40px;
+}
+
+.flotar {
+  display: flex;
+}
+
+.lineH {
+  margin-bottom: 10px;
+  padding: 0px !important;
+}
+
+.detalle1 {
+  font-size: 15px;
+  margin-left: 11px;
+  font-family: Alata;
+  color: rgba(255, 255, 255, 1);
+}
+
+.bold {
+  font-weight: 700;
+  font-family: Lato;
+}
+
+.qrImagen {
+  margin-left: 8px !important;
+  text-align-last: center;
+}
+
+.contenedorImagen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contenederoBlanco2 {
+  margin: 0 auto;
+  margin-top: 15px;
+}
+
+.mapI {
+  width: 84%;
+  height: 128px;
+  margin: 0 auto;
+  margin-top: 29px;
+}
+
+.tablaEventoPerfil {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+  font-family: 'Alata';
+  width: 100%;
+  margin: 2rem auto;
+}
+
+.mt-2 {
+  margin-top: 0.5rem !important;
+}
+
+.marGen {
+  width: 70%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.localidades-container {
+  border: 1px solid rgba(255, 217, 3, 1);
+  margin-bottom: 15px;
+  padding: 5px;
+  border-radius: 5px;
+  position: relative;
+  margin: 4px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 220px;
+}
+
+.localidad-header {
+  margin-bottom: 10px;
+}
+
+.localidadNombre {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem !important;
+  color: rgba(255, 217, 3, 1);
+}
+
+.azul {
+  color: white;
+}
+
+.localidad-details {
+  margin-bottom: 15px;
+}
+
+.localidadPrecio {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 1);
+}
+
+.localidad-total {
+  font-size: 1.1em;
+  text-align: right;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255, 217, 3, 1);
+  color: rgba(217, 217, 217, 1);
+  font-weight: bold;
+}
+
+.quantity-checkbox-container {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.quantity-checkbox {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.quantity-btn {
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 217, 3, 1);
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-btn.minus {
+  border-right: 1px solid rgba(255, 255, 255, 1);
+  border-radius: 50%;
+}
+
+.quantity-btn.plus {
+  border-left: 1px solid rgba(255, 255, 255, 1);
+  border-radius: 50%;
+}
+
+.quantity-box {
+  width: 40px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  background: black;
+}
+
+.totalContenedor {
+  display: flex;
+  justify-content: center;
+}
+
+.soldout-message {
+  color: #d32f2f;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px 0;
+}
+
+.centrarTexto {
+  text-align: center;
+}
+
+.mt-5 {
+  margin-top: 3rem !important;
+}
+
+.mb-5 {
+  margin-bottom: 3rem !important;
+}
+
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+#contador .contenedor {
+  margin: 0px auto;
+  text-align: center;
+  width: 60%;
+  background: linear-gradient(#333, #666);
+  box-shadow: 1px 1px 1px #333, 2px 2px 2px #333, 3px 3px 3px #333,
+    4px 4px 4px #333, 5px 5px 5px #333;
+  border: 4px solid black;
+  color: white;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: center;
+  justify-content: center;
+}
+
+.mt-3 {
+  margin-top: 1rem !important;
+}
+
+.mt-1 {
+  margin-top: 0.25rem !important;
+}
+
+.pl-1 {
+  padding-left: 0.25rem !important;
+}
+
+.pr-1 {
+  padding-right: 0.25rem !important;
+}
+
+.col-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.col-md-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.col-lg-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.col-sm-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.container-fluid {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+.botonCompra {
+  font-size: 14px;
+  font-weight: bolder;
+  background: linear-gradient(rgb(236, 224, 159), rgba(255, 217, 3, 1));
+  width: 130px;
+  color: white;
+  border: white;
+}
+
+.rounded {
+  border-radius: 0.25rem !important;
+}
+
+.pt-2 {
+  padding-top: 0.5rem !important;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem !important;
+}
+
+.action_button {
+  text-decoration: none;
+  color: rgba(255, 217, 3, 1);
+  font-weight: bold;
+  background: rgba(0, 0, 0, 1);
+  border: 1px solid rgba(255, 217, 3, 1);
+  padding: 13px 26px;
+  font-size: 11px;
+  font-family: Montserrat;
+  border-radius: 6px;
+  transition: all 500ms;
+}
+
+.bg-boton {
+  width: 172px;
+  height: 39px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.montserrat {
+  font-family: Montserrat;
+}
+
+@media (max-width: 768px) {
+  .placeholder-imagen2{
+    width: 90%;
+    height: auto  ;
+  }
+
+  .txtNombre{
+    text-align: center;
+    margin: 0;
+  }
+
+  .alineacionText {
+  margin-left: 0px;
+}
+
+.localidades-container {
+  height: fit-content
+}
+
+.col-lg-6 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+}

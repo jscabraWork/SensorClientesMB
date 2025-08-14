@@ -13,15 +13,10 @@ export class OrdenDataService {
 
   private apiOrdenes=`${API_URL_PAGOS}/ordenes`;
 
-  private apiOrdenesVendedores=`${API_URL_PAGOS}/ordenes-promotores`;
+  private apiOrdenesPromotores=`${API_URL_PAGOS}/ordenes-promotores`;
 
   private apiOrdenesAlcancias=`${API_URL_PAGOS}/ordenes-alcancia`;
 
-  private apiOrdenesAdicionales=`${API_URL_PAGOS}/ordenes-adicionales`;
-
-  private apiOrdenesParticularidades=`${API_URL_PAGOS}/ordenes-particularidades`;
-
-  private apiOrdenesTraspaso=`${API_URL_PAGOS}/ordenes-traspaso`;
 
 
   constructor(private http: HttpClient) { }
@@ -38,50 +33,44 @@ export class OrdenDataService {
    return this.http.post<any>(`${this.apiOrdenes}/crear`,cliente,{params,headers});
   }
 
-
-  crearOrdenClienteCompraPromotor(cantidad,idLocalidad,tipo:number, idEvento:number,cliente:ClientePagos, usuario:string){
-
+  crearOrdenNoNumerada(cantidad,idLocalidad, idEvento:number,numeroDocumento:string ){
     const params = new HttpParams()
-    .set('cantidad', cantidad)
-    .set('idLocalidad', idLocalidad)
-    .set('tipo', tipo.toString())
-    .set('idEvento',idEvento.toString())
-    .set('usuario',usuario);
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-   return this.http.post<any>(`${this.apiOrdenesVendedores}/crear/promotor`,cliente,{params,headers});
+    .set('pCantidad', cantidad)
+    .set('pLocalidadId', idLocalidad)
+    .set('pEventoId', idEvento.toString())
+    .set('pClienteNumeroDocumento', numeroDocumento);
+    return this.http.post<any>(`${this.apiOrdenes}/crear-no-numerada`, null, { params });
+  }
+
+  crearOrdenNumerada(idEvento:number, numeroDocumento:string, tickets: Ticket[]){
+    const params = new HttpParams()
+    .set('pEventoId', idEvento.toString())
+    .set('pClienteNumeroDocumento', numeroDocumento);
+    return this.http.post<any>(`${this.apiOrdenes}/crear-numerada`, tickets, { params });
+  }
+
+  crearOrdenIndividual(ticketPadreId: number, pCantidad, idEvento: number, numeroDocumento: string) {
+  const params = new HttpParams()
+    .set('pEventoId', idEvento.toString())
+    .set('pCantidad', pCantidad.toString())
+    .set('pTicketPadreId', ticketPadreId.toString())
+    .set('pClienteNumeroDocumento', numeroDocumento);
+  
+  // Enviar los parámetros como query parameters, no como body
+  return this.http.post<any>(`${this.apiOrdenes}/crear-individual`, null, { params });
   }
 
   
   
 
-  crearOrdenClienteCompraNumerados(tipo:number, idEvento:number,idCliente:string,tickets:Ticket[]){
-
-    const params = new HttpParams()
-    .set('tipo', tipo.toString())
-    .set('idEvento',idEvento.toString())
-    .set('idCliente',idCliente);
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-   return this.http.post<any>(`${this.apiOrdenes}/crear-numerados`,tickets,{params,headers});
-  }
-
-
-  crearOrdenClienteCompraNumeradosPromotor(tipo:number, idEvento:number,idCliente:string,tickets:Ticket[], usuario){
-
-    const params = new HttpParams()
-    .set('tipo', tipo.toString())
-    .set('idEvento',idEvento.toString())
-    .set('idCliente',idCliente)
-    .set('usuario',usuario);
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-   return this.http.post<any>(`${this.apiOrdenesVendedores}/crear-numerados/promotor`,tickets,{params,headers});
-  }
 
   getInformacionCarritoDeCompras(pIdOrden){
-    return this.http.get(`${this.apiOrdenes}/ver/${pIdOrden}`);
+    return this.http.get(`${this.apiOrdenes}/carrito/${pIdOrden}`);
   }
 
+  getRespuestaOrden(pIdOrden){
+    return this.http.get<any>(`${this.apiOrdenes}/orden/respuesta/${pIdOrden}`);
+  }
 
   crearOrdenAlcanciaCompra(idEvento:number,pIdAlcancia:number,cliente:ClientePagos){
 
@@ -95,72 +84,13 @@ export class OrdenDataService {
   }
 
 
-  crearOrdenAdicionesCompra(idEvento,idTicket:number,cliente:ClientePagos, cantidad){
-
-    const params = new HttpParams()
-
-    .set('idEvento',idEvento)
-    .set('pIdTicket',idTicket)
-    .set('cantidad',cantidad);
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-   return this.http.post<any>(`${this.apiOrdenesAdicionales}/crear`,cliente,{params,headers});
-  }
-
-  crearOrdenCupon(pIdOrden,pIdCupon){
-
-    const params = new HttpParams()
-    .set('pIdOrden', pIdOrden)
-    .set('pIdCupon', pIdCupon)
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-   return this.http.put<any>(`${this.apiOrdenesParticularidades}/agregar-cupon`,null,{params,headers});
-  }
 
 
-  crearOrdenAdicional(pIdOrden,pAdicional){
-
-    const params = new HttpParams()
-    .set('pIdOrden', pIdOrden)
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-   return this.http.put<any>(`${this.apiOrdenesParticularidades}/agregar-adicional`,pAdicional,{params,headers});
-  }
-
-  crearOrdenPalcoIndividual(idEvento: number, idCliente: string, idTicketPadre: number, cantidad: number, tipo: number) {
-    const params = new HttpParams()
-      .set('idEvento', idEvento.toString())
-      .set('idCliente', idCliente)
-      .set('idTicket', idTicketPadre.toString())
-      .set('cantidad', cantidad.toString())
-      .set('tipo',tipo.toString());
-  
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  
-    return this.http.post<any>(`${this.apiOrdenes}/orden-palco-individual`, null, { params, headers });
-  }
 
 
-  crearOrdenPalcoIndividualPromotor(idEvento: number, idCliente: string, idTicketPadre: number, cantidad: number, usuario, tipo: number) {
-    const params = new HttpParams()
-      .set('idEvento', idEvento.toString())
-      .set('idCliente', idCliente)
-      .set('idTicket', idTicketPadre.toString())
-      .set('cantidad', cantidad.toString())
-      .set('usuario', usuario)
-      .set('tipo',tipo.toString());
-  
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  
-    return this.http.post<any>(`${this.apiOrdenesVendedores}/orden-palco-individual-promotor`, null, { params, headers });
-  }
 
   getAllOrdenesEnProcesoByClienteId(correo: string){
     return this.http.get<any>(`${this.apiOrdenes}/enProceso/${correo}`);
-  }
-
-  getRespuestaOrden(pIdOrden){
-    return this.http.get<any>(`${this.apiOrdenes}/orden/respuesta/${pIdOrden}`);
   }
 
   validarOrdenPtp(pIdOrden){
@@ -170,12 +100,16 @@ export class OrdenDataService {
 
   //ORDENES TRASPASO
 
-  transferirTicket(ticket, pNumeroDocumento, pEventoId){
 
+  // Métodos para órdenes con promotor
+  crearOrdenNoNumeradaConPromotor(cantidad, idLocalidad, idEvento: number, numeroDocumento: string, promotorId: string) {
     const params = new HttpParams()
-    .set('pNumeroDocumento', pNumeroDocumento)
-    .set('pEventoId',pEventoId)
-   return this.http.post<any>(`${this.apiOrdenesTraspaso}/transferir/${ticket.id}`,null,{params});
+      .set('pCantidad', cantidad)
+      .set('pLocalidadId', idLocalidad)
+      .set('pEventoId', idEvento.toString())
+      .set('pClienteNumeroDocumento', numeroDocumento)
+      .set('pPromotorId', promotorId);
+    return this.http.post<any>(`${this.apiOrdenesPromotores}/crear-no-numerada`, null, { params });
   }
 
 

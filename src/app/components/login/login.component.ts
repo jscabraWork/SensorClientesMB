@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
         let usuario = this.auth.usuario;
         this.auth.guardarSesionEnLocalStorage();
 
-        window.history.back()
+        this.router.navigate(['/home'])
       },
       error: error => {
         if(error.status == 400){

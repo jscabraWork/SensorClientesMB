@@ -8,7 +8,7 @@
       <p class="mensaje-text" [innerHTML]="mensaje" *ngIf="mensaje"></p>
     </div>
     <div class="mensaje-footer">
-      <button class="mensaje-button" mat-button mat-dialog-close>OK</button>
+      <button class="mensaje-button" mat-button (click)="cerrar()">OK</button>
     </div>
   </div>
 </div>
