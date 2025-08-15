@@ -43,7 +43,7 @@
           <div class="cantidad-total">
             <span class="cantidad">Cantidad: {{compra.tickets?.length}}</span>
             <div class="totalDescuento">
-              <span class="total">Total: {{compra.precio | currency:'COP ':'symbol':'1.0-0'}}</span>
+              <span class="total">Total: {{compra.orden?.valorOrden | currency:'COP ':'symbol':'1.0-0'}}</span>
             </div>
           </div>
           <div class="pagarContainer">
