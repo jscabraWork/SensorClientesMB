@@ -17,15 +17,15 @@
           <h5 class="textoInfo"><strong>Localidad: </strong>{{misAlcancia.localidad || 'N/A'}}</h5>
           <h5 class="textoInfo"><strong>Etapa: </strong>{{misAlcancia.tickets?.[0]?.tarifa?.nombre || 'General'}}</h5>
           <h5 class="textoInfo"><strong>Número de Tickets:</strong> {{misAlcancia.tickets?.length || 0}}</h5>
-          <h5 class="textoInfo"><strong>Valor Total: </strong>{{misAlcancia.precioTotal | currency:'COP ':'symbol':'1.0-0'}}</h5>
-          <h5 class="textoInfo"><strong>Valor Pagado: </strong>{{misAlcancia.precioParcialPagado | currency:'COP ':'symbol':'1.0-0'}}</h5>
+          <h5 class="textoInfo"><strong>Valor Total: </strong>{{misAlcancia.alcancia.precioTotal | currency:'COP ':'symbol':'1.0-0'}}</h5>
+          <h5 class="textoInfo"><strong>Valor Pagado: </strong>{{misAlcancia.alcancia.precioParcialPagado | currency:'COP ':'symbol':'1.0-0'}}</h5>
           <h5 class="textoInfo"><strong>Valor Faltante: </strong>{{getValorFaltante(misAlcancia) | currency:'COP ':'symbol':'1.0-0'}}</h5>
           
           <div class="progress-container">
             <div class="progress-bar">
-              <div class="progress-fill" [style.width]="(misAlcancia.precioParcialPagado / misAlcancia.precioTotal * 100) + '%'"></div>
+              <div class="progress-fill" [style.width]="(misAlcancia.alcancia.precioParcialPagado / misAlcancia.alcancia.precioTotal * 100) + '%'"></div>
             </div>
-            <span class="progress-text">{{(misAlcancia.precioParcialPagado / misAlcancia.precioTotal * 100) | number:'1.0-0'}}%</span>
+            <span class="progress-text">{{(misAlcancia.alcancia.precioParcialPagado / misAlcancia.alcancia.precioTotal * 100) | number:'1.0-0'}}%</span>
           </div>
           
           <div class="form-group">

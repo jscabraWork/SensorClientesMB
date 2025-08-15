@@ -66,24 +66,24 @@ export class MisAlcanciasComponent implements OnInit {
         this.openMensaje('Ocurrió un error al cargar las alcancías');
       }
     });
-  }
+  }z
 
   inicializarValores(): void {
     for (let i = 0; i < this.misAlcancias.length; i++) {
-      let valorFaltante = this.misAlcancias[i].precioTotal - this.misAlcancias[i].precioParcialPagado;
+      let valorFaltante = this.misAlcancias[i].alcancia.precioTotal - this.misAlcancias[i].alcancia.precioParcialPagado;
       this.valorTotal.push(valorFaltante);
       this.description.push('Aporte a alcancia para el evento ' + this.misAlcancias[i].eventoNombre);
     }
   }
 
   getValorFaltante(misAlcancia: MisAlcanciasDto): number {
-    return misAlcancia.precioTotal - misAlcancia.precioParcialPagado;
+    return misAlcancia.alcancia.precioTotal  - misAlcancia.alcancia.precioParcialPagado;
   }
 
   pago(i: number, id: number): void {
     if (this.pagar === false) {
-      const valorFaltante = this.misAlcancias[i].precioTotal - this.misAlcancias[i].precioParcialPagado;
-      const aporteMinimo = this.misAlcancias[i].aporteMinimo || 30000;
+      const valorFaltante = this.misAlcancias[i].alcancia.precioTotal - this.misAlcancias[i].alcancia.precioParcialPagado;
+      const aporteMinimo = this.misAlcancias[i].aporteMinimo ;
       
       // Validar aporte mínimo, pero si el aporte mínimo es mayor al valor faltante, permitir pagar
       const montoMinimoValido = Math.min(aporteMinimo, valorFaltante);
