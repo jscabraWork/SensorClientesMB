@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
   usuario: Usuario
   errorMessage = "Invalid credentials";
   invalidLogin = false;
+  isLoading = false;
 
   constructor(
     public dialog: MatDialog,
@@ -54,6 +55,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true;
     this.auth.logout();
     this.usuario.correo = this.usuario.correo.trim();
 
@@ -65,9 +67,11 @@ export class LoginComponent implements OnInit {
         let usuario = this.auth.usuario;
         this.auth.guardarSesionEnLocalStorage();
 
+        this.isLoading = false;
         this.router.navigate(['/home'])
       },
       error: error => {
+        this.isLoading = false;
         if(error.status == 400){
           this.openMensaje('Usuario o clave incorrectos');
         }

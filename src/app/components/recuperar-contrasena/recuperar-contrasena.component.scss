@@ -1,5 +1,7 @@
-@import '../../styles/variables';
-@import '../../styles/mixins';
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+@import '../../../styles/components';
+@import '../../../styles/base';
 
 .reset-container {
   @extend .login-container;

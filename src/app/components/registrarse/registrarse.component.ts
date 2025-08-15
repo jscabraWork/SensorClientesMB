@@ -28,6 +28,7 @@ export class RegistrarseComponent implements OnInit {
   confimarcionDocumento: any;
   aceptoTerminos: boolean;
   aceptoTratamiento: boolean;
+  isLoading = false;
 
   constructor(
     private service: UsuariosDataService,
@@ -70,11 +71,14 @@ export class RegistrarseComponent implements OnInit {
               const contra = this.usuario.contrasena;
               this.usuario.contrasena = md5.appendStr(contra).end().toString();
 
+              this.isLoading = true;
               this.service.createCliente(this.usuario).subscribe(
                 (response) => {
+                  this.isLoading = false;
                   this.openMensaje(response.mensaje);
                 },
                 (error) => {
+                  this.isLoading = false;
                   this.openMensaje(
                     'Por favor verifica los datos ingresados, si el problema persiste contacta con el administrador del sistema'
                   );

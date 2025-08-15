@@ -1,4 +1,9 @@
 <div class="login-container">
+  <!-- Spinner overlay -->
+  <div *ngIf="isLoading" class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+  
   <div class="login-card">
     <div class="card-header">
       <h2>INICIAR SESIÓN</h2>
@@ -29,7 +34,7 @@
       <div class="error-message" *ngIf="invalidLogin">
         <small>{{errorMessage}}</small>
       </div>      <!-- Botón login -->
-      <button type="submit" class="submit-btn" [disabled]="loginForm.invalid">
+      <button type="submit" class="submit-btn" [disabled]="loginForm.invalid || isLoading">
         Iniciar Sesión
       </button>
     </form>

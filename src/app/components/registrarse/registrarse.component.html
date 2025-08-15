@@ -1,5 +1,10 @@
 
 <div class="registration-container">
+  <!-- Spinner overlay -->
+  <div *ngIf="isLoading" class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+  
   <div class="registration-card">
     <div class="card-header">
       <h2>REGÍSTRATE</h2>
@@ -107,7 +112,7 @@
       </div>
 
       <!-- Botón registro -->
-      <button type="submit" class="submit-btn" [disabled]="todoForm.invalid || !aceptoTerminos">
+      <button type="submit" class="submit-btn" [disabled]="todoForm.invalid || !aceptoTerminos || isLoading">
         Registrarse
       </button>
 
