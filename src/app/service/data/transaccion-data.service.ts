@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class TransaccionDataService {
 
-  private apiTransacciones = `${API_URL_PAGOS}/transacciones`;
+  private apiTransacciones = `${API_URL_PAGOS}/transaccion`;
 
   constructor(private http: HttpClient) { }
 
