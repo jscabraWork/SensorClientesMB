@@ -1,0 +1,29 @@
+<section >
+    <div id="contenedorTitulo">
+        <h1 class="tituloReserva" ><strong>Reserva para el evento</strong></h1>
+    </div>
+</section>
+
+<div class="contenedorReserva" *ngIf="!cargando">
+    <p><strong>Nombre de la Reserva:</strong> 0</p>
+    <p><strong>Nombre del promotor:</strong> 0</p>
+    <p><strong>Números de Tickets: </strong>0</p>
+    <p><strong>Cantidad de Tickets: </strong>0</p>
+
+    <p><strong>Total de Asientos: </strong>0</p>
+    <p><strong>Valor Total: </strong>0</p>
+
+    <button class="btn action_button">
+          Pagar
+    </button>
+</div>
+
+<!-- <div class="pagar cetrarTexto container border mt-5 p-3" *ngIf="!cargando&&reserva?.activa==false">
+    <h4>Esta reserva ya no se encuentra activa</h4>
+</div> -->
+
+<section *ngIf="cargando">
+    <div class="container-fluid contendor-spinner-2" >
+      <div class="spinner"></div>
+    </div>
+  </section>

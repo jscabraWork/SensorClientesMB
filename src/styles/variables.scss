@@ -13,6 +13,18 @@ $color-gray: #666666;
 $color-light-gray: #EAEAEA;
 $color-gray-text: #aaaaaa;
 
+// Colores - Nueva paleta
+$color-primario: #FFD900;
+$color-primario-dark: #E6C300;
+$color-primario-light: #FFF44D;
+
+$color-negro: #000000;
+$color-negro-soft: #2D2D2D;
+$color-gris-dark: #404040;
+$color-gris: #808080;
+$color-gris-light: #C0C0C0;
+$color-gris-muy-light:#F5F5F5;
+
 // Tipografías
 $font-roboto: 'Roboto';
 $font-lato: 'Lato';
@@ -46,7 +58,7 @@ $spacer-3: $spacer;
 $spacer-4: $spacer * 1.5;
 $spacer-5: $spacer * 3;
 
-// Mapa de espaciados 
+// Mapa de espaciados
 $spacers: (
   "0": $spacer-0,
   "1": $spacer-1,

@@ -19,7 +19,8 @@
 .contenedor-info {
   flex: 1;
   margin-top: 60px;
-  
+  background-color: white;
+
   @include mobile {
     margin-top: 50px;
   }

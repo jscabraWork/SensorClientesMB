@@ -1,0 +1,13 @@
+@use '../../../styles/variables' as v ;
+@use '../../../styles/mixins' as m;
+
+#contenedorTitulo{
+  padding: 1.5rem;
+  background-color: v.$color-primario;
+}
+
+.tituloReserva{
+    color: v.$color-negro;
+    text-align: center;
+}
+
