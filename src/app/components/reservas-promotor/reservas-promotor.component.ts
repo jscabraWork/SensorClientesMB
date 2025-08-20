@@ -154,7 +154,6 @@ export class ReservasPromotorComponent extends BaseComponent{
           console.log(response);
           if(response.ordenId){
             this.router.navigate(['/carrito-final', response.ordenId]);
-            console.log("la ruta es: ", this.router.url);
           } else if(response.mensaje){
             this.openMensaje(response.mensaje);
           }
