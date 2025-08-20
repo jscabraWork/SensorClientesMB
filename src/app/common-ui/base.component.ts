@@ -6,11 +6,11 @@ import { MensajeComponent } from '../components/mensaje/mensaje.component';
 
 @Directive()
 export abstract class BaseComponent implements OnInit {
-  
+
   cargando: boolean = false;
   error: string | null = null;
   pathVariable: string | null = null;
-  
+
   protected pathVariableName: string = '';
 
   constructor(
@@ -65,7 +65,7 @@ export abstract class BaseComponent implements OnInit {
     const dialogRef = this.dialog.open(MensajeComponent, {
       width: '500px',
       maxWidth: '80vw',
-      height: '250px',
+      height: 'auto',
       data: {
         mensaje: mensajeTexto,
         mostrarBotones: confirmacion

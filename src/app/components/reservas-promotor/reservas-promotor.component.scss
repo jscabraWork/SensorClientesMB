@@ -1,13 +1,83 @@
 @use '../../../styles/variables' as v ;
 @use '../../../styles/mixins' as m;
 
-#contenedorTitulo{
-  padding: 1.5rem;
-  background-color: v.$color-primario;
+body {
+  background: #fafbfc;
 }
 
-.tituloReserva{
-    color: v.$color-negro;
-    text-align: center;
+#contenedorTitulo {
+  padding: 2rem 1rem 1.5rem 1rem;
+  margin-bottom: 2.5rem;
 }
 
+.tituloReserva {
+  color: v.$color-negro;
+  text-align: center;
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin: 0;
+}
+
+.contenedorReserva {
+  background: v.$color-negro;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  max-width: 480px;
+  margin: 0 auto 2.5rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: flex-start;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+  }
+}
+
+.contenedorReserva p {
+  margin: 0;
+  color: v.$color-gris-muy-light;
+  font-size: 1.18rem;
+  font-weight: 500;
+
+  strong {
+    font-weight: 700;
+    color: v.$color-primario;
+    letter-spacing: 0.5px;
+  }
+}
+
+.action_button {
+  margin-top: 18px;
+  background: v.$color-primario;
+  color: v.$color-negro;
+  border: none;
+  border-radius: 8px;
+  padding: 0.9rem 2.5rem;
+  font-size: 1.18rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.12s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  letter-spacing: 1px;
+
+  &:hover {
+    background: darken(v.$color-primario, 10%);
+    transform: translateY(-2px) scale(1.03);
+  }
+}
+
+.contenedorButton {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.cdk-overlay-container, .cdk-overlay-backdrop {
+  z-index: 2000 !important;
+  position: fixed !important;
+}

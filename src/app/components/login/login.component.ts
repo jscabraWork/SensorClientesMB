@@ -68,7 +68,6 @@ export class LoginComponent implements OnInit {
         this.auth.guardarSesionEnLocalStorage();
 
         this.isLoading = false;
-        this.router.navigate(['/home'])
       },
       error: error => {
         this.isLoading = false;

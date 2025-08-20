@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {  API_URL_PAGOS } from '../../app.constants';
+import {  API_URL_PAGOS, API_URL_USUARIOS } from '../../app.constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientesPagoDataService {
 
-  private apiPagos=`${API_URL_PAGOS}/clientes`;
+  private apiPagos=`${API_URL_USUARIOS}/clientes`;
 
   constructor(private http: HttpClient) { }
 
@@ -16,7 +16,7 @@ export class ClientesPagoDataService {
     return this.http.get<any>(`${this.apiPagos}/usuario/${usuario}`);
   }
 
-  getCliente(numeroDocumento:string){
-    return this.http.get<any>(`${this.apiPagos}/${numeroDocumento}`)
+  getCliente(usuario:string){
+    return this.http.get<any>(`${API_URL_USUARIOS}/login/${usuario}`)
   }
 }

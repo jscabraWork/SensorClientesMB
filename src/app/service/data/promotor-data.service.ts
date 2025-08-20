@@ -10,11 +10,11 @@ export class PromotorDataService{
   constructor(protected http: HttpClient) {
    }
 
-private baseEndpoint = API_URL_PROMOTORES +"/todosPromotores"
+private baseEndpoint = API_URL_PROMOTORES +"/promotores"
 
 getPorId(pId)
   {
-    return this.http.get<any>((`${this.baseEndpoint}/${pId}/promotor`)); 
+    return this.http.get<any>((`${this.baseEndpoint}/promotor/${pId}`));
   }
- 
+
 }

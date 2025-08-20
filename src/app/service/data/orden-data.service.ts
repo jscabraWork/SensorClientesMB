@@ -55,13 +55,13 @@ export class OrdenDataService {
     .set('pCantidad', pCantidad.toString())
     .set('pTicketPadreId', ticketPadreId.toString())
     .set('pClienteNumeroDocumento', numeroDocumento);
-  
+
   // Enviar los parámetros como query parameters, no como body
   return this.http.post<any>(`${this.apiOrdenes}/crear-individual`, null, { params });
   }
 
-  
-  
+
+
 
 
   getInformacionCarritoDeCompras(pIdOrden){
@@ -76,7 +76,7 @@ export class OrdenDataService {
     const params = new HttpParams()
       .set('pAlcanciaId', pAlcanciaId.toString())
       .set('pAporte', pAporte.toString());
-    
+
     return this.http.post<any>(`${this.apiOrdenesAlcancias}/crear-aporte`, null, { params });
   }
 
@@ -114,7 +114,7 @@ export class OrdenDataService {
     const params = new HttpParams()
       .set('pCantidad', cantidad)
       .set('pLocalidadId', idLocalidad)
-      .set('pEventoId', idEvento.toString())
+      .set('pEventoId', idEvento)
       .set('pClienteNumeroDocumento', numeroDocumento)
       .set('pPromotorId', promotorId);
     return this.http.post<any>(`${this.apiOrdenesPromotores}/crear-no-numerada`, null, { params });
