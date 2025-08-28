@@ -5,7 +5,7 @@
 
 .error-container {
   @extend .login-container;
-  min-height: 100vh;
+  // min-height: 100vh; // REMOVIDO - Causaba doble scroll
   background: $color-background;
 }
 

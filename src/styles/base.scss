@@ -8,9 +8,16 @@
   box-sizing: border-box;
 }
 
-html, body {
+html {
   height: 100%;
   margin: 0;
+  padding: 0;
+}
+
+body {
+  // height: 100%; // REMOVIDO - Causaba doble scroll
+  margin: 0;
+  padding: 0;
   overflow-x: hidden; // Previene scroll horizontal en móvil
 }
 
@@ -27,7 +34,7 @@ body {
 
 .flex-centrar {
   @include flex-center;
-  height: 80vh;
+  // height: 80vh; // REMOVIDO - Causaba conflictos
 }
 
 .flex-center {
@@ -114,7 +121,7 @@ body {
 
 // Contenedores
 .contenedor-info {
-  min-height: 50vh;
+  // min-height: 50vh; // REMOVIDO - Causaba espacio excesivo
   margin-top: 60px;
 }
 
@@ -125,7 +132,7 @@ body {
 
 .contenido {
   position: relative;
-  min-height: 85vh;
+  // min-height: 85vh; // REMOVIDO - Causaba doble scroll
   padding-top: 60px;
   transition: padding-top 0.6s ease;
 }
@@ -218,7 +225,7 @@ body {
 // Overlay negro
 .negro-general {
   @include black-overlay;
-  width: 153vh;
+  width: 100vw; // CORREGIDO - Era 153vh
 }
 
 // Material Icons

@@ -3,7 +3,6 @@
 
 .contenedor-general {
   min-height: 100vh;
-  min-height: 100dvh; // Dynamic viewport height for better mobile support
   display: flex;
   flex-direction: column;
 }
@@ -18,10 +17,10 @@
 
 .contenedor-info {
   flex: 1;
-  margin-top: 60px;
+  // margin-top: 60px; // MOVIDO AL CONTENIDO INTERNO
   
   @include mobile {
-    margin-top: 50px;
+    // margin-top: 50px;
   }
 }
 
@@ -54,5 +53,5 @@
 
 .negro-general {
   @include black-overlay;
-  width: 153vh;
+  width: 100vw; // CORREGIDO - Era 153vh
 }

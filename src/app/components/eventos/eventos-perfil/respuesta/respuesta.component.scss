@@ -31,7 +31,7 @@
   max-width: 850px;
   margin: 0 auto;
   padding: 1rem;
-  min-height: calc(100vh - 120px);
+  // min-height: calc(100vh - 120px); // REMOVIDO - Causaba doble scroll
   padding-top: 2rem;
 }
 

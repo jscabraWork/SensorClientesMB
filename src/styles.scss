@@ -11,7 +11,7 @@
 @import 'styles/base';
 @import 'styles/components';
 
-html, body { height: 100%; }
+// html, body { height: 100%; } // REMOVIDO - Duplicado en base.scss
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 // Configuración global para centrar diálogos de Angular Material
