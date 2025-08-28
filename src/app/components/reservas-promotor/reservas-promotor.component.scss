@@ -1,83 +1,247 @@
-@use '../../../styles/variables' as v ;
-@use '../../../styles/mixins' as m;
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
 
-body {
-  background: #fafbfc;
+.evento-header {
+  position: relative;
+  min-height: 40vh;
+  overflow: hidden;
+  
+  @include mobile {
+    min-height: 35vh;
+  }
 }
 
-#contenedorTitulo {
-  padding: 2rem 1rem 1.5rem 1rem;
-  margin-bottom: 2.5rem;
+.imagen-evento-container {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
-.tituloReserva {
-  color: v.$color-negro;
+.imagen-evento {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay-gradiente {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6), rgba(0,0,0,0.8));
+  z-index: 2;
+}
+
+.header-content {
+  position: relative;
+  z-index: 3;
   text-align: center;
-  font-size: 2.4rem;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  margin: 0;
+  color: $color-white;
+  padding: $spacing-xl;
+  
+  @include mobile {
+    padding: $spacing-lg;
+  }
 }
 
-.contenedorReserva {
-  background: v.$color-negro;
-  border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-  padding: 2.5rem 2.5rem 2rem 2.5rem;
-  max-width: 480px;
-  margin: 0 auto 2.5rem auto;
+.subtitulo {
+  color: $color-light-gray;
+  font-size: $font-size-lg;
+  margin-top: $spacing-md;
+  font-weight: 500;
+  
+  @include mobile {
+    font-size: $font-size-md;
+  }
+}
+
+.reserva-card, .mensaje-estado {
+  background: #151515;
+  border-radius: $border-radius-xl;
+  padding: $spacing-lg;
+  max-width: 600px;
+  margin: -$spacing-2xl auto $spacing-xl auto;
+  position: relative;
+  z-index: 4;
+  border: 1px solid $color-primary;
+  backdrop-filter: blur(10px);
+  
+  @include mobile {
+    margin: -$spacing-xl $spacing-md $spacing-lg $spacing-md;
+    border-radius: $border-radius-lg;
+  }
+  
+  @include mobile-small {
+    margin: -$spacing-lg $spacing-sm $spacing-md $spacing-sm;
+    padding: $spacing-md;
+  }
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: $spacing-lg;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $color-primary, transparent);
+  }
+  
+  h2 {
+    color: $color-primary;
+    font-size: $font-size-2xl;
+    font-weight: 700;
+    margin: 0;
+    font-family: $font-montserrat;
+    
+    @include mobile {
+      font-size: $font-size-xl;
+    }
+  }
+}
+
+.reserva-info {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  align-items: flex-start;
-  transition: box-shadow 0.2s;
-
-  &:hover {
-    box-shadow: 0 8px 32px rgba(0,0,0,0.13);
-  }
+  gap: $spacing-md;
+  margin-bottom: $spacing-xl;
 }
 
-.contenedorReserva p {
-  margin: 0;
-  color: v.$color-gris-muy-light;
-  font-size: 1.18rem;
-  font-weight: 500;
-
-  strong {
-    font-weight: 700;
-    color: v.$color-primario;
-    letter-spacing: 0.5px;
-  }
-}
-
-.action_button {
-  margin-top: 18px;
-  background: v.$color-primario;
-  color: v.$color-negro;
-  border: none;
-  border-radius: 8px;
-  padding: 0.9rem 2.5rem;
-  font-size: 1.18rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: background 0.18s, transform 0.12s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-  letter-spacing: 1px;
-
-  &:hover {
-    background: darken(v.$color-primario, 10%);
-    transform: translateY(-2px) scale(1.03);
-  }
-}
-
-.contenedorButton {
+.info-item {
   display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-sm 0;
+  border-bottom: 1px solid rgba($color-gray, 0.2);
+  
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-xs;
+  }
+  
+  &.total {
+    border-bottom: 2px solid $color-primary;
+    padding: $spacing-md 0;
+    margin-top: $spacing-md;
+    font-weight: 700;
+    font-size: $font-size-lg;
+  }
 }
 
-.cdk-overlay-container, .cdk-overlay-backdrop {
-  z-index: 2000 !important;
-  position: fixed !important;
+.label {
+  color: $color-gray-text;
+  font-family: $font-montserrat;
+  font-weight: 500;
+  font-size: $font-size-md;
+  
+  @include mobile {
+    font-size: $font-size-sm;
+  }
+}
+
+.value {
+  color: $color-white;
+  font-family: $font-lato;
+  font-weight: 600;
+  font-size: $font-size-md;
+  
+  @include mobile {
+    font-size: $font-size-sm;
+  }
+  
+  &.price {
+    color: $color-primary;
+    font-size: $font-size-lg;
+    font-weight: 700;
+    
+    @include mobile {
+      font-size: $font-size-md;
+    }
+  }
+}
+
+.action-container {
+  text-align: center;
+  margin-top: $spacing-xl;
+}
+
+.mensaje-estado {
+  max-width: 500px;
+  text-align: center;
+  border: 1px solid $color-error;
+  
+  h3 {
+    color: $color-error;
+    font-size: $font-size-xl;
+    margin: $spacing-md 0;
+    
+    @include mobile {
+      font-size: $font-size-lg;
+    }
+  }
+  
+  p {
+    color: $color-gray-text;
+    font-size: $font-size-md;
+    line-height: 1.5;
+    
+    @include mobile {
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+.spinner-overlay {
+  @include spinner-overlay;
+  background: rgba($color-black, 0.8);
+  backdrop-filter: blur(5px);
+}
+
+@include mobile-small {
+  .evento-header {
+    min-height: 30vh;
+  }
+  
+  .header-content {
+    padding: $spacing-md;
+  }
+  
+  .subtitulo {
+    font-size: $font-size-base;
+  }
+  
+  .info-item {
+    padding: $spacing-xs 0;
+    
+    &.total {
+      padding: $spacing-sm 0;
+      margin-top: $spacing-sm;
+    }
+  }
+  
+  .label, .value {
+    font-size: $font-size-xs !important;
+    
+    &.price {
+      font-size: $font-size-sm !important;
+    }
+  }
+  
+  .reserva-info {
+    gap: $spacing-sm;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.evento-header:not(:has(.imagen-evento-container)) {
+  background: linear-gradient(135deg, $color-dark 0%, $color-dark-2 100%);
+  
+  .header-content {
+    padding: $spacing-2xl;
+  }
 }

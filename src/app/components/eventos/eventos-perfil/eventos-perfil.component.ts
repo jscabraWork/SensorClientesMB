@@ -185,52 +185,9 @@ export class EventosPerfilComponent extends BaseComponent {
            localidad.cantidadPersonasPorTicket * cantidad;
   }
 
-  AbrirCarrito(): void {
-    if (this.cantidadTotal == 0) {
-      this.mostrarError("Selecciona lo que deseas comprar");
-      return;
-    }
 
-    if (this.authService.isAuthenticated()) {
-      if (!this.cliente) {
-        this.autenticar().then(() => {
-          this.crearOrden();
-        });
-      } else {
-        this.crearOrden();
-      }
-    } else {
-      this.mostrarError("Debes estar registrado para poder realizar tu compra");
-      this.router.navigate(['/login']);
-    }
-  }
 
-  crearOrden(): void {
-    const numerosNoCero = this.cantidades.filter(num => num !== 0);
-    if (numerosNoCero.length == 1) {
-      const posicion = this.cantidades.indexOf(numerosNoCero[0]);
-      let localidad: Localidad = this.localidades[posicion];
-      this.idLocalidad = localidad.id;
-      let tipo: number = (localidad.tipo == 1 || localidad.tipo == 3) ? 4 : 1;
-      this.iniciarCarga();
-      this.ordenService.crearOrdenClienteCompra(this.cantidadTotal, this.idLocalidad, tipo, this.evento.id, this.cliente).subscribe({
-        next: response => {
-          if (response.ordenId) {
-            this.router.navigate([`/eventos/carrito/${response.ordenId}`]).then(() => {
-              window.scrollTo(0, 0);
-            });
-          } else if (response.mensaje) {
-            this.finalizarCarga();
-            this.mostrarError(response.mensaje);
-          }
-        }, error: error => {
-          this.manejarError(error, "Sucedió un error al generar la orden, por favor intenta nuevamente");
-        }
-      });
-    } else {
-      this.mostrarError("No se permite la compra de más de una localidad por compra");
-    }
-  }
+
 
   async autenticar() {
     this.usuario = this.hardCodedAuthService.getUsuario() || '';
@@ -312,7 +269,7 @@ export class EventosPerfilComponent extends BaseComponent {
 
     // Usar el método apropiado según si hay promotor o no
     const ordenObservable = this.idPromotor 
-      ? this.ordenService.crearOrdenNoNumeradaConPromotor(cantidad, localidad_id, this.evento.id, this.cliente?.numeroDocumento, this.idPromotor)
+      ? this.ordenService.crearOrdenNoNumeradaPromotor(cantidad, localidad_id, this.evento.id, this.cliente?.numeroDocumento, this.idPromotor)
       : this.ordenService.crearOrdenNoNumerada(cantidad, localidad_id, this.evento.id, this.cliente?.numeroDocumento);
 
     ordenObservable.subscribe({

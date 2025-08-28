@@ -31,16 +31,13 @@ export class ReservasPromotorComponent extends BaseComponent{
 
   reserva:Reserva = new Reserva();
   evento: Evento = new Evento();
-  usuario: ClientePagos = new ClientePagos();
   promotor: Promotor = new Promotor();
   localidad:Localidad
-  idPromotor: string
-  idLocalidad: number
+  documentoCliente: string | null = null;
+
   constructor(
     private authService: HardcodedAutheticationService,
     private reservaService: ReservasDataService,
-    private clienteService: ClientesPagoDataService,
-    private promotorService: PromotorDataService,
     private ordenService: OrdenDataService,
     private router: Router,
     dialog: MatDialog,
@@ -51,67 +48,62 @@ export class ReservasPromotorComponent extends BaseComponent{
   }
 
   protected override cargarDatos(): void {
-    this.cargando = true;
+    // Verificar si el usuario está logueado
+    if (!this.authService.usuarioLoggin()) {
+      this.openLoginModal();
+      return;
+    }
+
+    this.documentoCliente = this.authService.getCC();
+
+    this.iniciarCarga();
     this.reservaService.getPorId(this.pathVariable).subscribe((response) => {
-        this.reserva = response.reserva
-        this.evento = response.evento
-        this.localidad = response.localidad
-        this.idPromotor = response.reserva.promotor.numeroDocumento
+        this.reserva = response.reserva;
+        this.evento = response.evento;
+        this.localidad = response.localidad;
+        this.promotor = response.reserva.promotor;
+        this.finalizarCarga();
+        
         if (this.reserva == null) {
-          //alert("Esta reserva no existe")
           this.mostrarMensaje('Esta reserva no existe');
           this.cargando = false;
-
+          return;
         }
 
-        if(this.reserva.activa){
-
-          const correo = this.authService.getUsuario();
-
-          if (correo) {
-            this.clienteService.getCliente(correo).subscribe((response) => {
-              console.log(response)
-              this.usuario = response.usuario
-              if (this.reserva.clienteId == this.usuario.numeroDocumento) {
-                this.promotorService.getPorId(this.idPromotor).subscribe(
-                  (response) => {
-                    this.promotor = response.promotor;
-                    this.cargando = false;
-                  },
-                  (error) => {
-                    this.mostrarMensaje('Error al obtener el promotor');
-                    this.cargando = false;
-                  }
-                );
-                this.cargando=false
-
-              }
-              else {
-                //alert("Esta reserva no esta a tu nombre")
-                this.mostrarMensaje('Esta reserva no esta a tu nombre');
-                this.cargando = false;
-              }
-            })
-          }
-          else {
-            this.openMensaje('Debes ingresar a tu cuenta AllTickets para realizar la compra, en caso de no tener, regístrate', 'openD');
-            this.cargando = false;
-    }
+        // Validar que la reserva pertenece al usuario logueado
+        if (this.reserva.clienteId !== this.documentoCliente) {
+          this.mostrarMensajeYRedirigir('Esta reserva no está a tu nombre');
+          return;
         }
+
+        // Validar que la reserva esté activa
+        if (!this.reserva.activa) {
+          this.mostrarMensajeYRedirigir('Esta reserva ya no se encuentra activa');
+          return;
+        }
+      },
+      error => {
+        this.finalizarCarga();
+        this.mostrarMensaje('Error al cargar la reserva');
       }
-    )
+    );
   }
 
-  openDialog2(): void {
+  openLoginModal(): void {
     const dialogRef = this.dialog.open(LoginComponent, {
       width: '600px',
+      disableClose: true
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.cargarDatos();
+      if (this.authService.usuarioLoggin()) {
+        this.cargarDatos();
+      } else {
+        this.router.navigate(['/home']);
+      }
     });
   }
 
-  openMensaje(mensajeT: string, openD?: string): void {
+  mostrarMensajeYRedirigir(mensaje: string): void {
     let screenWidth = screen.width;
     let anchoDialog: string = 'auto';
     let anchomax: string = 'auto';
@@ -126,44 +118,98 @@ export class ReservasPromotorComponent extends BaseComponent{
       maxWidth: anchomax,
       height: altoDialog,
       data: {
-        mensaje: mensajeT
+        mensaje: mensaje
       }
     });
-    if (openD == 'openD') {
-      dialogRef.afterClosed().subscribe((result) => {
-        this.openDialog2();
-      });
-    } else if (openD == 'onInit') {
-      this.ngOnInit();
+    dialogRef.afterClosed().subscribe(() => {
+      this.router.navigate(['/home']);
+    });
+  }
+
+  mostrarConfirmacion(mensaje: string, callback: () => void): void {
+    let screenWidth = screen.width;
+    let anchoDialog: string = 'auto';
+    let anchomax: string = 'auto';
+    let altoDialog: string = 'auto';
+    if (screenWidth <= 600) {
+      anchoDialog = '100%';
+      anchomax = '100%';
+      altoDialog = 'auto';
     }
+    const dialogRef = this.dialog.open(MensajeComponent, {
+      width: anchoDialog,
+      maxWidth: anchomax,
+      height: altoDialog,
+      data: {
+        mensaje: mensaje,
+        mostrarBotones: true
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        callback();
+      }
+    });
   }
 
 
 
-  abrirCarrito(){
-      this.cargando = true;
-      this.idLocalidad = this.localidad.id;
-      console.log(this.reserva.cantidad,this.idLocalidad, this.evento.id, this.usuario.numeroDocumento, this.idPromotor);
-      this.ordenService.crearOrdenNoNumeradaConPromotor(
-        this.reserva.cantidad,
-        this.idLocalidad,
-        this.evento.id,
-        this.usuario.numeroDocumento,
-        this.idPromotor
-      ).subscribe({next: (response) => {
-          console.log(response);
-          if(response.ordenId){
-            this.router.navigate(['/carrito-final', response.ordenId]);
-          } else if(response.mensaje){
-            this.openMensaje(response.mensaje);
-          }
+  confirmarProceso(): void {
+    const mensaje = `¿Deseas continuar? A partir de aquí la reserva quedará inactiva y no podrás cancelar el proceso.`;
+    this.mostrarConfirmacion(mensaje, () => {
+      this.inactivarReservaYCrearOrden();
+    });
+  }
 
-        }, error: (error) => {
-          console.error(error);
-          this.cargando = false;
-          this.openMensaje('Error al crear la orden, por favor intenta nuevamente');
+  private inactivarReservaYCrearOrden(): void {
+    this.cargando = true;
+    
+    // Primero inactivar la reserva
+    this.reserva.activa = false;
+    this.reservaService.inactivarReserva(this.reserva.id).subscribe({
+      next: () => {
+        // Si la inactivación es exitosa, crear la orden
+        this.crearOrden();
+      },
+      error: (error) => {
+        console.error('Error al inactivar reserva:', error);
+        this.cargando = false;
+        this.mostrarMensaje('Error al procesar la reserva, por favor intenta nuevamente');
+      }
+    });
+  }
+
+  private crearOrden(): void {
+    this.ordenService.crearOrdenNoNumeradaPromotor(
+      this.reserva.cantidad,
+      this.localidad.id,
+      this.evento.id,
+      this.documentoCliente,
+      this.promotor.numeroDocumento
+    ).subscribe({
+      next: (response) => {
+        this.cargando = false;
+        if (response.ordenId) {
+          this.router.navigate(['/carrito-final', response.ordenId]);
+        } else if (response.mensaje) {
+          this.mostrarMensaje(response.mensaje);
         }
-      });
+      },
+      error: (error) => {
+        console.error('Error al crear orden:', error);
+        this.cargando = false;
+        this.mostrarMensaje('Error al crear la orden, por favor intenta nuevamente');
+      }
+    });
+  }
+
+  getImagenBanner(evento: Evento): string | null {
+    if (!evento.imagenes || evento.imagenes.length === 0) {
+      return null;
+    }
+
+    const imagenBanner = evento.imagenes.find(imagen => imagen.tipo === 2);
+    return imagenBanner?.url || null;
   }
 
 }

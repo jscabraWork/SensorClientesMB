@@ -21,17 +21,6 @@ export class OrdenDataService {
 
   constructor(private http: HttpClient) { }
 
-  crearOrdenClienteCompra(cantidad,idLocalidad,tipo:number, idEvento:number,cliente:ClientePagos){
-
-    const params = new HttpParams()
-    .set('cantidad', cantidad)
-    .set('idLocalidad', idLocalidad)
-    .set('tipo', tipo.toString())
-    .set('idEvento',idEvento.toString());
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-   return this.http.post<any>(`${this.apiOrdenes}/crear`,cliente,{params,headers});
-  }
 
   crearOrdenNoNumerada(cantidad,idLocalidad, idEvento:number,numeroDocumento:string ){
     const params = new HttpParams()
@@ -60,9 +49,16 @@ export class OrdenDataService {
   return this.http.post<any>(`${this.apiOrdenes}/crear-individual`, null, { params });
   }
 
-
-
-
+  // Métodos para órdenes con promotor
+  crearOrdenNoNumeradaPromotor(cantidad, idLocalidad, idEvento: number, numeroDocumento: string, promotorId: string) {
+    const params = new HttpParams()
+      .set('pCantidad', cantidad)
+      .set('pLocalidadId', idLocalidad)
+      .set('pEventoId', idEvento)
+      .set('pClienteNumeroDocumento', numeroDocumento)
+      .set('pPromotorId', promotorId);
+    return this.http.post<any>(`${this.apiOrdenesPromotores}/crear-no-numerada`, null, { params });
+  }
 
   getInformacionCarritoDeCompras(pIdOrden){
     return this.http.get(`${this.apiOrdenes}/carrito/${pIdOrden}`);
@@ -109,17 +105,7 @@ export class OrdenDataService {
   //ORDENES TRASPASO
 
 
-  // Métodos para órdenes con promotor
-  crearOrdenNoNumeradaConPromotor(cantidad, idLocalidad, idEvento: number, numeroDocumento: string, promotorId: string) {
-    const params = new HttpParams()
-      .set('pCantidad', cantidad)
-      .set('pLocalidadId', idLocalidad)
-      .set('pEventoId', idEvento)
-      .set('pClienteNumeroDocumento', numeroDocumento)
-      .set('pPromotorId', promotorId);
-    return this.http.post<any>(`${this.apiOrdenesPromotores}/crear-no-numerada`, null, { params });
-  }
-
+  
 
 
 }

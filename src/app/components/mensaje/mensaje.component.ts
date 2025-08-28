@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class MensajeComponent implements OnInit {
 
   mensaje: string;
+  mostrarBotones: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -25,11 +26,20 @@ export class MensajeComponent implements OnInit {
     this.dialogRef.addPanelClass('mensaje-dialog-transparent');
   }
 
-  cerrar() {
-    this.dialogRef.close();
+  cerrar(result: boolean = false) {
+    this.dialogRef.close(result);
+  }
+
+  confirmar() {
+    this.dialogRef.close(true);
+  }
+
+  cancelar() {
+    this.dialogRef.close(false);
   }
 
   ngOnInit(): void {
     this.mensaje = this.data.mensaje;
+    this.mostrarBotones = this.data.mostrarBotones || false;
   }
 }

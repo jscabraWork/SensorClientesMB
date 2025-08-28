@@ -1,30 +1,74 @@
-<section >
-    <div id="contenedorTitulo">
-        <h1 class="tituloReserva" ><strong>Reserva para el evento </strong>{{ evento?.nombre}}</h1>
-        <hr class="linea">
+<div class="fondo">
+  <!-- Header con imagen del evento -->
+  <section class="evento-header">
+    <div class="imagen-evento-container" *ngIf="getImagenBanner(evento)">
+      <img [src]="getImagenBanner(evento)" 
+           [alt]="evento?.nombre" 
+           class="imagen-evento">
+      <div class="overlay-gradiente"></div>
     </div>
-</section>
-
-<div class="contenedorReserva" *ngIf="!cargando && reserva?.activa==true">
-    <p><strong>Número de la Reserva:</strong>{{reserva?.id}}</p>
-    <p><strong>Nombre del promotor:</strong> {{promotor?.nombre}}</p>
-    <p><strong>Localidad: </strong>{{localidad?.nombre}}</p>
-    <p><strong>Cantidad de Tickets: </strong>{{reserva?.cantidad}}</p>
-    <p><strong>Valor Total: </strong>{{(reserva?.cantidad * (localidad?.tarifa?.precio + localidad?.tarifa?.servicio + localidad?.tarifa?.iva)) | currency: 'COP '}}</p>
-
-    <div class="contenedorButton">
-      <button class="action_button" (click)="abrirCarrito()">
-            Pagar
-      </button>
-    </div>
-</div>
-
-<div class="pagar cetrarTexto container border mt-5 p-3" *ngIf="!cargando&&reserva?.activa==false">
-    <h4>Esta reserva ya no se encuentra activa</h4>
-</div>
-
-<section *ngIf="cargando">
-    <div class="container-fluid contendor-spinner-2" >
-      <div class="spinner"></div>
+    
+    <div class="contenedor-info">
+      <div class="header-content">
+        <h1 class="titulo-eventos">{{ evento?.nombre }}</h1>
+        <div class="linea"></div>
+        <p class="subtitulo montserrat">Confirma tu reserva</p>
+      </div>
     </div>
   </section>
+
+  <!-- Contenido principal -->
+  <main class="contenido">
+    <!-- Reserva activa -->
+    <div class="reserva-card" *ngIf="!cargando && reserva?.activa">
+      <div class="card-header">
+        <h2 class="montserrat">Detalles de la Reserva</h2>
+      </div>
+      
+      <div class="reserva-info">
+        <div class="info-item">
+          <span class="label">Número de Reserva:</span>
+          <span class="value">{{ reserva?.id }}</span>
+        </div>
+        
+        <div class="info-item">
+          <span class="label">Promotor:</span>
+          <span class="value">{{ promotor?.nombre }}</span>
+        </div>
+        
+        <div class="info-item">
+          <span class="label">Localidad:</span>
+          <span class="value">{{ localidad?.nombre }}</span>
+        </div>
+        
+        <div class="info-item">
+          <span class="label">Cantidad de Tickets:</span>
+          <span class="value">{{ reserva?.cantidad }}</span>
+        </div>
+        
+        <div class="info-item total">
+          <span class="label">Valor Total:</span>
+          <span class="value price">{{ (reserva?.cantidad * (localidad?.tarifa?.precio + localidad?.tarifa?.servicio + localidad?.tarifa?.iva)) | currency: 'COP ' }}</span>
+        </div>
+      </div>
+
+      <div class="action-container">
+        <button [disabled]="!reserva?.activa || !localidad?.tarifa || cargando" class="submit-btn" (click)="confirmarProceso()" [disabled]="cargando">
+          <span *ngIf="!cargando">Proceder al Pago</span>
+          <span *ngIf="cargando">Procesando...</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Reserva inactiva -->
+    <div class="mensaje-estado" *ngIf="!cargando && !reserva?.activa">
+      <h3 class="montserrat">Reserva Inactiva</h3>
+      <p>Esta reserva ya no se encuentra activa</p>
+    </div>
+
+    <!-- Loading -->
+    <div class="spinner-overlay" *ngIf="cargando">
+      <div class="spinner"></div>
+    </div>
+  </main>
+</div>
