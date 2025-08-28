@@ -130,7 +130,7 @@ export class CarritoFinalComponent extends BaseComponent {
     // Para alcancías (orden tipo 3), calcular aporte mínimo multiplicado por cantidad de tickets
     if (this.orden.tipo === 3) { // Alcancía
       this.aporteMinimo = this.localidad.aporteMinimo * this.tickets.length;
-      this.aporteAlcancia = this.aporteMinimo;
+      this.aporteAlcancia = this.calcularTotalTickets();
     }
     else if(this.orden.tipo === 4){
       this.aporteAlcancia = this.orden.valorOrden;
