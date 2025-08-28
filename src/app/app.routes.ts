@@ -38,6 +38,10 @@ export const routes: Routes = [
     loadComponent: () => import('./components/eventos/eventos-perfil/carrito-final/carrito-final.component').then(m => m.CarritoFinalComponent)
   },
   {
+    path: 'reservas/:id',
+    loadComponent: () => import('./components/reservas-promotor/reservas-promotor.component').then(m => m.ReservasPromotorComponent)
+  },
+  {
     path: 'eventos',
     children: [
       {

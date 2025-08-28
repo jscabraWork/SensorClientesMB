@@ -92,7 +92,7 @@ body {
   font-size: $font-size-3xl;
   line-height: 30px;
   color: $color-dark;
-  
+
   @include mobile {
     font-size: 5vw;
     line-height: 5vw;
@@ -105,16 +105,16 @@ body {
   color: $color-secondary;
   background-color: $color-secondary;
   width: 200px;
-  
+
   @include mobile {
     width: 140px;
   }
 }
 
 .linea {
-  border-top: 1px solid $color-secondary;
+  border-top: 1px solid $color-primario-dark;
   height: 2px;
-  max-width: 200px;
+  max-width: 500px;
   padding: 0;
   margin: 20px auto 0 auto;
 }
@@ -155,7 +155,7 @@ body {
   border: 1px solid rgba($color-error, 0.3);
   border-radius: $border-radius-sm;
   backdrop-filter: blur(5px);
-  
+
   small {
     color: #ff8888;
     font-size: $font-size-xs;
@@ -185,7 +185,7 @@ body {
   font-size: $font-size-md;
   background: $color-dark;
   color: $color-accent;
-  
+
   @include mobile {
     font-size: $font-size-base;
   }
@@ -197,7 +197,7 @@ body {
   border-bottom: 1px solid $color-dark !important;
   background-color: $color-light-gray !important;
   width: 120px;
-  
+
   @include mobile {
     font-size: $font-size-base;
   }
@@ -216,7 +216,7 @@ body {
   color: $color-gray-text;
   font-size: $font-size-sm;
   cursor: pointer;
-  
+
   &::placeholder {
     color: $color-gray-text;
   }

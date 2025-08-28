@@ -8,7 +8,7 @@
   font-family: $font-alata;
   margin-top: auto;
   padding-bottom: env(safe-area-inset-bottom); // Para dispositivos con notch/home indicator
-  
+
   @include mobile {
     margin-top: $spacing-lg;
   }
@@ -43,7 +43,7 @@
   font-size: $font-size-md;
   color: $color-accent;
   line-height: 65px;
-  
+
   @include mobile {
     margin-top: 10px;
   }
@@ -75,7 +75,7 @@
   height: 25px;
   margin-right: 12px;
   transition: $transition-fast;
-  
+
   &:hover {
     transform: scale(1.1);
     opacity: 0.8;
@@ -85,8 +85,8 @@
 .lineaFooter {
   width: 100%;
   border: 1px solid $color-primary;
-  margin-top: 80px;
-  
+  margin-top: 30px;
+
   @include mobile {
     width: 90%;
     margin-left: 0;
@@ -105,7 +105,7 @@
   margin-top: 10px;
   text-align: center;
   width: 95%;
-  
+
   @include mobile {
     width: 100%;
   }

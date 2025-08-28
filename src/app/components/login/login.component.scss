@@ -6,7 +6,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
   position: relative;
 }
 
@@ -26,12 +25,8 @@
   background: #151515;
   border: 1px solid #ffd903;
   border-radius: 16px;
-  padding: 32px;
   width: 100%;
-  max-width: 480px;
   position: relative;
-  backdrop-filter: blur(10px);
-  margin-top: 3rem;
 }
 
 .card-header {
@@ -88,7 +83,7 @@
   outline: none;
   border-color: #ffd903;
   background: linear-gradient(145deg, #333, #222);
-  box-shadow: 
+  box-shadow:
     0 0 0 2px rgba(255, 217, 3, 0.2),
     inset 0 1px 3px rgba(0, 0, 0, 0.1);
   transform: none;
@@ -106,7 +101,7 @@
 .input-field.ng-invalid.ng-touched {
   border-color: #ff6b6b;
   background: linear-gradient(145deg, #3a2222, #2a1a1a);
-  box-shadow: 
+  box-shadow:
     0 0 0 1px rgba(255, 107, 107, 0.3),
     inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
@@ -114,7 +109,7 @@
 .input-field.ng-valid.ng-touched {
   border-color: #666;
   background: linear-gradient(145deg, #2f2f2f, #1f1f1f);
-  box-shadow: 
+  box-shadow:
     0 0 0 1px rgba(102, 102, 102, 0.3),
     inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
@@ -176,7 +171,7 @@
   text-transform: uppercase;
   position: relative;
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 4px 15px rgba(255, 217, 3, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
@@ -194,7 +189,7 @@
 
 .submit-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(255, 217, 3, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
@@ -274,23 +269,65 @@
   transform: translateY(0);
 }
 
+/* Ajustes para material dialog */
+::ng-deep .mat-dialog-container {
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  z-index: 9999 !important;
+}
+
+/* Aseguramos que no se muestre el fondo negro en el backdrop */
+::ng-deep .cdk-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.5) !important;
+  z-index: 9998 !important;
+}
+
+::ng-deep .cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.5) !important;
+  z-index: 9998 !important;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 9999 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Clase para hacer transparente el panel del di�logo */
+::ng-deep .mensaje-dialog-transparent {
+  background: transparent !important;
+}
+
+::ng-deep .mensaje-dialog-transparent .mat-dialog-container {
+  background: transparent !important;
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
   .login-container {
     padding: 16px;
   }
-  
+
   .login-card {
     padding: 24px 20px;
     border-radius: 12px;
     max-width: 400px;
   }
-  
+
   .card-header h2 {
     font-size: 24px;
     letter-spacing: 1px;
   }
-  
+
   .input-field {
     padding: 10px 14px;
     font-size: 15px;
@@ -303,15 +340,15 @@
     margin: 8px;
     max-width: 360px;
   }
-  
+
   .login-form {
     gap: 14px;
   }
-  
+
   .card-header h2 {
     font-size: 22px;
   }
-  
+
   .create-account-btn {
     max-width: 240px;
     padding: 10px;

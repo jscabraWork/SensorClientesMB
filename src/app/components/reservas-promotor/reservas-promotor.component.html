@@ -1,0 +1,30 @@
+<section >
+    <div id="contenedorTitulo">
+        <h1 class="tituloReserva" ><strong>Reserva para el evento </strong>{{ evento?.nombre}}</h1>
+        <hr class="linea">
+    </div>
+</section>
+
+<div class="contenedorReserva" *ngIf="!cargando && reserva?.activa==true">
+    <p><strong>Número de la Reserva:</strong>{{reserva?.id}}</p>
+    <p><strong>Nombre del promotor:</strong> {{promotor?.nombre}}</p>
+    <p><strong>Localidad: </strong>{{localidad?.nombre}}</p>
+    <p><strong>Cantidad de Tickets: </strong>{{reserva?.cantidad}}</p>
+    <p><strong>Valor Total: </strong>{{(reserva?.cantidad * (localidad?.tarifa?.precio + localidad?.tarifa?.servicio + localidad?.tarifa?.iva)) | currency: 'COP '}}</p>
+
+    <div class="contenedorButton">
+      <button class="action_button" (click)="abrirCarrito()">
+            Pagar
+      </button>
+    </div>
+</div>
+
+<div class="pagar cetrarTexto container border mt-5 p-3" *ngIf="!cargando&&reserva?.activa==false">
+    <h4>Esta reserva ya no se encuentra activa</h4>
+</div>
+
+<section *ngIf="cargando">
+    <div class="container-fluid contendor-spinner-2" >
+      <div class="spinner"></div>
+    </div>
+  </section>
