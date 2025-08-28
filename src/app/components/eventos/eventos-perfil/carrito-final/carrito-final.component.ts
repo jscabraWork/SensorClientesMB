@@ -132,6 +132,9 @@ export class CarritoFinalComponent extends BaseComponent {
       this.aporteMinimo = this.localidad.aporteMinimo * this.tickets.length;
       this.aporteAlcancia = this.aporteMinimo;
     }
+    else if(this.orden.tipo === 4){
+      this.aporteAlcancia = this.orden.valorOrden;
+    }
 
     // Solo calcular seguro opcional si no es obligatorio
     if (this.configSeguro && this.configSeguro.valorMaximo > 0 && 
@@ -154,13 +157,18 @@ export class CarritoFinalComponent extends BaseComponent {
         this.mostrarError(`El aporte mínimo es ${this.aporteMinimo.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}`);
         return;
       }
+
+      if (this.aporteAlcancia > this.calcularTotalTickets()) {
+        this.mostrarError(`El aporte máximo es ${this.calcularTotalTickets().toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}`);
+        return;
+      }
     }
     
     this.iniciarCarga();
     this.pagar = true;
-    
-    const aporteParaEnviar = this.orden?.tipo === 3 ? this.aporteAlcancia : undefined;
-    
+
+    const aporteParaEnviar = this.orden?.tipo === 3 || this.orden?.tipo === 4 ? this.aporteAlcancia : undefined;
+
     this.authService.guardarSesionEnLocalStorage();
     this.ptpService.getPeticionPTP(this.orden.id, this.seguro, aporteParaEnviar).subscribe({
       next: response => {
@@ -228,10 +236,7 @@ export class CarritoFinalComponent extends BaseComponent {
   }
 
   private calcularTotalTickets(): number {
-    if (this.orden?.tipo === 3) {
-      // Para alcancías, usar el aporte
-      return this.aporteAlcancia;
-    }
+ 
     // Para órdenes normales, calcular basado en tickets y tarifas
     let total = 0;
     const tarifa = this.localidad?.tarifa;
@@ -244,6 +249,16 @@ export class CarritoFinalComponent extends BaseComponent {
   }
 
   get valorTotal(): number {
+
+    if(this.orden.tipo == 3){
+      return this.aporteAlcancia;
+    }
+
+    if(this.orden.tipo == 4){
+      return this.orden.valorOrden
+    }
+  
+
     const totalTickets = this.calcularTotalTickets();
     return this.seguro ? totalTickets + this.valorSeguro : totalTickets;
   }

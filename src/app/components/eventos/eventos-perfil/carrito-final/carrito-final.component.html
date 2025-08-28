@@ -34,8 +34,11 @@
                   <div class="detalle2"><strong class="bold">Artistas: </strong> {{ evento?.artistas ? evento?.artistas : "Por confirmar" }}
                   </div>
                 </div>
-                <div class="  lineH2">
+                <div class="  lineH2" *ngIf="orden?.tipo != 4">
                   <div class="detalle3">Compra de <strong class="bold">{{tickets.length}}</strong>Tickets en la localidad <strong class="bold">{{localidad?.nombre}}</strong></div>
+                </div>
+                <div class="  lineH2" *ngIf="orden?.tipo == 4">
+                  <div class="detalle3">Aporte a alcancía</div>
                 </div>
               </div>
             </div>
@@ -57,26 +60,38 @@
 
   <div class="txtNombre3">
     
-    <h2 class="titulo-seccion">Resumen de tu Compra</h2>
-    <p class="texto-informativo">Revisa los detalles de tu pedido antes de proceder al pago</p>
-    <section class="tabCompra">
-      <table>
-        <tr >
-          <th class="fondoTabla">Cantidad</th>
-          <th class="fondoTabla">Etapa</th>
-          <th class="fondoTabla">Localidad</th>
-          <th class="fondoTabla">Precio incluido Servicio</th>
-        </tr>
-        <tr>
-          <td class="fondoTablaDato">{{tickets.length}}</td>
-          <td class="fondoTablaDato">{{localidad?.nombre}}</td>
-          <td
-          class="fondoTablaDato">{{localidad?.nombre}}
-          </td>
-          <td class="fondoTablaDato"> ${{ (localidad?.tarifa?.precio + localidad?.tarifa?.servicio + localidad?.tarifa?.iva) | number: '1.0-0' }}</td>
-        </tr>
-      </table>
-    </section>
+    <div *ngIf="orden?.tipo != 4">
+      <h2 class="titulo-seccion">Resumen de tu Compra</h2>
+      <p class="texto-informativo">Revisa los detalles de tu pedido antes de proceder al pago</p>
+      <section class="tabCompra">
+        <table>
+          <tr >
+            <th class="fondoTabla">Cantidad</th>
+            <th class="fondoTabla">Etapa</th>
+            <th class="fondoTabla">Localidad</th>
+            <th class="fondoTabla">Precio incluido Servicio</th>
+          </tr>
+          <tr>
+            <td class="fondoTablaDato">{{tickets.length}}</td>
+            <td class="fondoTablaDato">{{orden?.tarifa?.nombre}}</td>
+            <td
+            class="fondoTablaDato">{{localidad?.nombre}}
+            </td>
+            <td class="fondoTablaDato"> ${{ (localidad?.tarifa?.precio + localidad?.tarifa?.servicio + localidad?.tarifa?.iva) * tickets.length | number: '1.0-0' }}</td>
+          </tr>
+        </table>
+      </section>
+    </div>
+    
+    <div *ngIf="orden?.tipo == 4">
+      <h2 class="titulo-seccion">Aporte a Alcancía</h2>
+      <p class="texto-informativo">Contribución que realizarás a la alcancía del evento</p>
+      <div class="boxTotal">
+        <div class="cajaTotales2 padding-3">
+          <h3 class="font-vaca montserrat cantTq fs-18">Monto del aporte: ${{orden?.valorOrden | number: '1.0-0'}}</h3>
+        </div>
+      </div>
+    </div>
 
     <div class="boxTotal" *ngIf="adicionales?.length>0">
       <h3 class="titulo-seccion">Servicios Adicionales</h3>
@@ -112,13 +127,13 @@
       
       <div class="cajaTotales2 padding-3">
         <h3 class="font-vaca montserrat cantTq fs-18">¿Cuál es el monto qué deseas aportar a tu alcancía? (mínimo
-          {{aporteMinimo| currency:'COP ':'symbol':'1.0-0'}})</h3>
+          {{aporteMinimo| currency:'COP ':'symbol':'1.0-0'}}, máximo {{(localidad?.tarifa?.precio + localidad?.tarifa?.servicio + localidad?.tarifa?.iva) * tickets.length | currency:'COP ':'symbol':'1.0-0'}})</h3>
 
         <form #todoForm="ngForm" class="w100">
           <fieldset class="form-group">
             <input type="number" name="valorVaca" required="required" class="input-vaca form-control"
               placeholder="Valor mínimo" [(ngModel)]="aporteAlcancia" (blur)="validarAporte()" 
-              [min]="aporteMinimo" step="1000">
+              [min]="aporteMinimo">
           </fieldset>
         </form>
       </div>
@@ -149,7 +164,7 @@
       <p class="texto-informativo">Procede al pago de forma segura. Serás redirigido a nuestra pasarela de pagos</p>
       
       <div class="cajaTotales">
-        <button class="action_button btnBoxToatl" (click)="ptp()"> PAGAR</button>
+        <button class="action_button btnBoxToatl" (click)="ptp()"> PAGAR ${{valorTotal | number: '1.0-0'}}</button>
 
       </div>
     </div>
