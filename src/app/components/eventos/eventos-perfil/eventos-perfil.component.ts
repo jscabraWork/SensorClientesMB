@@ -8,7 +8,6 @@ import localeES from '@angular/common/locales/es';
 
 import { Evento } from '../../../models/evento.model';
 import { Localidad } from '../../../models/localidad.model';
-import { ClientePagos } from '../../../models/cliente-pagos.model';
 import { EventoDataService } from '../../../service/data/evento-data.service';
 import { OrdenDataService } from '../../../service/data/orden-data.service';
 import { ClientesPagoDataService } from '../../../service/data/clientes-pago-data.service';
@@ -47,8 +46,7 @@ export class EventosPerfilComponent extends BaseComponent {
   cantidadTotal: number = 0;
   cantidades: number[] = [];
   idLocalidad: any;
-  cliente: ClientePagos;
-  usuario: string = '';
+  clienteId: string = '';
   valorTotal: number = 0;
   localidadSeleccionadaId: number | null = null;
   idPromotor: string | null = null;
@@ -100,7 +98,6 @@ export class EventosPerfilComponent extends BaseComponent {
       }
     });
   }
-
 
   getSafeUrl(url: string) {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
@@ -185,23 +182,8 @@ export class EventosPerfilComponent extends BaseComponent {
            localidad.cantidadPersonasPorTicket * cantidad;
   }
 
-
-
-
-
-  async autenticar() {
-    this.usuario = this.hardCodedAuthService.getUsuario() || '';
-    if (this.usuario) {
-      return new Promise((resolve) => {
-        this.clienteDataService.getClientePago(this.usuario).subscribe({
-          next: response => {
-            this.cliente = response.cliente;
-            resolve(true);
-          }
-        });
-      });
-    }
-    return Promise.resolve(false);
+  autenticar() {
+    this.clienteId = this.hardCodedAuthService.getCC()
   }
 
   // Métodos para el contador de cantidad y total  
@@ -248,17 +230,17 @@ export class EventosPerfilComponent extends BaseComponent {
 
   onComprarLocalidad(event: {cantidad: number, localidad_id: number}): void {
     // Lógica de compra usando el nuevo componente (como MarcaBlancaClientes)
-    if (this.hardCodedAuthService.getUsuario()) {
-      if (!this.cliente) {
-        this.autenticar().then(() => {
-          this.crearOrdenNueva(event.cantidad, event.localidad_id);
-        });
-      } else {
-        this.crearOrdenNueva(event.cantidad, event.localidad_id);
-      }
+    if (this.hardCodedAuthService.getCC()) {
+      if (!this.clienteId) {
+        this.autenticar();
+      } 
+        
+      this.crearOrdenNueva(event.cantidad, event.localidad_id);
+      
     } else {
-      this.mostrarError("Debes estar registrado para poder realizar tu compra");
-      this.router.navigate(['/login']);
+      this.mostrarMensaje("Debes estar registrado para poder realizar tu compra").subscribe(() => {
+        this.router.navigate(['/login']);
+      });
     }
   }
 
@@ -269,8 +251,8 @@ export class EventosPerfilComponent extends BaseComponent {
 
     // Usar el método apropiado según si hay promotor o no
     const ordenObservable = this.idPromotor 
-      ? this.ordenService.crearOrdenNoNumeradaPromotor(cantidad, localidad_id, this.evento.id, this.cliente?.numeroDocumento, this.idPromotor)
-      : this.ordenService.crearOrdenNoNumerada(cantidad, localidad_id, this.evento.id, this.cliente?.numeroDocumento);
+      ? this.ordenService.crearOrdenNoNumeradaPromotor(cantidad, localidad_id, this.evento.id, this.clienteId, this.idPromotor)
+      : this.ordenService.crearOrdenNoNumerada(cantidad, localidad_id, this.evento.id, this.clienteId);
 
     ordenObservable.subscribe({
       next: response => {

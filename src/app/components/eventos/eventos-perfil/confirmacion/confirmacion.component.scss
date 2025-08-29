@@ -127,22 +127,8 @@
   background: #555;
 }
 
-/* Ajustes para material dialog */
-::ng-deep .mat-dialog-container {
-  padding: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  overflow: visible !important;
-}
+/* Ajustes para material dialog - mantener solo estilos específicos del componente */
 
-/* Aseguramos que no se muestre el fondo negro en el backdrop */
-::ng-deep .cdk-overlay-backdrop {
-  background: rgba(0, 0, 0, 0.5) !important;
-}
-
-::ng-deep .cdk-overlay-dark-backdrop {
-  background: rgba(0, 0, 0, 0.5) !important;
-}
 
 /* Clase para hacer transparente el panel del diálogo */
 ::ng-deep .mensaje-dialog-transparent {

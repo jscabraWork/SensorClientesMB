@@ -19,6 +19,21 @@ export class AuthService {
 
   constructor(private http: HttpClient, private dialog: MatDialog, private router: Router) { }
 
+  // Método para guardar la URL antes de redirigir al login
+  setRedirectUrl(url: string): void {
+    sessionStorage.setItem('redirectUrl', url);
+  }
+
+  // Método para obtener la URL de redirección
+  getRedirectUrl(): string {
+    return sessionStorage.getItem('redirectUrl') || '/home';
+  }
+
+  // Método para limpiar la URL de redirección
+  clearRedirectUrl(): void {
+    sessionStorage.removeItem('redirectUrl');
+  }
+
 
   public get usuario(): Usuario {
     if (this._usuario != null) {
@@ -101,6 +116,11 @@ export class AuthService {
       sessionStorage.setItem('cc', this._usuario.numeroDocumento); 
       sessionStorage.setItem('usuarioEntidad', JSON.stringify(this._usuario));
       this.dialog.closeAll();
+      
+      // Redirigir a la URL guardada o a /home por defecto
+      const redirectUrl = this.getRedirectUrl();
+      this.clearRedirectUrl();
+      this.router.navigate([redirectUrl]);
 
     } else if (this._usuario.tipo == 'promotor') {
       this.openMensaje('<p>Nos hemos actualizado, para realizar tus ventas por favor ingresar a:  <a style="color:#ed701c;" href="https://promotores.allticketscol.com"> https://organizadores.allticketscol.com</a> </p>')
@@ -148,35 +168,69 @@ export class AuthService {
     this._token = null;
     this._usuario = null;
 
+    // Limpiar sessionStorage
     sessionStorage.clear();
     sessionStorage.removeItem('usuarioEntidad');
     sessionStorage.removeItem('token');
-    
     sessionStorage.removeItem('usuario');
     sessionStorage.removeItem('promotor');
+    sessionStorage.removeItem('cc');
+    sessionStorage.removeItem('redirectUrl');
 
+    // Limpiar también localStorage de sesiones temporales
+    localStorage.removeItem('tempSession');
   }
 
   guardarSesionEnLocalStorage(): void {
     const sessionData = {
       token: sessionStorage.getItem('token'),
       usuario: sessionStorage.getItem('usuario'),
-      usuarioEntidad: sessionStorage.getItem('usuarioEntidad')
+      usuarioEntidad: sessionStorage.getItem('usuarioEntidad'),
+      cc: sessionStorage.getItem('cc'),
+      timestamp: Date.now()
     };
+    
+    if (sessionData.token && sessionData.usuario) {
+      localStorage.setItem('tempSession', JSON.stringify(sessionData));
+    }
   }
 
   //Carga la session desde el localstoreage y luego lo elimina, es asíncrono
   async cargarSesionDesdeLocalStorage(): Promise<void> {
     const tempSession = localStorage.getItem('tempSession');
     if (tempSession) {
-      const sessionData = JSON.parse(tempSession);
-      
-      sessionStorage.setItem('token', sessionData.token);
-      sessionStorage.setItem('usuario', sessionData.usuario);
-      sessionStorage.setItem('usuarioEntidad', sessionData.usuarioEntidad);
-      
-      this._token = sessionData.token;
-      this._usuario = JSON.parse(sessionData.usuarioEntidad);
+      try {
+        const sessionData = JSON.parse(tempSession);
+        
+        // Validar que los datos requeridos existan
+        if (sessionData.token && sessionData.usuario && sessionData.usuarioEntidad) {
+          // Opcional: Validar que la sesión no sea muy antigua (ej: 24 horas)
+          const maxAge = 24 * 60 * 60 * 1000; // 24 horas en millisegundos
+          if (sessionData.timestamp && (Date.now() - sessionData.timestamp) > maxAge) {
+            localStorage.removeItem('tempSession');
+            return;
+          }
+          
+          // Restaurar datos en sessionStorage
+          sessionStorage.setItem('token', sessionData.token);
+          sessionStorage.setItem('usuario', sessionData.usuario);
+          sessionStorage.setItem('usuarioEntidad', sessionData.usuarioEntidad);
+          if (sessionData.cc) {
+            sessionStorage.setItem('cc', sessionData.cc);
+          }
+          
+          // Actualizar variables privadas
+          this._token = sessionData.token;
+          this._usuario = JSON.parse(sessionData.usuarioEntidad);
+          
+          // Limpiar localStorage después de restaurar
+          localStorage.removeItem('tempSession');
+        }
+      } catch (error) {
+        // Si hay error al parsear, limpiar localStorage
+        console.error('Error al cargar sesión desde localStorage:', error);
+        localStorage.removeItem('tempSession');
+      }
     }
   }
 

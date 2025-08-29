@@ -269,37 +269,7 @@
   transform: translateY(0);
 }
 
-/* Ajustes para material dialog */
-::ng-deep .mat-dialog-container {
-  padding: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  overflow: visible !important;
-  z-index: 9999 !important;
-}
-
-/* Aseguramos que no se muestre el fondo negro en el backdrop */
-::ng-deep .cdk-overlay-backdrop {
-  background: rgba(0, 0, 0, 0.5) !important;
-  z-index: 9998 !important;
-}
-
-::ng-deep .cdk-overlay-dark-backdrop {
-  background: rgba(0, 0, 0, 0.5) !important;
-  z-index: 9998 !important;
-}
-
-::ng-deep .cdk-overlay-container {
-  z-index: 9999 !important;
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
+/* Ajustes para material dialog - mantener solo estilos específicos del componente */
 
 /* Clase para hacer transparente el panel del di�logo */
 ::ng-deep .mensaje-dialog-transparent {

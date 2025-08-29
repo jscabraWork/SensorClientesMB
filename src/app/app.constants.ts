@@ -1,5 +1,5 @@
-//const endpoint="https://back.ticketsensor.com"
-const endpoint="http://localhost:8090"
+const endpoint="https://back.ticketsensor.com"
+//const endpoint="http://localhost:8090"
 
 export const API_URL_USUARIOS=endpoint+"/api/usuarios"
 export const API_URL_PAGOS=endpoint+"/api/pagos"
@@ -16,4 +16,4 @@ export const IVA =0.19
 //export const API_URL_USUARIOS="http://localhost:8090/api/usuarios"
 //export const API_URL_PROMOTORES="http://localhost:8090/api/promotores"
 
-export const respuesta ="http://localhost:4401"
+export const respuesta ="https://back.ticketsensor.com"
