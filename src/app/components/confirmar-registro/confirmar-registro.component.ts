@@ -28,7 +28,7 @@ export class ConfirmarRegistroComponent implements OnInit {
   ngOnInit(): void {
     this.cargando = true
     this.route.paramMap.subscribe(params => {
-      this.idCodigo = params.get('id')
+      this.idCodigo = params.get('idCodigo')
       this.service.crearUsuarioDesdeCodigo(this.idCodigo).subscribe({
         next: response => {
           this.message = response.mensaje

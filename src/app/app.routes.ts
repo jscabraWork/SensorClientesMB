@@ -28,7 +28,7 @@ export const routes: Routes = [
     loadComponent: () => import('./components/error/error.component').then(m => m.ErrorComponent)
   },
   {
-    path: 'recuperar-contrasena/:id',
+    path: 'cambio-contrasena/:id',
     loadComponent: () => import('./components/recuperar-contrasena/recuperar-contrasena.component').then(m => m.RecuperarContrasenaComponent)
   },
   {
