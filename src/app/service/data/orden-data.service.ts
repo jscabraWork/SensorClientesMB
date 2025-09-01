@@ -85,10 +85,6 @@ export class OrdenDataService {
   }
 
 
-
-
-
-
   getAllOrdenesEnProcesoByClienteId(correo: string){
     return this.http.get<any>(`${this.apiOrdenes}/enProceso/${correo}`);
   }
@@ -100,12 +96,6 @@ export class OrdenDataService {
   getComprasPendientesByCliente(numeroDocumento: string) {
     return this.http.get<any[]>(`${this.apiOrdenes}/compras-pendientes/${numeroDocumento}`);
   }
-
-
-  //ORDENES TRASPASO
-
-
-  
 
 
 }

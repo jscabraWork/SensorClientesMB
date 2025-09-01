@@ -25,12 +25,11 @@
 
       <!-- Tipo documento -->
       <div class="form-field">
-        <select class="input-field" name="tipoDocumento" required [(ngModel)]="usuario.tipo_documento">
+        <select class="input-field" name="tipoDocumento" required 
+                [value]="usuario.tipoDocumento?.id || ''" 
+                (change)="onTipoDocumentoChange($event)">
           <option value="" disabled>Tipo de documento</option>
-          <option value="Cedula">Cédula</option>
-          <option value="Tarjeta de identidad">Tarjeta de Identidad</option>
-          <option value="Pasaporte">Pasaporte</option>
-          <option value="Cedula de Extranjería">Cédula de extranjería</option>
+          <option *ngFor="let tipo of tiposDocumento" [value]="tipo.id">{{tipo.nombre}}</option>
         </select>
       </div>
 
@@ -82,11 +81,6 @@
         </div>
       </div>
 
-      <!-- Dirección -->
-      <div class="form-field">
-        <input type="text" placeholder="Dirección" class="input-field" name="direccion"
-               required [(ngModel)]="usuario.direccion" #direccion="ngModel">
-      </div>
 
       <!-- Contraseña -->
       <div class="form-field">

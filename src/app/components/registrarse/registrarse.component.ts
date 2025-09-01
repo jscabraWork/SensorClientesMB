@@ -7,7 +7,7 @@ import { Md5 } from 'ts-md5';
 
 import { UsuariosDataService } from '../../service/data/usuarios-data.service'; 
 import { Cliente } from './../usuario/cliente.model';
-import { Codigo } from '../../models/codigo.model';
+import { Codigo, TipoDocumento } from '../../models/codigo.model';
 import { MensajeComponent } from '../mensaje/mensaje.component';
 
 @Component({
@@ -30,6 +30,14 @@ export class RegistrarseComponent implements OnInit {
   aceptoTratamiento: boolean;
   isLoading = false;
 
+  tiposDocumento: TipoDocumento[] = [
+    { id: 1, nombre: 'Cedula de Ciudadania' },
+    { id: 2, nombre: 'Pasaporte' },
+    { id: 3, nombre: 'Cedula de Extranjeria' },
+    { id: 4, nombre: 'Interno' },
+    { id: 5, nombre: 'Tarjeta de Identidad' }
+  ];
+
   constructor(
     private service: UsuariosDataService,
     private router: Router,
@@ -42,7 +50,7 @@ export class RegistrarseComponent implements OnInit {
     this.aceptoTerminos = false;
     this.aceptoTratamiento = false;
     this.usuario = new Codigo();
-    this.usuario.tipo_documento = 'Cedula';
+    this.usuario.tipoDocumento = this.tiposDocumento[0];
     this.function();
   }
 
@@ -122,6 +130,11 @@ export class RegistrarseComponent implements OnInit {
 
   aceptarTerminos() {
     this.aceptoTerminos = !this.aceptoTerminos;
+  }
+
+  onTipoDocumentoChange(event: any) {
+    const tipoId = parseInt(event.target.value);
+    this.usuario.tipoDocumento = this.tiposDocumento.find(tipo => tipo.id === tipoId) || this.tiposDocumento[0];
   }
 
   openMensaje(mensajeT: string, openD?: string): void {

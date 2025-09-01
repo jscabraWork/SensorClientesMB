@@ -9,9 +9,15 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent)
   },
+
   {
     path: 'registrarse',
     loadComponent: () => import('./components/registrarse/registrarse.component').then(m => m.RegistrarseComponent)
+  },
+
+  {
+    path: 'confirmar-registro/:idCodigo',
+    loadComponent: () => import('./components/confirmar-registro/confirmar-registro.component').then(m => m.ConfirmarRegistroComponent)
   },
   {
     path: 'logout',

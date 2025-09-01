@@ -5,18 +5,16 @@ export class Codigo {
     numeroDocumento: string;
     nombre: string;
     correo:string;
-    tipo_documento: string;
+    tipoDocumento: TipoDocumento;
     contrasena:string;
-    direccion: string;
     celular:string;
-
     activo: boolean;
-
     publicidad: boolean;
-
-    tipo:string;
-    
-
-
-    
 }
+
+export class TipoDocumento {
+   
+    id:number;
+    nombre: string;
+}
+
