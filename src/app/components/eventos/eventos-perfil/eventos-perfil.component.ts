@@ -32,7 +32,6 @@ import { SeleccionLocalidadComponent } from './seleccion-localidad/seleccion-loc
 })
 export class EventosPerfilComponent extends BaseComponent {
   evento: Evento = new Evento();
-  localidades: Localidad[] = [];
   mapaUrl: any;
   safeSrc: any = null;
   fecha: Date = new Date();
@@ -42,7 +41,7 @@ export class EventosPerfilComponent extends BaseComponent {
   dias: number = 0;
   horas: number = 0;
   minutos: number = 0;
-  segundos: number = 0;
+  segundos: number = 0
   cantidadTotal: number = 0;
   cantidades: number[] = [];
   idLocalidad: any;
@@ -86,6 +85,7 @@ export class EventosPerfilComponent extends BaseComponent {
 
     this.service.getEventoVenta(this.pathVariable).subscribe({
       next: (response) => {
+        console.log(response);
         if (response) {
           this.handleGetSuccesfull(response);
         } else {
@@ -105,7 +105,6 @@ export class EventosPerfilComponent extends BaseComponent {
 
   handleGetSuccesfull(response: any) {
     this.evento = Object.assign(new Evento(), response.evento);
-    this.localidades = response.localidades || [];
     this.mapaUrl = this.evento.venue?.urlMapa;
 
     if (this.mapaUrl && this.mapaUrl !== 'no') {
@@ -171,62 +170,13 @@ export class EventosPerfilComponent extends BaseComponent {
     return fecha;
   }
 
-  obtenerCantidad(localidad: any): number {
-    const index = this.localidades.indexOf(localidad);
-    return this.cantidades[index] || 0;
-  }
 
-  calcularTotal(localidad: any): number {
-    const cantidad = this.obtenerCantidad(localidad);
-    return (localidad.precio + localidad.servicio_iva + localidad.servicio) *
-           localidad.cantidadPersonasPorTicket * cantidad;
-  }
-
+ 
   autenticar() {
     this.clienteId = this.hardCodedAuthService.getCC()
   }
 
-  // Métodos para el contador de cantidad y total  
-  incrementarCantidad(localidad: any): void {
-    if (this.localidadSeleccionadaId !== null && this.localidadSeleccionadaId !== localidad.id) {
-      return;
-    }
-    const index = this.localidades.indexOf(localidad);
-    if (this.localidadSeleccionadaId === null) {
-      this.localidadSeleccionadaId = localidad.id;
-    }
-    if (this.cantidades[index] === undefined) {
-      this.cantidades[index] = 0;
-    }
 
-    if (this.cantidades[index] < 7) {
-      this.cantidades[index]++;
-      this.actualizarTotal();
-    }
-  }
-
-  decrementarCantidad(localidad: any): void {
-    if (this.localidadSeleccionadaId !== null && this.localidadSeleccionadaId !== localidad.id) {
-      return;
-    }
-    const index = this.localidades.indexOf(localidad);
-    if (this.cantidades[index] > 0) {
-      this.cantidades[index]--;
-      this.actualizarTotal();
-
-      if (this.cantidades[index] === 0) {
-        this.localidadSeleccionadaId = null;
-      }
-    }
-  }
-
-  actualizarTotal(): void {
-    this.cantidadTotal = this.cantidades.reduce((total, cantidad) => total + cantidad, 0);
-    this.valorTotal = this.localidades.reduce((total, localidad, index) => {
-      const cantidad = this.cantidades[index] || 0;
-      return total + this.calcularTotal(localidad) * cantidad;
-    }, 0);
-  }
 
   onComprarLocalidad(event: {cantidad: number, localidad_id: number}): void {
     // Lógica de compra usando el nuevo componente (como MarcaBlancaClientes)

@@ -23,11 +23,11 @@
             <div class="detalle1"><strong class="bold">Fecha del Evento: </strong>  {{ darFecha(evento,true) }}</div>
           </div>
           <div class="col-12   flotar lineH">
-            <div class="detalle1"><strong class="bold">Hora inicio: </strong> {{ evento?.dias?.[0]?.horaInicio | horas}}
+            <div class="detalle1"><strong class="bold">Hora inicio: </strong> {{ evento?.dias?.[0]?.horaInicio}}
             </div>
           </div>
           <div class="col-12   flotar lineH">
-            <div class="detalle1"><strong class="bold">Hora finalización: </strong>{{ evento?.dias?.[0]?.horaFin | horas }}</div>
+            <div class="detalle1"><strong class="bold">Hora finalización: </strong>{{ evento?.dias?.[0]?.horaFin}}</div>
           </div>
           <div class="col-12   flotar lineH">
             <div class="detalle1"><strong class="bold">Artistas: </strong> {{ evento?.artistas ? evento?.artistas : "Por confirmar" }}</div>
