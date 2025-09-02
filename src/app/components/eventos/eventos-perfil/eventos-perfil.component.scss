@@ -1,8 +1,11 @@
-/* Solo las clases realmente usadas en el HTML proporcionado */
+@import '../../../../styles/variables';
+@import '../../../../styles/mixins';
+
+// Spinner
 .spinner {
   border: 4px solid rgba(0, 0, 0, 0.1);
   border-radius: 50%;
-  border-top: 4px solid rgba(255, 217, 3, 1);
+  border-top: 4px solid $color-primary;
   width: 40px;
   height: 40px;
   animation: spin 1s linear infinite;
@@ -26,6 +29,7 @@
   z-index: 9999;
 }
 
+// Banner Section
 .contenedorFoto {
   display: flex;
   justify-content: center;
@@ -37,231 +41,154 @@
   object-fit: cover;
 }
 
-.placeholder-imagen2 {
-  width: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 50px;
-}
-
 .contenedorLinea {
   display: flex;
   justify-content: center;
 }
 
 .linea-naranja4 {
-  border: 2px solid rgba(255, 217, 3, 1);
+  border: 2px solid $color-primary;
   width: 90%;
-  margin-bottom: 0 !important;
+  margin-bottom: 0;
 }
 
-.eventoVideo {
-  width: 100%;
+// Event Details Section
+.event-details {
+  max-width: 1500px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
-.sinPadding {
-  padding: 0 !important;
+.event-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
 }
 
-.row {
+.event-info {
+  .event-title {
+    font-family: $font-montserrat;
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1.2;
+    color: $color-primary;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+
+    @include mobile {
+      text-align: center;
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.event-details-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.largo {
-  width: 100%;
-}
-
-.sinVideo {
-  width: 100%;
-}
-
-.txtNombre {
-  height: 60px;
-  margin-top: 35px;
-  margin-left: 50px;
-}
-
-.titulo-evento3 {
-  font-family: Montserrat;
-  font-weight: 700;
-  font-size: 25px;
-  line-height: 25px;
-  color: rgba(255, 217, 3, 1);
-  text-transform: uppercase;
-  margin-top: 30px;
-}
-
-.alineacionText {
-  margin-left: 40px;
-}
-
-.flotar {
+.detail-item {
   display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .label {
+    font-family: $font-lato;
+    font-weight: 700;
+    color: $color-white;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .value {
+    font-family: $font-alata;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+  }
 }
 
-.lineH {
-  margin-bottom: 10px;
-  padding: 0px !important;
-}
-
-.detalle1 {
-  font-size: 15px;
-  margin-left: 11px;
-  font-family: Alata;
-  color: rgba(255, 255, 255, 1);
-}
-
-.bold {
-  font-weight: 700;
-  font-family: Lato;
-}
-
-.qrImagen {
-  margin-left: 8px !important;
-  text-align-last: center;
-}
-
-.contenedorImagen {
+.event-image {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+
+  .event-secondary-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: $border-radius-sm;
+    box-shadow: $shadow-lg;
+    transition: transform $transition-fast;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+
+    @include mobile {
+      max-width: 90%;
+    }
+  }
 }
 
-.contenederoBlanco2 {
-  margin: 0 auto;
-  margin-top: 15px;
-}
-
-.mapI {
-  width: 84%;
-  height: 128px;
-  margin: 0 auto;
-  margin-top: 29px;
-}
-
-.tablaEventoPerfil {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 15px;
-  font-family: 'Alata';
+.event-map {
+  margin-top: 2rem;
   width: 100%;
-  margin: 2rem auto;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .map-iframe {
+    width: 100%;
+    height: 200px;
+    border: none;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-md;
+
+    @include mobile {
+      height: 250px;
+    }
+  }
 }
 
-.mt-2 {
-  margin-top: 0.5rem !important;
-}
 
 .marGen {
-  width: 70%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-
-.localidad-header {
-  margin-bottom: 10px;
-}
-
-
-#contador .contenedor {
-  margin: 0px auto;
+.section-header {
   text-align: center;
-  width: 60%;
-  background: linear-gradient(#333, #666);
-  box-shadow: 1px 1px 1px #333, 2px 2px 2px #333, 3px 3px 3px #333,
-    4px 4px 4px #333, 5px 5px 5px #333;
-  border: 4px solid black;
-  color: white;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  align-items: center;
-  justify-content: center;
-}
+  margin-bottom: 1rem;
 
-.mt-3 {
-  margin-top: 1rem !important;
-}
-
-.mt-1 {
-  margin-top: 0.25rem !important;
-}
-
-.pl-1 {
-  padding-left: 0.25rem !important;
-}
-
-.pr-1 {
-  padding-right: 0.25rem !important;
-}
-
-.col-12 {
-  flex: 0 0 100%;
-  max-width: 100%;
-}
-
-.col-md-12 {
-  flex: 0 0 100%;
-  max-width: 100%;
-}
-
-.col-lg-6 {
-  flex: 0 0 50%;
-  max-width: 50%;
-}
-
-.col-sm-12 {
-  flex: 0 0 100%;
-  max-width: 100%;
-}
-
-.container-fluid {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-
-.action_button {
-  text-decoration: none;
-  color: rgba(255, 217, 3, 1);
-  font-weight: bold;
-  background: rgba(0, 0, 0, 1);
-  border: 1px solid rgba(255, 217, 3, 1);
-  padding: 13px 26px;
-  font-size: 11px;
-  font-family: Montserrat;
-  border-radius: 6px;
-  transition: all 500ms;
-}
-
-
-.montserrat {
-  font-family: Montserrat;
-}
-
-@media (max-width: 768px) {
-  .placeholder-imagen2{
-    width: 90%;
-    height: auto  ;
+  .section-title {
+    font-family: $font-montserrat;
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: $color-primary;
+    text-transform: uppercase;
+    margin: 0 0 0.5rem 0;
+    
+    @include mobile {
+      font-size: 1.5rem;
+    }
   }
 
-  .txtNombre{
-    text-align: center;
+  .section-subtitle {
+    font-family: $font-alata;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
     margin: 0;
+    
+    @include mobile {
+      font-size: 0.9rem;
+    }
   }
-
-  .alineacionText {
-  margin-left: 0px;
-}
-
-.col-lg-6 {
-  flex: 0 0 100%;
-  max-width: 100%;
-}
 }

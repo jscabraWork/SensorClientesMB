@@ -10,56 +10,69 @@
   <hr class="linea-naranja4" />
 </div>
 
-<section class="container-fluid  mt-1  eventoVideo">
-  <div class="pl-1 pr-1 sinPadding">
-    <div class="row largo sinVideo">
-
-      <div class="col-12 col-md-12 col-lg-6">
-        <div class="txtNombre">
-          <h2 class="titulo-evento3">{{evento?.nombre}}</h2>
+<section class="event-details">
+  <div class="event-content">
+    
+    <!-- Event Information -->
+    <div class="event-info">
+      <h2 class="event-title">{{evento?.nombre}}</h2>
+      
+      <div class="event-details-list">
+        <div class="detail-item">
+          <span class="label">Fecha del Evento:</span>
+          <span class="value">{{ darFecha(evento,true) }}</span>
         </div>
-        <div class="alineacionText">
-          <div class="col-12  flotar lineH">
-            <div class="detalle1"><strong class="bold">Fecha del Evento: </strong>  {{ darFecha(evento,true) }}</div>
-          </div>
-          <div class="col-12   flotar lineH">
-            <div class="detalle1"><strong class="bold">Hora inicio: </strong> {{ evento?.dias?.[0]?.horaInicio}}
-            </div>
-          </div>
-          <div class="col-12   flotar lineH">
-            <div class="detalle1"><strong class="bold">Hora finalización: </strong>{{ evento?.dias?.[0]?.horaFin}}</div>
-          </div>
-          <div class="col-12   flotar lineH">
-            <div class="detalle1"><strong class="bold">Artistas: </strong> {{ evento?.artistas ? evento?.artistas : "Por confirmar" }}</div>
-          </div>
-          <div class="col-12   flotar lineH">
-            <div class="detalle1"><strong class="bold">Ciudad: </strong> {{evento?.venue?.ciudad?.nombre}}</div>
-          </div>
-          <div class="col-12   flotar lineH">
-            <div class="detalle1"><strong class="bold">Lugar: </strong> {{ evento?.venue?.nombre ? evento?.venue?.nombre : "Por confirmar" }}</div>
-          </div>
+        
+        <div class="detail-item">
+          <span class="label">Hora inicio:</span>
+          <span class="value">{{ evento?.dias?.[0]?.horaInicio}}</span>
         </div>
-      </div>
-
-      <div class=" col-12 col-sm-12 col-lg-6  vid " *ngIf="!evento?.video">
-        <div *ngIf="!evento?.video " class="   qrImagen ">
-          <div class="contenedorImagen">
-              <img class="placeholder-imagen2" *ngIf="darURL(3)" [src]="darURL(3)" alt="Imagen secundaria evento"/>
-          </div>
+        
+        <div class="detail-item">
+          <span class="label">Hora finalización:</span>
+          <span class="value">{{ evento?.dias?.[0]?.horaFin}}</span>
         </div>
-      </div>
-      </div>
-
-      <div class="col-12 contenederoBlanco2 ">
-        <div *ngIf="mapaUrl && mapaUrl !== 'no'" class="mapI">
-          <iframe *ngIf='mapaUrl' [src]='mapaUrl' width="100%"
-            style="border:0; height: 100%;" allowfullscreen="" loading="lazy"></iframe>
+        
+        <div class="detail-item">
+          <span class="label">Artistas:</span>
+          <span class="value">{{ evento?.artistas ? evento?.artistas : "Por confirmar" }}</span>
+        </div>
+        
+        <div class="detail-item">
+          <span class="label">Ciudad:</span>
+          <span class="value">{{evento?.venue?.ciudad?.nombre}}</span>
+        </div>
+        
+        <div class="detail-item">
+          <span class="label">Lugar:</span>
+          <span class="value">{{ evento?.venue?.nombre ? evento?.venue?.nombre : "Por confirmar" }}</span>
         </div>
       </div>
     </div>
+
+    <!-- Event Image -->
+    <div class="event-image" *ngIf="!evento?.video && darURL(3)">
+      <img [src]="darURL(3)" alt="Imagen del evento" class="event-secondary-image">
+    </div>
+  </div>
+
+  <!-- Map Section -->
+  <div class="event-map" *ngIf="mapaUrl && mapaUrl !== 'no'">
+    <iframe [src]='mapaUrl' 
+            class="map-iframe"
+            allowfullscreen="" 
+            loading="lazy"
+            title="Ubicación del evento">
+    </iframe>
+  </div>
 </section>
 
 <section class="tablaEventoPerfil marGen" *ngIf="evento?.dias?.length > 0">
+  <div class="section-header">
+    <h3 class="section-title">Precios y Ubicaciones</h3>
+    <p class="section-subtitle">Selecciona la localidad que deseas</p>
+  </div>
+
   <app-seleccion-localidad 
     [dias]="evento.dias" 
     (comprar)="onComprarLocalidad($event)">
