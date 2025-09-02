@@ -1,13 +1,6 @@
 @import '../../../styles/variables';
 @import '../../../styles/mixins';
 
-.eventos-container {
-  padding: $spacing-xl;
-  min-height: 80vh;
-  @include flex-center;
-  flex-direction: column;
-}
-
 .titulo-eventos {
   font-family: $font-alata;
   font-weight: 700;
@@ -17,14 +10,6 @@
   text-align: center;
 }
 
-.eventos-grid {
-  width: 100%;
-  max-width: 1200px;
-  text-align: center;
-  color: $color-white;
-  font-family: $font-lato;
-  font-size: $font-size-lg;
-}
 
 .imagenEvento {
   width: 100%;
@@ -106,12 +91,6 @@
 .Banner {
   width: 100%;
   background: #000;
-}
-
-.imagenSensor {
-  width: 100%;
-  height: 300px;
-object-fit: fill;
 }
 
 .centrarTxt {
@@ -240,16 +219,6 @@ object-fit: fill;
   }
 }
 
-
-
-.logo-sensor {
-  width: 200px;
-  max-width: 90vw;
-  filter: drop-shadow(0 0 20px rgba(255, 235, 59, 0.6));
-  animation: logoGlow 2s ease-in-out infinite alternate;
-  z-index: 3;
-  position: relative;
-}
 
 .logo-glow {
   position: absolute;
@@ -633,7 +602,7 @@ object-fit: fill;
 
 @media (max-width: 576px) {
   .banner-container {
-    height: 220px;
+    height: 180px;
   }
   .logo-glow {
     width: 120px;
@@ -658,12 +627,15 @@ object-fit: fill;
   .fechaCiudad > p {
     font-size: 0.875rem;
   }
+
+  .carousel-container {
+  height: 180px;
+}
+
 }
 
 @media (max-width: 400px) {
-  .banner-container {
-    height: 180px;
-  }
+  
   .logo-glow {
     width: 100px;
     height: 100px;
