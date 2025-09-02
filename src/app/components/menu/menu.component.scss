@@ -138,18 +138,31 @@
     left: 0;
     width: 100%;
     background: #000000;
-    transform: translateY(-100%);
+    display: none;
+    transform: translateY(-20px);
     opacity: 0;
-    visibility: hidden;
     transition: all 0.3s ease;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     z-index: 999;
 
     &.active {
+      display: block;
       transform: translateY(0);
       opacity: 1;
-      visibility: visible;
+      animation: slideDown 0.3s ease forwards;
     }
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 
     .nav-list {
       flex-direction: column;
@@ -202,7 +215,7 @@
     padding: 0 15px;
     height: 60px;
   }
-}
+
 
 @media (max-width: 480px) {
   .nav-container {
