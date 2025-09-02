@@ -4,7 +4,36 @@
 
 <section class="Banner ubicar">
   <div class="banner-container">
-    <img class="imagenSensor" alt="" src="./../../assets/images/img/bannersensor.avif">
+    <div class="carousel-container">
+      <img class="imagenSensor carousel-image" 
+           [src]="imagenCarrusel" 
+           alt="Banner evento"
+           [class.fade-out]="fadeOut"
+           (click)="clickImagen()"
+           style="cursor: pointer;">
+      
+      <div class="carousel-controls" *ngIf="imagenesConEvento.length > 1">
+        <button class="carousel-btn carousel-btn-prev" 
+                (click)="irAImagenAnterior()"
+                aria-label="Imagen anterior">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <button class="carousel-btn carousel-btn-next" 
+                (click)="irAImagenSiguiente()"
+                aria-label="Imagen siguiente">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+      
+      <div class="carousel-indicators" *ngIf="imagenesConEvento.length > 1">
+        <button *ngFor="let imagen of imagenesConEvento; let i = index"
+                class="indicator"
+                [class.active]="i === currentIndex"
+                (click)="seleccionarImagen(i)"
+                [attr.aria-label]="'Ir a imagen ' + (i + 1)">
+        </button>
+      </div>
+    </div>
     <div class="logo-overlay">
       <div class="logo-container">
         <img class="logo-sensor animated-logo" alt="Sensor Logo" src="../../assets/images/img/sensorImg.png">
@@ -54,14 +83,13 @@
             <span class="linea-amarilla"></span>
           </div>
           <div class="espacioA">
-            <div class="col-12  border-right fechaCiudad ">
-              <p class="fechas "><strong>{{darFecha(evento)}} </strong>-</p>
-              <p class="fechas "><strong>{{ evento?.horaInicio | horas2}} </strong></p>
+            <div class="fechaCiudad">
+              <p class="fechas"><strong>{{darFecha(evento)}}</strong> -</p>
+              <p class="fechas"><strong>{{ evento?.horaInicio | horas2}}</strong></p>
             </div>
-            <div class="col-12  border-right fechaCiudad ">
-              <p class="fechas "><strong>{{evento?.ciudad?.nombre }} </strong></p>
+            <div class="fechaCiudad">
+              <p class="fechas"><strong>{{evento?.venue?.ciudad.nombre}}</strong></p>
             </div>
-
           </div>
           <button routerLink="/eventos/evento/{{evento.id}}" class="btn-comprar">Ver</button>
         </div>

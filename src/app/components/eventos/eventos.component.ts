@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
@@ -28,7 +28,7 @@ import { HoraPipe2 } from '../../pipes/horas2.pipe';
   templateUrl: './eventos.component.html',
   styleUrl: './eventos.component.scss'
 })
-export class EventosComponent implements OnInit {
+export class EventosComponent implements OnInit, OnDestroy {
   
   eventos: Evento[] = [];
   busqudaNombre: string = ''
@@ -39,11 +39,10 @@ export class EventosComponent implements OnInit {
   ciudades: Ciudad[] = []
   tipoEvento: string = '';
   tiposEventosDisponibles: any[] = [];
-  imagenesTipo4: any[] = [];
-  resultados: any = '';
+  imagenesConEvento: {url: string, eventoId: number}[] = [];
   currentIndex: number = 0;
   intervalId: any;
-  transitionActive: boolean = true;
+  fadeOut: boolean = false;
 
   constructor(
     private eventoDataService: EventoDataService,
@@ -68,6 +67,87 @@ export class EventosComponent implements OnInit {
         this.cargarEventos();
       }
     });   
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
+  iniciarCarrusel(): void {
+    if (this.imagenesConEvento.length > 1) {
+      this.intervalId = setInterval(() => {
+        this.siguienteImagen();
+      }, 4000);
+    }
+  }
+
+  siguienteImagen(): void {
+    if (this.imagenesConEvento.length > 0) {
+      this.fadeOut = true;
+      setTimeout(() => {
+        this.currentIndex = (this.currentIndex + 1) % this.imagenesConEvento.length;
+        this.fadeOut = false;
+      }, 300);
+    }
+  }
+
+  get imagenCarrusel(): string {
+    if (this.imagenesConEvento.length > 0) {
+      return this.imagenesConEvento[this.currentIndex]?.url || '';
+    }
+    return './../../assets/images/img/bannersensor.avif';
+  }
+
+  clickImagen(): void {
+    
+      const eventoId = this.imagenesConEvento[this.currentIndex].eventoId;
+      this.router.navigate([`/eventos/evento/${eventoId}`]);
+  }
+
+  pausarCarrusel(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+  }
+
+  reanudarCarrusel(): void {
+    if (!this.intervalId && this.imagenesConEvento.length > 1) {
+      this.intervalId = setInterval(() => {
+        this.siguienteImagen();
+      }, 4000);
+    }
+  }
+
+  irAImagenAnterior(): void {
+    this.pausarCarrusel();
+    this.fadeOut = true;
+    setTimeout(() => {
+      this.currentIndex = this.currentIndex === 0 ? 
+        this.imagenesConEvento.length - 1 : 
+        this.currentIndex - 1;
+      this.fadeOut = false;
+    }, 300);
+    setTimeout(() => this.reanudarCarrusel(), 5000);
+  }
+
+  seleccionarImagen(index: number): void {
+    this.pausarCarrusel();
+    this.fadeOut = true;
+    setTimeout(() => {
+      this.currentIndex = index;
+      this.fadeOut = false;
+    }, 300);
+    setTimeout(() => this.reanudarCarrusel(), 5000);
+  }
+
+  irAImagenSiguiente(): void {
+    this.pausarCarrusel();
+    this.siguienteImagen();
+    setTimeout(() => this.reanudarCarrusel(), 5000);
   }
 
   cargarEventos(){
@@ -141,21 +221,24 @@ export class EventosComponent implements OnInit {
   handleSuccesfullGet(response: any) {
     this.eventos = response.map((e: any) => Object.assign(new Evento(), e));
     this.ciudades = [];
-    this.imagenesTipo4 = [];
+    this.imagenesConEvento = [];
 
     this.eventos.forEach(evento => {
       if (evento.imagenes && evento.imagenes.length > 0) {
-          const imagenesTipo4 = evento.imagenes.filter(imagen => imagen.tipo == 4);
-          if(imagenesTipo4.length > 0){
-            imagenesTipo4.forEach(imagen => {
-              this.imagenesTipo4.push({
-                ...imagen,
-                eventoId: evento.id
-              })
+        const imagenesTipo2 = evento.imagenes.filter(imagen => imagen.tipo == 2);
+        if(imagenesTipo2.length > 0){
+          imagenesTipo2.forEach(imagen => {
+            this.imagenesConEvento.push({
+              url: imagen.url,
+              eventoId: evento.id
             });
-          }
+          });
         }
+      }
     });
+
+                this.iniciarCarrusel();
+
 
     this.ciudades = this.eventos
       .map(evento => evento.venue.ciudad)

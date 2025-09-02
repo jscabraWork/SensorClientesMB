@@ -111,7 +111,7 @@
 .imagenSensor {
   width: 100%;
   height: 300px;
-  object-fit: cover;
+object-fit: fill;
 }
 
 .centrarTxt {
@@ -218,104 +218,29 @@
 }
 
 .espacioA {
-  height: calc(100% - 3rem);
-}
-
-.border-right {
-  border-right: 1px solid #444;
-}
-
-.imagenEvento {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background: #222;
-  display: block;
-}
-
-.evento-card {
-  box-sizing: border-box;
-  padding: 0.8rem;
-  margin: 0;
-  width: 25%;
-  min-width: 270px;
-  max-width: 350px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  position: relative;
-  aspect-ratio: 800 / 750;
-  background: #1b1b1b;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 16px 0 rgba(255, 235, 59, 0.1),
-                0 2px 8px rgba(0, 0, 0, 0.18);
-    background: linear-gradient(0deg, rgba(255, 235, 59, 0.07) 0%, #111 100%);
-  }
+  gap: 0.5rem;
 }
 
-.spinner-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+.fechaCiudad {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 4px solid #fff;
-  border-top: 4px solid #ffeb3b;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.Banner {
-  width: 100%;
-  background: #000;
-  position: relative;
-  overflow: hidden;
-}
-
-.banner-container {
-  position: relative;
-  width: 100%;
-  height: 400px;
-  overflow: hidden;
-
-  &:hover .imagenSensor {
-    filter: brightness(0.6) contrast(1.2);
-    transform: scale(1.02);
-  }
-
-  &:hover .logo-sensor {
-    animation-duration: 2s;
-  }
-
-  &:hover .logo-glow {
-    animation-duration: 2s;
+  gap: 0.5rem;
+  
+  .fechas {
+    color: #fff;
+    font-family: 'Alata', sans-serif;
+    font-size: 0.875rem;
+    margin: 0;
+    
+    @media (max-width: 576px) {
+      font-size: 0.9rem;
+    }
   }
 }
 
-.imagenSensor {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(0.4) contrast(1.1);
-  transition: all 0.3s ease;
-}
+
 
 .logo-sensor {
   width: 200px;
@@ -359,95 +284,7 @@
   }
 }
 
-.btn-comprar {
-  background: linear-gradient(135deg, #ffeb3b, #fdd835);
-  color: #000;
-  border: none;
-  border-radius: 12px;
-  width: 90px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.2rem 0.5rem;
-  align-self: flex-end;
-  transition: all 0.3s ease;
 
-  &:hover {
-    background: linear-gradient(135deg, #fff176, #ffeb3b);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 235, 59, 0.4);
-  }
-}
-
-.titulo-eventos {
-  color: #ffeb3b;
-  font-family: 'Alata', sans-serif;
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
-}
-
-.colorLetra {
-  color: #fff;
-  text-align: center;
-  margin: 2rem auto;
-}
-
-.fechaCiudad {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-
-  > p {
-    color: #fff;
-    font-family: 'Alata', sans-serif;
-    font-size: 0.9375rem;
-    margin: 0;
-  }
-}
-
-.titulos {
-  color: #ffeb3b;
-  font-family: 'Alata', sans-serif;
-  font-size: 1.125rem;
-  text-decoration: none !important;
-  transition: color 0.2s;
-
-  &:hover {
-    color: #ffeb3b;
-  }
-}
-
-.placeholder-imagen {
-  width: 100%;
-  aspect-ratio: 800 / 750;
-  background: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.fechaCiudad {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-
-  > p {
-    color: #fff;
-    font-family: $font-alata;
-    font-size: 0.9375rem;
-    margin: 0;
-  }
-}
-
-.colorLetra {
-  color: #fff;
-  text-align: center;
-  margin: 2rem auto;
-}
 
 .Banner {
   width: 100%;
@@ -479,13 +316,131 @@
   }
 }
 
-/* Imagen de fondo responsiva */
+/* Contenedor del carrusel */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Imagen de fondo responsiva con transición */
 .imagenSensor {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: fill !important;
   filter: brightness(0.4) contrast(1.1);
+  transition: all 0.1s ease;
+  cursor: pointer;
+}
+
+.carousel-image {
+  transition: opacity 0.6s ease-in-out;
+  opacity: 1;
+
+  &.fade-out {
+    opacity: 0;
+  }
+}
+
+/* Controles del carrusel */
+.carousel-controls {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.carousel-btn {
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
   transition: all 0.3s ease;
+  pointer-events: auto;
+  backdrop-filter: blur(4px);
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+  }
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Indicadores del carrusel */
+.carousel-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 15;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &.active {
+    background: #ffeb3b;
+    border-color: #ffeb3b;
+    box-shadow: 0 0 10px rgba(255, 235, 59, 0.6);
+  }
+
+  &:hover:not(.active) {
+    border-color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Responsividad para controles */
+@media (max-width: 768px) {
+  .carousel-controls {
+    padding: 0 10px;
+  }
+
+  .carousel-btn {
+    width: 40px;
+    height: 40px;
+    
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .indicator {
+    width: 10px;
+    height: 10px;
+  }
+
+  .carousel-indicators {
+    bottom: 15px;
+    gap: 8px;
+  }
 }
 
 /* Overlay para el logo */
@@ -498,7 +453,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
+  z-index: 20;
+  pointer-events: none;
 }
 
 /* Contenedor del logo con efectos */
