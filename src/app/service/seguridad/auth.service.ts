@@ -120,13 +120,14 @@ export class AuthService {
       // Redirigir a la URL guardada o a /home por defecto
       const redirectUrl = this.getRedirectUrl();
       this.clearRedirectUrl();
-      this.router.navigate([redirectUrl]);
+      //DESCOMENTAR PARA REDIRIGIR A URL ANTERIOR
+      //this.router.navigate([redirectUrl]);
 
     } else if (this._usuario.tipo == 'promotor') {
-      this.openMensaje('<p>Nos hemos actualizado, para realizar tus ventas por favor ingresar a:  <a style="color:#ed701c;" href="https://promotores.allticketscol.com"> https://organizadores.allticketscol.com</a> </p>')
+      this.openMensaje('<p>Nos hemos actualizado, para realizar tus ventas por favor ingresar a:  <a style="color:#ed701c;" href="https://promotores.allticketscol.com"> https://organizadores.ticketsensor.com</a> </p>')
     }
     else{
-      this.openMensaje('<p>Nos hemos actualizado, para realizar tus consultas por favor ingresar a:  <a style="color:#ed701c;" href="https://organizadores.allticketscol.com"> https://organizadores.allticketscol.com</a> </p>')
+      this.openMensaje('<p>Nos hemos actualizado, para realizar tus consultas por favor ingresar a:  <a style="color:#ed701c;" href="https://organizadores.ticketsensor.com"> https://organizadores.ticketsensor.com</a> </p>')
     }
 
   }

@@ -4,6 +4,8 @@ import { Router, RouterModule } from '@angular/router';
 import { HardcodedAutheticationService } from '../../service/hardcoded-authetication.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Cliente } from '../usuario/cliente.model';
+import { LoginComponent } from '../login/login.component';
+import { RegistrarseComponent } from '../registrarse/registrarse.component';
 
 @Component({
   selector: 'app-menu',
@@ -15,7 +17,6 @@ import { Cliente } from '../usuario/cliente.model';
 export class MenuComponent implements OnInit {
   cliente: Cliente;
   usuario:string;
-  nombreBuscador:string
   cc:string
   nombre:string
   visibleMenuResponsive:boolean = false;
@@ -33,22 +34,25 @@ export class MenuComponent implements OnInit {
   }
 
 
-
-  abrirCampoBuscador(){
-    this.router.navigate(['/eventos/buscador/',this.nombreBuscador])
-
-  }
   cargarUsuario(){
     this.usuario=this.autenticacion.getUsuario();
   }
 
 
-  openDialog(): void {
-    this.router.navigate(['/registrarse'])
+  abrirRegistro(): void {
+    const dialogRef = this.dialog.open(RegistrarseComponent, {
+      width: '700px',
+      maxWidth: '90vw',
+      disableClose: false,
+    });
   }
 
-  openDialog2(): void {
-    this.router.navigate(['/login'])
+  abrirIniciarSesion(): void {
+    const dialogRef = this.dialog.open(LoginComponent, {
+      width: '500px',
+      maxWidth: '90vw',
+      disableClose: false,
+    });
   }
 
   cambiarVisibilidadMenuResponsive(){

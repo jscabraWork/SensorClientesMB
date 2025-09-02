@@ -7,7 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 import localeES from '@angular/common/locales/es';
 
 import { Evento } from '../../../models/evento.model';
-import { Localidad } from '../../../models/localidad.model';
 import { EventoDataService } from '../../../service/data/evento-data.service';
 import { OrdenDataService } from '../../../service/data/orden-data.service';
 import { ClientesPagoDataService } from '../../../service/data/clientes-pago-data.service';
@@ -16,6 +15,7 @@ import { BaseComponent } from '../../../common-ui/base.component';
 import { HoraPipe } from '../../../pipes/horas.pipe';
 import { HardcodedAutheticationService } from '../../../service/hardcoded-authetication.service';
 import { SeleccionLocalidadComponent } from './seleccion-localidad/seleccion-localidad.component';
+import { LoginComponent } from '../../login/login.component';
 
 @Component({
   selector: 'app-eventos-perfil',
@@ -189,10 +189,19 @@ export class EventosPerfilComponent extends BaseComponent {
       
     } else {
       this.mostrarMensaje("Debes estar registrado para poder realizar tu compra").subscribe(() => {
-        this.router.navigate(['/login']);
+
+          this.abrirIniciarSesion();
       });
     }
   }
+
+  abrirIniciarSesion(): void {
+      const dialogRef = this.dialog.open(LoginComponent, {
+        width: '500px',
+        maxWidth: '90vw',
+        disableClose: false,
+      });
+    }
 
   private crearOrdenNueva(cantidad: number, localidad_id: number): void {
     this.iniciarCarga();

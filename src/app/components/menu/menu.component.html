@@ -1,48 +1,56 @@
 <div class="spinner-overlay" *ngIf="cargando">
   <div class="spinner"></div>
 </div>
-<section class="menuFront">
-  <div class="barraNav" [ngClass]="{ 'menu-30': visibleMenuResponsive }">
-    <div class="zona1">
-      <a routerLink="/home" class="menu-r-p1">
-        <img class="logoAT" src="assets/images/img/sensorImg.png" alt="Sensor Logo" />
+
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a routerLink="/home">
+        <img 
+          class="logo-desktop" 
+          src="assets/images/brand/logo.png" 
+          alt="Sensor Logo"
+        />
+        <img 
+          class="logo-mobile" 
+          src="assets/images/brand/logo-icon.png" 
+          alt="Sensor Logo"
+        />
       </a>
-      <div class="menu-r-p2">
-        <div class="menu-container" (click)="cambiarVisibilidadMenuResponsive()">
-          <div class="menu-icon">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-          </div>
-        </div>
-      </div>
     </div>
-    <div class="menuNav" [ngClass]="{ 'visible': visibleMenuResponsive }">
-      <ul [ngClass]="{ 'flex-ul': visibleMenuResponsive, 'enlacesMenu': !visibleMenuResponsive }" (click)="cambiarVisibilidadMenuResponsive()">
-        <li class="cajasMenu">
-          <a class="colorText" routerLink="home">Inicio</a>
+
+    <div class="nav-menu" [class.active]="visibleMenuResponsive">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="home" routerLinkActive="active" (click)="cambiarVisibilidadMenuResponsive()">Inicio</a>
         </li>
         
-        <li routerLinkActive="active"  *ngIf="!this.autenticacion.getUsuario();" (click)="openDialog2()" class ="cajasMenu">
-            <a class="colorText">Iniciar Sesión</a>
-          </li>
-        
-        <li *ngIf="!this.autenticacion.getUsuario();" class="cajasMenu">
-          <a (click)="openDialog()" class="colorText">Registrate</a>
+        <li class="nav-item" *ngIf="!this.autenticacion.getUsuario();">
+          <a class="nav-link" (click)="abrirIniciarSesion(); cambiarVisibilidadMenuResponsive()" routerLinkActive="active">Iniciar Sesión</a>
         </li>
         
-        <li routerLinkActive="inactive" *ngIf="this.autenticacion.getUsuario();" routerLink="/compras-pendientes" class ="cajasMenu" >
-          <a class="colorText">Pendientes</a>
+        <li class="nav-item" *ngIf="!this.autenticacion.getUsuario();">
+          <a class="nav-link" (click)="abrirRegistro(); cambiarVisibilidadMenuResponsive()">Regístrate</a>
+        </li>
+        
+        <li class="nav-item" *ngIf="this.autenticacion.getUsuario();">
+          <a class="nav-link" routerLink="/compras-pendientes" routerLinkActive="active" (click)="cambiarVisibilidadMenuResponsive()">Pendientes</a>
         </li>
 
-        <li routerLinkActive="active"  *ngIf="this.autenticacion.getUsuario();" routerLink="/usuario-perfil" class ="cajasMenu">
-          <a class="colorText">Mi Perfil</a>
+        <li class="nav-item" *ngIf="this.autenticacion.getUsuario();">
+          <a class="nav-link" routerLink="/usuario-perfil" routerLinkActive="active" (click)="cambiarVisibilidadMenuResponsive()">Mi Perfil</a>
         </li>
 
-        <li routerLinkActive="inactive" *ngIf="this.autenticacion.getUsuario();" routerLink="/logout" class ="cajasMenu" >
-          <a class="colorText">Cerrar Sesión</a>
+        <li class="nav-item" *ngIf="this.autenticacion.getUsuario();">
+          <a class="nav-link" routerLink="/logout" routerLinkActive="active" (click)="cambiarVisibilidadMenuResponsive()">Cerrar Sesión</a>
         </li>
       </ul>
     </div>
+
+    <div class="menu-toggle" (click)="cambiarVisibilidadMenuResponsive()">
+      <span [class.active]="visibleMenuResponsive"></span>
+      <span [class.active]="visibleMenuResponsive"></span>
+      <span [class.active]="visibleMenuResponsive"></span>
+    </div>
   </div>
-</section>
+</nav>

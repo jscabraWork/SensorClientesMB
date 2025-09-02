@@ -99,3 +99,69 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin: 0 !important;
   overflow: visible !important;
 }
+
+// Selectores adicionales para Angular Material v17+
+::ng-deep .mdc-dialog {
+  background-color: transparent !important;
+}
+
+::ng-deep .mdc-dialog .mdc-dialog__surface {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+::ng-deep .mdc-dialog__container {
+  background-color: transparent !important;
+}
+
+// Forzar transparencia en todos los elementos del diálogo
+::ng-deep .cdk-dialog-container,
+::ng-deep .mat-dialog-content,
+::ng-deep .mat-mdc-dialog-content {
+  background-color: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+// Selectores ultra-específicos para eliminar TODOS los estilos de fondo y padding
+::ng-deep .cdk-overlay-pane .mat-mdc-dialog-container,
+::ng-deep .cdk-overlay-pane .mdc-dialog,
+::ng-deep .cdk-overlay-pane .mdc-dialog__surface,
+::ng-deep .cdk-overlay-pane .mat-mdc-dialog-surface {
+  background: transparent !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+// Eliminar padding de elementos internos
+::ng-deep .mat-mdc-dialog-title,
+::ng-deep .mat-mdc-dialog-content,
+::ng-deep .mat-mdc-dialog-actions,
+::ng-deep .mdc-dialog__title,
+::ng-deep .mdc-dialog__content,
+::ng-deep .mdc-dialog__actions {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+// Forzar en cualquier clase que contenga 'dialog'
+::ng-deep [class*="dialog"] {
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+// Último recurso: forzar en TODA la estructura del overlay
+::ng-deep .cdk-overlay-container * {
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}

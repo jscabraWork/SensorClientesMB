@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../service/seguridad/auth.service';
 import { Usuario } from '../../service/usuario.model';
 import { MensajeComponent } from '../mensaje/mensaje.component';
 import { OlvidoComponent } from '../olvido/olvido.component';
+import { RegistrarseComponent } from '../registrarse/registrarse.component';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +31,8 @@ export class LoginComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private dialogRef: MatDialogRef<LoginComponent>
   ) { }
 
   ngOnInit(): void {
@@ -90,9 +92,17 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  openDialog(): void {
-    this.router.navigate(['registrarse'])
-  }
+  abrirRegistro(): void {
+     const dialogRef = this.dialog.open(RegistrarseComponent, {
+       width: '700px',
+       maxWidth: '90vw',
+       disableClose: false,
+     });
+     
+     // Cerrar el diálogo actual de login
+     this.dialogRef.close();
+   }
+ 
 
   openMensaje(mensajeT: string, openD?: string): void {
     let screenWidth = screen.width;

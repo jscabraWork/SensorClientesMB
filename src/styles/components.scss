@@ -102,7 +102,6 @@
   max-width: 480px;
   position: relative;
   backdrop-filter: blur(10px);
-  margin-top: 3rem;
   
   @include mobile {
     padding: 24px 20px;
@@ -234,7 +233,6 @@
 // Contenedores de layout
 .login-container {
   @include flex-center;
-  padding: 20px;
   position: relative;
   
   &::before {

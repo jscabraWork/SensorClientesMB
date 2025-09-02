@@ -283,15 +283,6 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .login-container {
-    padding: 16px;
-  }
-
-  .login-card {
-    padding: 24px 20px;
-    border-radius: 12px;
-    max-width: 400px;
-  }
 
   .card-header h2 {
     font-size: 24px;
@@ -306,8 +297,6 @@
 
 @media (max-width: 480px) {
   .login-card {
-    padding: 20px 16px;
-    margin: 8px;
     max-width: 360px;
   }
 

@@ -3,25 +3,55 @@
 @import '../../../styles/components';
 
 .registration-container {
-  @extend .login-container;
-  // min-height: 100vh; // REMOVIDO - Causaba doble scroll
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 20px;
 }
 
 .registration-card {
-  @extend .login-card;
+  background: #151515;
+  border: 1px solid #ffd903;
+  border-radius: 16px;
+  width: 100%;
   max-width: 800px;
+  position: relative;
+  padding: 32px;
+  margin: 0 auto;
 }
 
 .card-header {
-  @extend .card-header;
+  text-align: center;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.card-header::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ffd903, transparent);
 }
 
 .card-header h2 {
-  font-family: $font-montserrat
+  color: #ffd903;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  background: transparent;
+  font-family: $font-montserrat;
 }
 
 .registration-form {
-  @extend .login-form;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background-color: transparent;
 }
 
 .form-field {

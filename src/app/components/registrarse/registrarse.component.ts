@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Md5 } from 'ts-md5';
 
 import { UsuariosDataService } from '../../service/data/usuarios-data.service'; 
@@ -41,7 +41,8 @@ export class RegistrarseComponent implements OnInit {
   constructor(
     private service: UsuariosDataService,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private dialogRef: MatDialogRef<RegistrarseComponent>
   ) {}
 
   ngOnInit(): void {
