@@ -56,10 +56,8 @@ export class MenuComponent implements OnInit {
   }
 
   cambiarVisibilidadMenuResponsive(){
-    if (window.innerWidth <= 920) {
-      this.visibleMenuResponsive = !this.visibleMenuResponsive;
-      this.valorCambiado.emit(this.visibleMenuResponsive);
-    }
+    this.visibleMenuResponsive = !this.visibleMenuResponsive;
+    this.valorCambiado.emit(this.visibleMenuResponsive);
   }
 
   @HostListener('window:resize', ['$event'])
