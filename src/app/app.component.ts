@@ -19,10 +19,4 @@ export class AppComponent {
     this.visibleMenuResponsive = evento;
   }
 
-  @HostListener('window:scroll', ['$event'])
-  onScrollEvent(event: any) {
-    if (this.visibleMenuResponsive && window.innerWidth < 920) {
-      window.scrollTo(0, 0); // Deshabilitar scroll cuando el menú está activo
-    }
-  }
 }

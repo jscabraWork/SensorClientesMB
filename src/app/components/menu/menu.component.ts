@@ -60,15 +60,18 @@ export class MenuComponent implements OnInit {
     this.valorCambiado.emit(this.visibleMenuResponsive);
   }
 
+  cerrarMenuResponsive(){
+    this.visibleMenuResponsive = false;
+    this.valorCambiado.emit(this.visibleMenuResponsive);
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    if(window.innerWidth < 920){
-      this.visibleMenuResponsive=false
-      this.valorCambiado .emit(false);
-    }
-    else{
-      this.visibleMenuResponsive=false
-      this.valorCambiado .emit(false);
+    this.isMobileView = window.innerWidth < 920;
+    if(window.innerWidth >= 920){
+      this.visibleMenuResponsive = false;
+      this.valorCambiado.emit(false);
     }
   }
+
 }

@@ -7,6 +7,14 @@
   flex-direction: column;
 }
 
+.contenedor-menu {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  flex-shrink: 0;
+}
+
 .menuFront {
   position: relative;
 }
@@ -47,8 +55,7 @@
 }
 
 .contenedor-info-largo {
-  pointer-events: none;
-  opacity: 0.5;
+  // Removido para no interferir con el menu
 }
 
 .negro-general {

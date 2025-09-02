@@ -22,27 +22,27 @@
     <div class="nav-menu" [class.active]="visibleMenuResponsive">
       <ul class="nav-list">
         <li class="nav-item">
-          <a class="nav-link" routerLink="home" routerLinkActive="active" (click)="cambiarVisibilidadMenuResponsive()">Inicio</a>
+          <a class="nav-link" routerLink="home" routerLinkActive="active" (click)="cerrarMenuResponsive()">Inicio</a>
         </li>
         
         <li class="nav-item" *ngIf="!this.autenticacion.getUsuario();">
-          <a class="nav-link" (click)="abrirIniciarSesion(); cambiarVisibilidadMenuResponsive()" routerLinkActive="active">Iniciar Sesión</a>
+          <a class="nav-link" (click)="abrirIniciarSesion(); cerrarMenuResponsive()" routerLinkActive="active">Iniciar Sesión</a>
         </li>
         
         <li class="nav-item" *ngIf="!this.autenticacion.getUsuario();">
-          <a class="nav-link" (click)="abrirRegistro(); cambiarVisibilidadMenuResponsive()">Regístrate</a>
+          <a class="nav-link" (click)="abrirRegistro(); cerrarMenuResponsive()">Regístrate</a>
         </li>
         
         <li class="nav-item" *ngIf="this.autenticacion.getUsuario();">
-          <a class="nav-link" routerLink="/compras-pendientes" routerLinkActive="active" (click)="cambiarVisibilidadMenuResponsive()">Pendientes</a>
+          <a class="nav-link" routerLink="/compras-pendientes" routerLinkActive="active" (click)="cerrarMenuResponsive()">Pendientes</a>
         </li>
 
         <li class="nav-item" *ngIf="this.autenticacion.getUsuario();">
-          <a class="nav-link" routerLink="/usuario-perfil" routerLinkActive="active" (click)="cambiarVisibilidadMenuResponsive()">Mi Perfil</a>
+          <a class="nav-link" routerLink="/usuario-perfil" routerLinkActive="active" (click)="cerrarMenuResponsive()">Mi Perfil</a>
         </li>
 
         <li class="nav-item" *ngIf="this.autenticacion.getUsuario();">
-          <a class="nav-link" routerLink="/logout" routerLinkActive="active" (click)="cambiarVisibilidadMenuResponsive()">Cerrar Sesión</a>
+          <a class="nav-link" routerLink="/logout" routerLinkActive="active" (click)="cerrarMenuResponsive()">Cerrar Sesión</a>
         </li>
       </ul>
     </div>

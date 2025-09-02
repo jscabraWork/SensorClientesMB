@@ -1,7 +1,7 @@
 <div class="contenedor-general fondo">
   <div class="negro-general" *ngIf="visibleMenuResponsive"></div>
 
-  <div class="contenedor-menu" [ngClass]="{'esconder': visibleMenuResponsive}">
+  <div class="contenedor-menu">
     <app-menu (valorCambiado)="actualizarValor($event)"></app-menu>
   </div>
 
