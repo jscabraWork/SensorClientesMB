@@ -85,7 +85,7 @@
           <div class="espacioA">
             <div class="fechaCiudad">
               <p class="fechas"><strong>{{darFecha(evento)}}</strong> -</p>
-              <p class="fechas"><strong>{{ evento?.horaInicio | horas2}}</strong></p>
+              <p class="fechas"><strong>{{ evento?.dias[0]?.horaInicio}}</strong></p>
             </div>
             <div class="fechaCiudad">
               <p class="fechas"><strong>{{evento?.venue?.ciudad.nombre}}</strong></p>

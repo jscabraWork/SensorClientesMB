@@ -219,6 +219,7 @@ export class EventosComponent implements OnInit, OnDestroy {
   }
 
   handleSuccesfullGet(response: any) {
+    console.log(response)
     this.eventos = response.map((e: any) => Object.assign(new Evento(), e));
     this.ciudades = [];
     this.imagenesConEvento = [];
