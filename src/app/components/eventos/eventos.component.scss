@@ -263,26 +263,26 @@
 .row {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  margin: -0.5rem;
 }
 
 // Tarjetas de eventos
 .evento-card {
   box-sizing: border-box;
   padding: 0.8rem;
-  margin: 0;
-  width: 25%;
+  margin: 0.5rem;
+  width: calc(25% - 1rem);
   min-width: 270px;
   max-width: 350px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   position: relative;
-  aspect-ratio: 800/750;
   background: #1b1b1b;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   transition: transform 0.2s;
+  flex-shrink: 0;
 
   &:hover {
     transform: translateY(-4px);
@@ -293,14 +293,17 @@
 
 .placeholder-imagen {
   width: 100%;
-  aspect-ratio: 800/750;
+  height: 0;
+  padding-bottom: 100%;
   background: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .imagenEvento {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -460,7 +463,7 @@
 // Responsividad
 @media (max-width: 1200px) {
   .evento-card {
-    width: 33.3333%;
+    width: calc(33.3333% - 1rem);
     min-width: 220px;
   }
   
@@ -481,7 +484,7 @@
 
 @media (max-width: 900px) {
   .evento-card {
-    width: 50%;
+    width: calc(50% - 1rem);
     min-width: 180px;
   }
 }
@@ -542,9 +545,9 @@
 
 @media (max-width: 600px) {
   .evento-card {
-    width: 100%;
+    width: calc(100% - 1rem);
     min-width: 140px;
-    max-width: 100%;
+    max-width: calc(100% - 1rem);
   }
 }
 
