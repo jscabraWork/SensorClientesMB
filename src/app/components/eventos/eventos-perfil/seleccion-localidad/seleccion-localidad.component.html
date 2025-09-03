@@ -50,7 +50,7 @@
   <div class="resumen-content">
     <div class="resumen-info">
       <span class="resumen-cantidad">{{getCantidadTotal()}} boleta(s) - {{getLocalidadSeleccionada()?.nombre}}</span>
-      <span class="resumen-total">Total: ${{calcularTotalGeneral() | currency:'COP ':'symbol':'1.0-0'}}</span>
+      <span class="resumen-total">Total: {{calcularTotalGeneral() | currency:'COP ':'symbol':'1.0-0'}}</span>
     </div>
     <button class="btn-reservar" (click)="onComprar()">
       COMPRAR

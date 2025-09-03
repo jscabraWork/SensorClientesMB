@@ -188,6 +188,10 @@
   margin-top: v.$spacer-4;
   box-shadow: v.$shadow-md;
   border-radius: v.$border-radius-md;
+
+   @media (max-width: v.$breakpoint-md) {
+    padding: v.$spacer-2 0;
+  }
 }
 
 .resumen-content {
@@ -220,6 +224,10 @@
   font-size: 1.4rem;
   font-weight: 700;
   color: v.$color-dark;
+
+  @media (max-width: v.$breakpoint-md) {
+    font-size: 1.2rem;
+  }
 }
 
 .btn-reservar {
