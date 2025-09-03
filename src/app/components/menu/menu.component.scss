@@ -63,10 +63,7 @@
   }
 }
 
-/* Desktop styles (por defecto) */
 .nav-menu {
-  display: block;
-  
   .nav-list {
     display: flex;
     list-style: none;
@@ -74,50 +71,23 @@
     padding: 0;
     gap: 0.5rem;
 
-    .nav-item {
-      .nav-link {
-        display: block;
-        padding: 8px 20px;
-        color: #ffffff;
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 16px;
-        transition: all 0.3s ease;
-        border-radius: 10px;
-        cursor: pointer;
+    .nav-link {
+      display: block;
+      padding: 8px 20px;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      border-radius: 10px;
+      cursor: pointer;
 
-        &:hover {
-          background-color: #ffd903;
-          color: #000000;
-        }
-
-        &.active {
-          background-color: #ffd903;
-          color: #000000;
-        }
+      &:hover,
+      &.active {
+        background-color: #ffd903;
+        color: #000000;
       }
     }
-  }
-}
-
-/* Asegurar que en desktop se vean los elementos correctos */
-@media (min-width: 921px) {
-  .nav-brand {
-    .logo-desktop {
-      display: block !important;
-    }
-    
-    .logo-mobile {
-      display: none !important;
-    }
-  }
-  
-  .menu-toggle {
-    display: none !important;
-  }
-  
-  .nav-menu {
-    display: block !important;
   }
 }
 
@@ -155,6 +125,17 @@
   }
 }
 
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 @media (max-width: 920px) {
   .nav-menu {
     position: absolute;
@@ -163,58 +144,23 @@
     width: 100%;
     background: #000000;
     display: none;
-    transform: translateY(-20px);
-    opacity: 0;
-    transition: all 0.3s ease;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     z-index: 999;
 
     &.active {
       display: block;
-      transform: translateY(0);
-      opacity: 1;
-      animation: slideDown 0.3s ease forwards;
+      animation: slideDown 0.3s ease;
     }
-  }
-
-  @keyframes slideDown {
-    from {
-      transform: translateY(-20px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
 
     .nav-list {
       flex-direction: column;
       padding: 20px 0;
-      margin: 0;
 
-      .nav-item {
-        margin: 0;
-        
-        .nav-link {
-          display: block;
-          padding: 15px 25px;
-          border-bottom: 1px solid #333;
-          text-align: left;
-          width: 100%;
+      .nav-link {
+        padding: 15px 25px;
+        border-bottom: 1px solid #333;
 
-          &:hover {
-            background-color: #ffd903;
-            color: #000000;
-          }
-
-          &.active {
-            background-color: #ffd903;
-            color: #000000;
-          }
-        }
-
-        &:last-child .nav-link {
+        &:last-child {
           border-bottom: none;
         }
       }
@@ -229,7 +175,6 @@
     .logo-desktop {
       display: none;
     }
-
     .logo-mobile {
       display: block;
     }
@@ -239,6 +184,7 @@
     padding: 0 15px;
     height: 60px;
   }
+}
 
 
 @media (max-width: 480px) {
