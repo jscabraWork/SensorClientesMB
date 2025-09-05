@@ -143,6 +143,20 @@
 }
 
 // Mobile responsive
+// Estado deshabilitado para botones
+.action_button:disabled {
+  background-color: #333;
+  color: #666;
+  border-color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+::ng-deep .custom-modal-panel {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
 @include mobile {
   .info-ticket h5 {
     font-size: 1rem;
@@ -151,5 +165,10 @@
   .botones-tickets {
     flex-direction: column;
     gap: 5px;
+  }
+  
+  .action_button {
+    font-size: 10px;
+    padding: 8px 12px;
   }
 }

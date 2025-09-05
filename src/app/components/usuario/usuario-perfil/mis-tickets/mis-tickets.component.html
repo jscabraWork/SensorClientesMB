@@ -28,6 +28,14 @@
           [disabled]="misTicket.ticket.estado !== 1">
           Reenviar QR
         </button>
+        
+        <button 
+          class="action_button rounded" 
+          (click)="abrirModalTraspaso(misTicket)"
+          [disabled]="misTicket.utilizado || misTicket.ticket.estado !== 1"
+          [title]="misTicket.utilizado ? 'No se puede transferir un ticket utilizado' : 'Transferir ticket a otra persona'">
+          Transferir Ticket
+        </button>
       </div>
     </div>
   </div>

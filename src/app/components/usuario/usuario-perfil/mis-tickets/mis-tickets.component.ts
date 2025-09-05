@@ -6,6 +6,8 @@ import { MisTicketsDto } from '../../../../models/mistickets.model';
 import { TicketDataService } from '../../../../service/data/ticket-data.service';
 import { MensajeComponent } from '../../../mensaje/mensaje.component';
 import { QrDataService } from '../../../../service/data/qr-data.service';
+import { TraspasarTicketComponent } from './traspasar-ticket/traspasar-ticket.component';
+import { Ticket } from '../../../../models/ticket.model';
 
 @Component({
   selector: 'app-mis-tickets',
@@ -92,5 +94,22 @@ export class MisTicketsComponent implements OnInit {
 
   getUtilizadoColor(utilizado: boolean): string {
     return utilizado ? '#dc3545' : '#28a745'; // Rojo si utilizado, verde si disponible
+  }
+
+  abrirModalTraspaso(misTicket: MisTicketsDto): void {
+    const ticket: Ticket = misTicket.ticket;
+
+    const dialogRef = this.dialog.open(TraspasarTicketComponent, {
+      data: { ticket: ticket },
+      disableClose: true,
+      panelClass: 'custom-modal-panel'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Si el traspaso fue exitoso, recargar los tickets
+        this.ngOnInit();
+      }
+    });
   }
 }

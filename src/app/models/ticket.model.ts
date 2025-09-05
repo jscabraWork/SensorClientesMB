@@ -17,6 +17,7 @@ export class Ticket {
   seguro: Seguro | null;
   tarifa: Tarifa | null;
   localidad: Localidad | null;
+  utilizado: boolean;
 
   //Variables auxiliares para la compra desde mapas
   personasPorTicket: number | null;

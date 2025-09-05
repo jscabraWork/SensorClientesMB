@@ -1,1 +1,52 @@
-<p>traspasar-ticket works!</p>
+<div class="modal-container" (click)="onCerrar()">
+  <div class="login-card" (click)="$event.stopPropagation()">
+    <div class="card-header">
+      <h2>Transfiere tu Ticket</h2>
+    </div>
+
+    <form [formGroup]="traspasoForm" class="login-form" (ngSubmit)="onTransferir()">
+      <div class="form-field">
+        <input 
+          type="email" 
+          formControlName="correo"
+          class="input-field"
+          placeholder="Correo electrónico del destinatario"
+          [class.ng-invalid]="correoControl?.invalid && correoControl?.touched"
+          [class.ng-valid]="correoControl?.valid && correoControl?.touched"
+        />
+        
+        <div class="error-message" *ngIf="correoControl?.invalid && correoControl?.touched">
+          <small *ngIf="correoControl?.errors?.['required']">El correo electrónico es requerido</small>
+          <small *ngIf="correoControl?.errors?.['email']">Ingrese un correo electrónico válido</small>
+        </div>
+      </div>
+
+      <div class="info-message" *ngIf="isTicketUtilizado">
+        <small>Este ticket ya ha sido utilizado y no puede ser transferido</small>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="submit-btn" 
+          [disabled]="!isFormValid || cargando"
+        >
+          <span *ngIf="!cargando">Transferir Ticket</span>
+          <span *ngIf="cargando">Transfiriendo...</span>
+        </button>
+        
+        <button 
+          type="button" 
+          class="create-account-btn" 
+          (click)="onCerrar()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+
+    <div class="spinner-overlay" *ngIf="cargando">
+      <div class="spinner"></div>
+    </div>
+  </div>
+</div>
