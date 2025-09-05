@@ -1,0 +1,241 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.evento-header {
+  position: relative;
+  min-height: 30vh;
+  overflow: hidden;
+  
+  @include mobile {
+    min-height: 20vh;
+  }
+}
+
+.imagen-evento-container {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.imagen-evento {
+  width: 100%;
+  height: 100%;
+  object-fit: fit-content;
+}
+
+.overlay-gradiente {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6), rgba(0,0,0,0.8));
+  z-index: 2;
+}
+
+.header-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  color: $color-white;
+  padding: $spacing-xl;
+  
+  @include mobile {
+    padding: $spacing-lg;
+  }
+}
+
+.subtitulo {
+  color: $color-light-gray;
+  font-size: $font-size-lg;
+  margin-top: $spacing-md;
+  font-weight: 500;
+  
+  @include mobile {
+    font-size: $font-size-md;
+  }
+}
+
+.traspaso-card, .mensaje-estado {
+  background: #151515;
+  border-radius: $border-radius-xl;
+  padding: $spacing-lg;
+  max-width: 600px;
+  margin: $spacing-2xl auto $spacing-xl auto;
+  position: relative;
+  z-index: 4;
+  border: 1px solid $color-primary;
+  
+  @include mobile {
+    margin: $spacing-xl $spacing-md $spacing-lg $spacing-md;
+    border-radius: $border-radius-lg;
+  }
+  
+  @include mobile-small {
+    margin: $spacing-lg $spacing-sm $spacing-md $spacing-sm;
+    padding: $spacing-md;
+  }
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: $spacing-lg;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $color-primary, transparent);
+  }
+  
+  h2 {
+    color: $color-primary;
+    font-size: $font-size-2xl;
+    font-weight: 700;
+    margin: 0;
+    font-family: $font-montserrat;
+    
+    @include mobile {
+      font-size: $font-size-xl;
+    }
+  }
+}
+
+.ticket-info {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  margin-bottom: $spacing-xl;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-sm 0;
+  border-bottom: 1px solid rgba($color-gray, 0.2);
+  
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-xs;
+  }
+  
+  &.highlight {
+    border-bottom: 2px solid $color-primary;
+    padding: $spacing-md 0;
+    margin-top: $spacing-md;
+    font-weight: 700;
+    font-size: $font-size-lg;
+  }
+}
+
+.label {
+  color: $color-gray-text;
+  font-family: $font-montserrat;
+  font-weight: 500;
+  font-size: $font-size-md;
+  
+  @include mobile {
+    font-size: $font-size-sm;
+  }
+}
+
+.value {
+  color: $color-white;
+  font-family: $font-lato;
+  font-weight: 600;
+  font-size: $font-size-md;
+  
+  @include mobile {
+    font-size: $font-size-sm;
+  }
+  
+  &.primary {
+    color: $color-primary;
+    font-size: $font-size-lg;
+    font-weight: 700;
+    
+    @include mobile {
+      font-size: $font-size-md;
+    }
+  }
+}
+
+.action-container {
+  text-align: center;
+  margin-top: $spacing-xl;
+}
+
+.mensaje-estado {
+  max-width: 500px;
+  text-align: center;
+  border: 1px solid $color-error;
+  
+  h3 {
+    color: $color-error;
+    font-size: $font-size-xl;
+    margin: $spacing-md 0;
+    
+    @include mobile {
+      font-size: $font-size-lg;
+    }
+  }
+  
+  p {
+    color: $color-gray-text;
+    font-size: $font-size-md;
+    line-height: 1.5;
+    
+    @include mobile {
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+.spinner-overlay {
+  @include spinner-overlay;
+  background: rgba($color-black, 0.8);
+}
+
+@include mobile-small {
+  .header-content {
+    padding: $spacing-md;
+  }
+  
+  .subtitulo {
+    font-size: $font-size-base;
+  }
+  
+  .info-item {
+    padding: $spacing-xs 0;
+    
+    &.highlight {
+      padding: $spacing-sm 0;
+      margin-top: $spacing-sm;
+    }
+  }
+  
+  .label, .value {
+    font-size: $font-size-xs !important;
+    
+    &.primary {
+      font-size: $font-size-sm !important;
+    }
+  }
+  
+  .ticket-info {
+    gap: $spacing-sm;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.evento-header:not(:has(.imagen-evento-container)) {
+  background: linear-gradient(135deg, $color-dark 0%, $color-dark-2 100%);
+  
+  .header-content {
+    padding: $spacing-2xl;
+  }
+}

@@ -20,6 +20,10 @@ export const routes: Routes = [
     loadComponent: () => import('./components/confirmar-registro/confirmar-registro.component').then(m => m.ConfirmarRegistroComponent)
   },
   {
+    path: 'confirmar-traspaso/:idCodigo',
+    loadComponent: () => import('./components/confirmar-traspaso/confirmar-traspaso.component').then(m => m.ConfirmarTraspasoComponent)
+  },
+  {
     path: 'logout',
     loadComponent: () => import('./components/logout/logout.component').then(m => m.LogoutComponent)
   },

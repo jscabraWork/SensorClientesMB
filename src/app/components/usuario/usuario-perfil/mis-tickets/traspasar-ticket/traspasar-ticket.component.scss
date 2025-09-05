@@ -1,39 +1,40 @@
-@import '../../../../../styles/variables';
-@import '../../../../../styles/mixins';
+@import '../../../../../../styles/variables';
+@import '../../../../../../styles/mixins';
 
 .modal-container {
-  @include black-overlay(0.8);
-  @include flex-center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: $z-modal;
-  backdrop-filter: blur(3px);
 }
 
-.login-card {
+.transfer-modal {
   background: #151515;
   border: 1px solid $color-primary;
   border-radius: $border-radius-xl;
   padding: $spacing-xl;
   width: 100%;
-  max-width: 480px;
+  max-width: 600px;
   position: relative;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
   
   @include mobile {
     padding: 24px 20px;
     border-radius: $border-radius-lg;
-    max-width: 400px;
+    max-width: 90vw;
     margin: 16px;
   }
   
   @include mobile-small {
     padding: 20px 16px;
     margin: 8px;
-    max-width: 360px;
+    max-width: 95vw;
   }
 }
 
@@ -54,12 +55,10 @@
     font-size: 28px;
     font-weight: 700;
     margin: 0;
-    background: transparent;
     font-family: $font-montserrat;
     
     @include mobile {
       font-size: 24px;
-      letter-spacing: 1px;
     }
     
     @include mobile-small {
@@ -72,7 +71,6 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
-  background-color: #151515;
   
   @include mobile-small {
     gap: 14px;
@@ -204,4 +202,86 @@
 
 .spinner {
   @include spinner;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: $color-primary;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all $transition-fast;
+  z-index: 1;
+  
+  &:hover {
+    background: rgba($color-primary, 0.1);
+    color: $color-white;
+    transform: scale(1.1);
+  }
+  
+  span {
+    line-height: 1;
+    font-family: Arial, sans-serif;
+  }
+  
+  @include mobile {
+    top: 8px;
+    right: 12px;
+    font-size: 24px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.instructions {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: rgba($color-primary, 0.05);
+  border-radius: $border-radius-md;
+  border: 1px solid rgba($color-primary, 0.2);
+  
+  p {
+    margin: 0 0 8px 0;
+    color: $color-white;
+    font-size: $font-size-base;
+    line-height: 1.5;
+    font-family: $font-lato;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  .warning-text {
+    color: $color-primary;
+    font-weight: 600;
+    font-size: $font-size-sm;
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid rgba($color-primary, 0.3);
+  }
+  
+  @include mobile {
+    padding: 12px;
+    margin-bottom: 20px;
+    
+    p {
+      font-size: $font-size-sm;
+    }
+    
+    .warning-text {
+      font-size: $font-size-xs;
+    }
+  }
 }

@@ -1,7 +1,16 @@
 <div class="modal-container" (click)="onCerrar()">
-  <div class="login-card" (click)="$event.stopPropagation()">
+  <div class="transfer-modal" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="onCerrar()" title="Cerrar">
+      <span>&times;</span>
+    </button>
+    
     <div class="card-header">
       <h2>Transfiere tu Ticket</h2>
+    </div>
+
+    <div class="instructions">
+      <p>Ingresa el correo electrónico de la persona que recibirá este ticket.</p>
+      <p class="warning-text">El traspaso no se completará hasta que el destinatario confirme la transferencia desde su correo electrónico.</p>
     </div>
 
     <form [formGroup]="traspasoForm" class="login-form" (ngSubmit)="onTransferir()">

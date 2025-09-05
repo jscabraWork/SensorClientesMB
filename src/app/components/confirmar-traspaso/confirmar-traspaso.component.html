@@ -1,1 +1,84 @@
-<p>confirmar-traspaso works!</p>
+<div class="fondo">
+  <!-- Header con imagen del evento -->
+  <section *ngIf="evento.id"  class="evento-header">
+    <div class="imagen-evento-container" *ngIf="getImagenBanner(evento)">
+      <img [src]="getImagenBanner(evento)" 
+           [alt]="evento?.nombre" 
+           class="imagen-evento">
+      <div class="overlay-gradiente"></div>
+    </div>
+    
+    <div class="contenedor-info">
+      <div class="header-content">
+        <h1 class="titulo-eventos">{{ evento?.nombre }}</h1>
+        <div class="linea"></div>
+        <p class="subtitulo montserrat">Confirma tu traspaso de ticket</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contenido principal -->
+  <main class="contenido">
+    <!-- Datos del ticket válido -->
+    <div class="traspaso-card" *ngIf="!cargando && !mensajeError && ticket?.id">
+      <div class="card-header">
+        <h2 class="montserrat">Detalles del Ticket</h2>
+      </div>
+      
+      <div class="ticket-info">
+        <div class="info-item">
+          <span class="label">Ticket ID:</span>
+          <span class="value">{{ ticket?.id }}</span>
+        </div>
+        
+        <div class="info-item" *ngIf="ticket?.numero">
+          <span class="label">Número de Ticket:</span>
+          <span class="value">{{ ticket?.numero }}</span>
+        </div>
+        
+        <div class="info-item">
+          <span class="label">Evento:</span>
+          <span class="value">{{ evento?.nombre }}</span>
+        </div>
+        
+        <div class="info-item">
+          <span class="label">Localidad:</span>
+          <span class="value">{{ localidad?.nombre }}</span>
+        </div>
+        
+        <div class="info-item" *ngIf="localidad?.tarifa">
+          <span class="label">Valor:</span>
+          <span class="value primary">{{ (localidad?.tarifa?.precio + localidad?.tarifa?.servicio + localidad?.tarifa?.iva) | currency: 'COP ' }}</span>
+        </div>
+        
+        <div class="info-item highlight">
+          <span class="label">Estado:</span>
+          <span class="value primary">Listo para Transferir</span>
+        </div>
+      </div>
+
+      <div class="action-container">
+        <button 
+          class="submit-btn" 
+          (click)="confirmarReclamoTicket()" 
+          [disabled]="cargando"
+        >
+          <span *ngIf="!cargando">Confirmar Traspaso</span>
+          <span *ngIf="cargando">Procesando...</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div class="mensaje-estado" *ngIf="!cargando && mensajeError">
+      <h3 class="montserrat">Error en el Código</h3>
+      <p>{{ mensajeError }}</p>
+      <button class="submit-btn" (click)="router.navigate(['/home'])">Volver al Inicio</button>
+    </div>
+
+    <!-- Loading -->
+    <div class="spinner-overlay" *ngIf="cargando">
+      <div class="spinner"></div>
+    </div>
+  </main>
+</div>

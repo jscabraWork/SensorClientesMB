@@ -13,10 +13,14 @@ export class TraspasoDataService {
   constructor(private http: HttpClient) { }
 
   transferirTicket(ticketId: number, correo: string): Observable<any> {
-    return this.http.post(`${this.baseEndpoint}/transferir/${ticketId}?correo=${encodeURIComponent(correo)}`,{},);
+    return this.http.post(`${this.baseEndpoint}/transferir/${ticketId}?pCorreo=${encodeURIComponent(correo)}`,{},);
   }
 
   confirmarTransferenciaTicket(codigo: string): Observable<any> {
     return this.http.post(`${this.baseEndpoint}/confirmar-traspaso/${codigo}`,{},);
+  }
+
+  getCodigoParaConfirmacion(codigo: string): Observable<any> {
+    return this.http.get(`${this.baseEndpoint}/codigo/${codigo}`);
   }
 }
