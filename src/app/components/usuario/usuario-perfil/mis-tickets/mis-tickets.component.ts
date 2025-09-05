@@ -2,10 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-
-import { Evento } from '../../../../models/evento.model';
-import { Localidad } from '../../../../models/localidad.model';
-import { Ticket } from '../../../../models/ticket.model';
 import { MisTicketsDto } from '../../../../models/mistickets.model';
 import { TicketDataService } from '../../../../service/data/ticket-data.service';
 import { MensajeComponent } from '../../../mensaje/mensaje.component';
@@ -76,7 +72,7 @@ export class MisTicketsComponent implements OnInit {
   }
 
   enviarQR(ticketId: number): void {
-    this.qrDataService.enviarQR(ticketId, this.numeroDocumento).subscribe({
+    this.qrDataService.enviarQR(ticketId).subscribe({
       next: () => {
         this.openMensaje('QR Enviado a su correo exitosamente. Revise Spam');
       },
@@ -90,30 +86,8 @@ export class MisTicketsComponent implements OnInit {
     });
   }
 
-  getEstadoTexto(estado: number): string {
-    switch (estado) {
-      case 0: return 'DISPONIBLE';
-      case 1: return 'VENDIDO';
-      case 2: return 'RESERVADO';
-      case 3: return 'EN PROCESO';
-      case 4: return 'NO DISPONIBLE';
-      default: return 'DESCONOCIDO';
-    }
-  }
-
-  getEstadoColor(estado: number): string {
-    switch (estado) {
-      case 0: return '#28a745'; // Verde
-      case 1: return '#17a2b8'; // Azul
-      case 2: return '#ffc107'; // Amarillo
-      case 3: return '#fd7e14'; // Naranja
-      case 4: return '#dc3545'; // Rojo
-      default: return '#6c757d'; // Gris
-    }
-  }
-
   getUtilizadoTexto(utilizado: boolean): string {
-    return utilizado ? 'UTILIZADO' : 'DISPONIBLE';
+    return utilizado ? 'UTILIZADO' : 'NO UTILIZADO';
   }
 
   getUtilizadoColor(utilizado: boolean): string {

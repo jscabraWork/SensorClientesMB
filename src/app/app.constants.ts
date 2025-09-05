@@ -1,5 +1,5 @@
-const endpoint="https://back.ticketsensor.com"
-//const endpoint="http://localhost:8090"
+//const endpoint="https://back.ticketsensor.com"
+const endpoint="http://localhost:8090"
 
 export const API_URL_USUARIOS=endpoint+"/api/usuarios"
 export const API_URL_PAGOS=endpoint+"/api/pagos"

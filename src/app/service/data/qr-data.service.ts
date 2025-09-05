@@ -11,8 +11,8 @@ export class QrDataService {
   private apiQR=`${API_URL_PAGOS}/qr`;
   constructor(private http: HttpClient) { }
 
-  enviarQR(ticketId: number, numeroDocumento: string): Observable<any> {
-    return this.http.put(`${this.apiQR}/enviar/${numeroDocumento}/${ticketId}`, {});
+  enviarQR(ticketId: number): Observable<any> {
+    return this.http.put(`${this.apiQR}/enviar/${ticketId}`, {});
   }
 
 }
