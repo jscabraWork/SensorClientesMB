@@ -24,7 +24,6 @@ import { LoginComponent } from '../../login/login.component';
     CommonModule,
     RouterModule,
     FormsModule,
-    HoraPipe,
     SeleccionLocalidadComponent
   ],
   templateUrl: './eventos-perfil.component.html',
@@ -115,31 +114,8 @@ export class EventosPerfilComponent extends BaseComponent {
 
     this.safeSrc = this.getSafeUrl(this.evento.video);
     this.fecha = new Date(this.evento.fechaApertura);
-    this.startCountdown();
   }
 
-  startCountdown(): void {
-    let x = setInterval(() => {
-      let fechaFutura = this.fecha.getTime();
-      let hoy = new Date().getTime();
-      let distancia = fechaFutura - hoy;
-      this.meses = Math.floor(distancia / (1000 * 60 * 60 * 24) / 30);
-      this.semanas = Math.floor(distancia / (1000 * 60 * 60 * 24 * 7));
-      this.dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
-      this.horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      this.minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
-      this.segundos = Math.floor((distancia % (1000 * 60)) / 1000);
-      if (distancia < 0) {
-        clearInterval(x);
-        this.meses = 0;
-        this.semanas = 0;
-        this.dias = 0;
-        this.horas = 0;
-        this.minutos = 0;
-        this.segundos = 0;
-      }
-    }, 1000);
-  }
 
   darURL(tipo: number) {
     const primeraImagenTipo = this.evento.imagenes?.find(imagen => imagen.tipo === tipo);
@@ -205,9 +181,6 @@ export class EventosPerfilComponent extends BaseComponent {
 
   private crearOrdenNueva(cantidad: number, localidad_id: number): void {
     this.iniciarCarga();
-    
-    console.log(this.idPromotor);
-
     // Usar el método apropiado según si hay promotor o no
     const ordenObservable = this.idPromotor 
       ? this.ordenService.crearOrdenNoNumeradaPromotor(cantidad, localidad_id, this.evento.id, this.clienteId, this.idPromotor)

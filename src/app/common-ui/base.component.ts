@@ -96,7 +96,7 @@ export abstract class BaseComponent implements OnInit {
     this.finalizarCarga();
     let mensaje = mensajePersonalizado || 'Ha ocurrido un error. Por favor, inténtalo de nuevo.';
     if (error && error.message) {
-      mensaje = error.message;
+      mensaje = error.error.message;
     }
     this.mostrarError(mensaje);
     console.error('Error:', error);

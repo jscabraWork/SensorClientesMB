@@ -1,3 +1,4 @@
+import { Tarifa } from './../../../../models/tarifa.model';
 import { ConfigSeguro } from '../../../../models/configSeguro.model';
 import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -39,6 +40,7 @@ export class CarritoFinalComponent extends BaseComponent {
   dia: Dia | null = null
   tickets: Ticket[] = []
   localidad: Localidad | null = null
+  tarifa: Tarifa = new Tarifa();
   configSeguro: ConfigSeguro | null = null
   pagar: boolean = false
   mostrarSeguro: boolean = false
@@ -46,7 +48,6 @@ export class CarritoFinalComponent extends BaseComponent {
   seguro: boolean = false
   aporteAlcancia: number = 0
   aporteMinimo: number = 0
-  cuponAgregado: boolean = false
   cuponCodigo: string = ''
   adicionales: any[] = []
   totalPrecioTickets: number = 0
@@ -90,6 +91,7 @@ export class CarritoFinalComponent extends BaseComponent {
 
   handleResponse(response: any): void {
     this.orden = response.orden;
+    this.tarifa = response.orden.tarifa;
 
     if (this.orden.estado !== 3) {
       this.mostrarError("No tienes ninguna orden de compra pendiente");
@@ -239,12 +241,11 @@ export class CarritoFinalComponent extends BaseComponent {
  
     // Para órdenes normales, calcular basado en tickets y tarifas
     let total = 0;
-    const tarifa = this.localidad?.tarifa;
-    if (tarifa) {
-      const precioUnitario = tarifa.precio + tarifa.servicio + tarifa.iva;
+    if (this.tarifa) {
+      const precioUnitario = this.tarifa.precio + this.tarifa.servicio + this.tarifa.iva;
       total = precioUnitario * this.tickets.length;
     }
-  
+
     return total;
   }
 
@@ -278,9 +279,8 @@ export class CarritoFinalComponent extends BaseComponent {
   this.iniciarCarga();
   this.service.aplicarCupon(this.cuponCodigo, this.orden.id).subscribe({
     next: (response) => {
-      this.cuponAgregado = true;
       this.mostrarMensaje(response.mensaje || "Cupón aplicado correctamente");
-      this.finalizarCarga();
+      this.cargarDatos(); //Recargar datos para reflejar el cambios
     },
     error: (err) => {
       this.manejarError(err, "No se pudo aplicar el cupón");
