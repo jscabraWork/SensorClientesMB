@@ -27,8 +27,7 @@ import { HoraPipe } from '../../../../pipes/horas.pipe';
     CommonModule,
     RouterModule,
     FormsModule,
-    CountdownModule,
-    HoraPipe
+    CountdownModule
   ],
   templateUrl: './carrito-final.component.html',
   styleUrl: './carrito-final.component.scss'
@@ -101,26 +100,9 @@ export class CarritoFinalComponent extends BaseComponent {
 
     this.tickets = response.tickets;
     this.evento = response.evento;  // Cambio: evento sin 's'
+    this.dia = this.evento.dias[0];
     this.localidad = response.localidad;
     this.configSeguro = response.configSeguro || null;
-
-    // Cargar el evento completo usando getEventoVenta para obtener los días e imágenes
-    if (this.evento && this.evento.id) {
-      this.eventoService.getEventoVenta(this.evento.id.toString()).subscribe({
-        next: (response) => {
-          const eventoCompleto = response.evento;
-          // Mantener los datos básicos del evento del carrito pero agregar días e imágenes
-          this.evento = { ...this.evento, ...eventoCompleto };
-          // Si tiene días, tomar el primer día para fechaFin y horaFin
-          if (eventoCompleto.dias && eventoCompleto.dias.length > 0) {
-            this.dia = eventoCompleto.dias[0];
-          }
-        },
-        error: (error) => {
-          console.error('Error al cargar evento completo:', error);
-        }
-      });
-    }
 
     // Verificar si la orden ya tiene seguro obligatorio
     if (this.orden.valorSeguro && this.orden.valorSeguro > 0) {

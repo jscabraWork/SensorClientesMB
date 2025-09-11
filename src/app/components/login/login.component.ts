@@ -104,6 +104,10 @@ export class LoginComponent implements OnInit {
    }
  
 
+  cerrarModal() {
+    this.dialogRef.close();
+  }
+
   openMensaje(mensajeT: string, openD?: string): void {
     let screenWidth = screen.width;
     let anchoDialog: string = '500px';

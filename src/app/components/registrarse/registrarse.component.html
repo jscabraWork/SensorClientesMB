@@ -8,6 +8,7 @@
   <div class="registration-card">
     <div class="card-header">
       <h2>REGÍSTRATE</h2>
+      <button class="close-btn" (click)="cerrarModal()" type="button">✕</button>
     </div>
 
     <form (ngSubmit)="!todoForm.invalid && saveUsuario()" #todoForm="ngForm" class="registration-form">

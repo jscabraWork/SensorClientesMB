@@ -7,7 +7,6 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 20px;
 }
 
 .registration-card {
@@ -18,7 +17,6 @@
   max-width: 800px;
   position: relative;
   padding: 32px;
-  margin: 0 auto;
 }
 
 .card-header {
@@ -45,6 +43,37 @@
   margin: 0;
   background: transparent;
   font-family: $font-montserrat;
+}
+
+.close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: #ffd903;
+  font-size: 24px;
+  font-weight: 400;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  background: rgba(255, 217, 3, 0.1);
+  transform: rotate(90deg);
+  box-shadow: 0 2px 8px rgba(255, 217, 3, 0.2);
+}
+
+.close-btn:active {
+  transform: rotate(90deg) scale(0.95);
 }
 
 .registration-form {
@@ -251,20 +280,18 @@ select {
 
 // Responsive
 @include mobile {
-  .registration-container {
-    padding: 16px;
-  }
   
-  .registration-card {
-    padding: 24px 20px;
-    border-radius: $border-radius-lg;
-    max-width: 400px;
-  }
   
   .card-header h2 {
     font-size: 24px;
     letter-spacing: 1px;
     font-family: $font-montserrat;
+  }
+  
+  .close-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
   }
   
   .input-field {
@@ -282,18 +309,18 @@ select {
 }
 
 @include mobile-small {
-  .registration-card {
-    padding: 20px 16px;
-    margin: 8px;
-    max-width: 360px;
-  }
-  
   .registration-form {
     gap: 14px;
   }
   
   .card-header h2 {
     font-size: 22px;
+  }
+  
+  .close-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
   }
   
   .checkbox-container {

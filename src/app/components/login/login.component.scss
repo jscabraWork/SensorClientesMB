@@ -2,30 +2,20 @@
 @import '../../../styles/mixins';
 @import '../../../styles/components';
 
-.login-container {
+.login {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  width: 100%;
 }
 
-.login-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 30% 20%, rgba(255, 217, 3, 0.05) 0%, transparent 50%),
-              radial-gradient(circle at 80% 80%, rgba(255, 217, 3, 0.03) 0%, transparent 50%);
-  pointer-events: none;
-}
 
 .login-card {
   background: #151515;
   border: 1px solid #ffd903;
   border-radius: 16px;
-  width: 100%;
+  width: 100%!important;
   position: relative;
 }
 
@@ -53,6 +43,37 @@
   margin: 0;
   background: transparent;
   font-family: $font-montserrat;
+}
+
+.close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: #ffd903;
+  font-size: 24px;
+  font-weight: 400;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  background: rgba(255, 217, 3, 0.1);
+  transform: rotate(90deg);
+  box-shadow: 0 2px 8px rgba(255, 217, 3, 0.2);
+}
+
+.close-btn:active {
+  transform: rotate(90deg) scale(0.95);
 }
 
 .login-form {
@@ -289,6 +310,12 @@
     letter-spacing: 1px;
   }
 
+  .close-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+  }
+
   .input-field {
     padding: 10px 14px;
     font-size: 15px;
@@ -296,16 +323,18 @@
 }
 
 @media (max-width: 480px) {
-  .login-card {
-    max-width: 360px;
-  }
-
   .login-form {
     gap: 14px;
   }
 
   .card-header h2 {
     font-size: 22px;
+  }
+
+  .close-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
   }
 
   .create-account-btn {

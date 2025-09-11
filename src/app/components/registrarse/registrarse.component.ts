@@ -138,6 +138,10 @@ export class RegistrarseComponent implements OnInit {
     this.usuario.tipoDocumento = this.tiposDocumento.find(tipo => tipo.id === tipoId) || this.tiposDocumento[0];
   }
 
+  cerrarModal() {
+    this.dialogRef.close();
+  }
+
   openMensaje(mensajeT: string, openD?: string): void {
     let screenWidth = screen.width;
     let anchoDialog: string = '500px';
