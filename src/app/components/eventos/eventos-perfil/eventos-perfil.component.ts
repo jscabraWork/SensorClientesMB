@@ -104,6 +104,15 @@ export class EventosPerfilComponent extends BaseComponent {
 
   handleGetSuccesfull(response: any) {
     this.evento = Object.assign(new Evento(), response.evento);
+
+    // Validar que el evento esté en estado 2 (disponible)
+    if (this.evento.estado !== 2 && this.evento.estado !== 1) {
+      this.mostrarMensaje("El evento no está disponible").subscribe(() => {
+        this.router.navigate(['/']);
+      });
+      return;
+    }
+
     this.mapaUrl = this.evento.venue?.urlMapa;
 
     if (this.mapaUrl && this.mapaUrl !== 'no') {
