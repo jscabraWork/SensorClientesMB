@@ -31,14 +31,12 @@ export class RegistrarseComponent implements OnInit {
   isLoading = false;
   isGoogleRegistration = false;
   googleData: any = null;
-  cargando: boolean = false;
   mostrarPassword: boolean = false;
 
   tiposDocumento: TipoDocumento[] = [
     { id: 1, nombre: 'Cedula de Ciudadania' },
     { id: 2, nombre: 'Pasaporte' },
     { id: 3, nombre: 'Cedula de Extranjeria' },
-    { id: 4, nombre: 'Interno' },
     { id: 5, nombre: 'Tarjeta de Identidad' }
   ];
 
@@ -87,7 +85,6 @@ export class RegistrarseComponent implements OnInit {
   }
 
   saveUsuario() {
-    this.cargando = true;
     this.isLoading = true;
 
     if (!this.usuario.correo.includes(' ')) {
@@ -99,26 +96,14 @@ export class RegistrarseComponent implements OnInit {
                 !this.usuario.numeroDocumento.includes('.')
               ) {
                 if (this.isGoogleRegistration && this.googleData) {
-                  // Crear objeto plano para evitar problemas de serialización
-                  const usuarioData = {
-                    nombre: this.usuario.nombre,
-                    correo: this.usuario.correo,
-                    numeroDocumento: this.usuario.numeroDocumento,
-                    tipoDocumento: this.usuario.tipoDocumento,
-                    celular: this.usuario.celular,
-                    contrasena: this.usuario.contrasena,
-                    publicidad: this.usuario.publicidad,
-                    activo: true
-                  };
 
                   this.service.registroGoogle(
-                    usuarioData,
+                    this.usuario,
                     this.googleData.googleId,
                     this.googleData.accessToken,
                     this.googleData.refreshToken
                   ).subscribe({
                     next: (response) => {
-                      this.cargando = false;
                       this.isLoading = false;
                       if (response.mensaje === 'Los datos provisionados ya se encuentran registrados') {
                         this.openMensaje(response.mensaje);
@@ -160,7 +145,6 @@ export class RegistrarseComponent implements OnInit {
                       }
                     },
                     error: (error) => {
-                      this.cargando = false;
                       this.isLoading = false;
                       console.error('Error en registro Google:', error);
                       this.openMensaje('Error en el registro: ' + (error.error?.mensaje || error.message || 'Error desconocido'));
@@ -175,7 +159,6 @@ export class RegistrarseComponent implements OnInit {
 
                   this.service.createCliente(this.usuario).subscribe({
                     next: (response) => {
-                      this.cargando = false;
                       this.isLoading = false;
                       if (response.mensaje === 'Los datos provisionados ya se encuentran registrados') {
                         this.openMensaje(response.mensaje);
@@ -186,7 +169,6 @@ export class RegistrarseComponent implements OnInit {
                       }
                     },
                     error: () => {
-                      this.cargando = false;
                       this.isLoading = false;
                       this.usuario.contrasena = '';
                       this.openMensaje('Por favor verifica los datos ingresados, si el problema persiste contacta con el administrador del sistema');
@@ -194,27 +176,22 @@ export class RegistrarseComponent implements OnInit {
                   });
                 }
               } else {
-                this.cargando = false;
                 this.isLoading = false;
                 this.openMensaje('El número de documento no puede contener espacios ni puntos');
               }
             } else {
-              this.cargando = false;
               this.isLoading = false;
               this.openMensaje('Verifica el número de documento');
             }
         } else {
-          this.cargando = false;
           this.isLoading = false;
           this.openMensaje('Verifica el correo');
         }
       } else {
-        this.cargando = false;
         this.isLoading = false;
         this.openMensaje('Debes aceptar términos y condiciones');
       }
     } else {
-      this.cargando = false;
       this.isLoading = false;
       this.openMensaje('El correo no permite espacios en blanco');
     }
