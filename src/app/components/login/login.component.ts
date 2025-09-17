@@ -108,6 +108,11 @@ export class LoginComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  loginWithGoogle(): void {
+    this.isLoading = true;
+    this.auth.loginWithGoogle();
+  }
+
   openMensaje(mensajeT: string, openD?: string): void {
     let screenWidth = screen.width;
     let anchoDialog: string = '500px';

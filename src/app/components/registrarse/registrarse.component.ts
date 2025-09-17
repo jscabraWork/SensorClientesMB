@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Md5 } from 'ts-md5';
 
 import { UsuariosDataService } from '../../service/data/usuarios-data.service'; 
 import { Cliente } from './../usuario/cliente.model';
 import { Codigo, TipoDocumento } from '../../models/codigo.model';
 import { MensajeComponent } from '../mensaje/mensaje.component';
+import { AuthService } from '../../service/seguridad/auth.service';
 
 @Component({
   selector: 'app-registrarse',
@@ -27,31 +28,47 @@ export class RegistrarseComponent implements OnInit {
   confimarcionCorreo: string;
   confimarcionDocumento: any;
   aceptoTerminos: boolean;
-  aceptoTratamiento: boolean;
   isLoading = false;
+  isGoogleRegistration = false;
+  googleData: any = null;
+  mostrarPassword: boolean = false;
 
   tiposDocumento: TipoDocumento[] = [
     { id: 1, nombre: 'Cedula de Ciudadania' },
     { id: 2, nombre: 'Pasaporte' },
     { id: 3, nombre: 'Cedula de Extranjeria' },
-    { id: 4, nombre: 'Interno' },
     { id: 5, nombre: 'Tarjeta de Identidad' }
   ];
 
   constructor(
     private service: UsuariosDataService,
+    private auth: AuthService,
     private router: Router,
     public dialog: MatDialog,
-    private dialogRef: MatDialogRef<RegistrarseComponent>
-  ) {}
+    private dialogRef: MatDialogRef<RegistrarseComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    if (data && data.googleData) {
+      this.googleData = data.googleData;
+      this.isGoogleRegistration = true;
+    }
+  }
 
   ngOnInit(): void {
+    this.mostrarPassword = false;
     this.confimarcionCorreo = '';
     this.confimarcionDocumento = null;
     this.aceptoTerminos = false;
-    this.aceptoTratamiento = false;
     this.usuario = new Codigo();
     this.usuario.tipoDocumento = this.tiposDocumento[0];
+
+    // Si es registro con Google, prellenar los datos
+    if (this.isGoogleRegistration && this.googleData) {
+      this.usuario.correo = this.googleData.correo;
+      this.usuario.nombre = this.googleData.nombre;
+      this.confimarcionCorreo = this.googleData.correo;
+    }
+
     this.function();
   }
 
@@ -68,46 +85,114 @@ export class RegistrarseComponent implements OnInit {
   }
 
   saveUsuario() {
+    this.isLoading = true;
+
     if (!this.usuario.correo.includes(' ')) {
       if (this.aceptoTerminos) {
         if (this.confimarcionCorreo === this.usuario.correo) {
           if (this.confimarcionDocumento === this.usuario.numeroDocumento) {
-            if (
-              !this.usuario.numeroDocumento.includes(' ') &&
-              !this.usuario.numeroDocumento.includes('.')
-            ) {
-              const md5 = new Md5();
-              const contra = this.usuario.contrasena;
-              this.usuario.contrasena = md5.appendStr(contra).end().toString();
+              if (
+                !this.usuario.numeroDocumento.includes(' ') &&
+                !this.usuario.numeroDocumento.includes('.')
+              ) {
+                if (this.isGoogleRegistration && this.googleData) {
 
-              this.isLoading = true;
-              this.service.createCliente(this.usuario).subscribe(
-                (response) => {
-                  this.isLoading = false;
-                  this.openMensaje(response.mensaje);
-                },
-                (error) => {
-                  this.isLoading = false;
-                  this.openMensaje(
-                    'Por favor verifica los datos ingresados, si el problema persiste contacta con el administrador del sistema'
-                  );
+                  this.service.registroGoogle(
+                    this.usuario,
+                    this.googleData.googleId,
+                    this.googleData.accessToken,
+                    this.googleData.refreshToken
+                  ).subscribe({
+                    next: (response) => {
+                      this.isLoading = false;
+                      if (response.mensaje === 'Los datos provisionados ya se encuentran registrados') {
+                        this.openMensaje(response.mensaje);
+                        this.usuario.contrasena = '';
+                      } else {
+                        // Auto-login después del registro exitoso con Google
+                        if (response.access_token) {
+                          this.auth.guardarUsuario(response.access_token);
+                          this.auth.guardarToken(response.access_token);
+
+                          // Mostrar mensaje y recargar cuando cierren el diálogo
+                          const dialogRef = this.dialog.open(MensajeComponent, {
+                            width: '500px',
+                            maxWidth: '80vw',
+                            height: 'auto',
+                            data: {
+                              mensaje: response.mensaje
+                            }
+                          });
+
+                          dialogRef.afterClosed().subscribe(() => {
+                            window.location.href = '/home';
+                          });
+                        } else {
+                          // Mostrar mensaje de registro exitoso sin token
+                          const dialogRef = this.dialog.open(MensajeComponent, {
+                            width: '500px',
+                            maxWidth: '80vw',
+                            height: 'auto',
+                            data: {
+                              mensaje: response.mensaje
+                            }
+                          });
+
+                          dialogRef.afterClosed().subscribe(() => {
+                            this.dialogRef.close(true); // Retorna true para indicar registro exitoso
+                          });
+                        }
+                      }
+                    },
+                    error: (error) => {
+                      this.isLoading = false;
+                      console.error('Error en registro Google:', error);
+                      this.openMensaje('Error en el registro: ' + (error.error?.mensaje || error.message || 'Error desconocido'));
+                      this.usuario.contrasena = '';
+                    }
+                  });
+                } else {
+                  // Registro normal - hashear contraseña con MD5
+                  const md5 = new Md5();
+                  const contra = this.usuario.contrasena;
+                  this.usuario.contrasena = md5.appendStr(contra).end().toString();
+
+                  this.service.createCliente(this.usuario).subscribe({
+                    next: (response) => {
+                      this.isLoading = false;
+                      if (response.mensaje === 'Los datos provisionados ya se encuentran registrados') {
+                        this.openMensaje(response.mensaje);
+                        this.usuario.contrasena = '';
+                      } else {
+                        // Mostrar mensaje de confirmación (NO hacer autologin, requiere confirmación por correo)
+                        this.openMensaje(response.mensaje, 'closeAll');
+                      }
+                    },
+                    error: () => {
+                      this.isLoading = false;
+                      this.usuario.contrasena = '';
+                      this.openMensaje('Por favor verifica los datos ingresados, si el problema persiste contacta con el administrador del sistema');
+                    }
+                  });
                 }
-              );
+              } else {
+                this.isLoading = false;
+                this.openMensaje('El número de documento no puede contener espacios ni puntos');
+              }
             } else {
-              this.openMensaje(
-                'El número de documento no puede contener espacios ni puntos'
-              );
+              this.isLoading = false;
+              this.openMensaje('Verifica el número de documento');
             }
-          } else {
-            this.openMensaje('Verifica el número de documento');
-          }
         } else {
+          this.isLoading = false;
           this.openMensaje('Verifica el correo');
         }
       } else {
+        this.isLoading = false;
         this.openMensaje('Debes aceptar términos y condiciones');
       }
     } else {
+      this.isLoading = false;
       this.openMensaje('El correo no permite espacios en blanco');
     }
   }
@@ -133,6 +218,18 @@ export class RegistrarseComponent implements OnInit {
     this.aceptoTerminos = !this.aceptoTerminos;
   }
 
+  togglePassword() {
+    this.mostrarPassword = !this.mostrarPassword;
+  }
+
+  publicidad() {
+    if (this.usuario.publicidad) {
+      this.usuario.publicidad = false;
+    } else {
+      this.usuario.publicidad = true;
+    }
+  }
+
   onTipoDocumentoChange(event: any) {
     const tipoId = parseInt(event.target.value);
     this.usuario.tipoDocumento = this.tiposDocumento.find(tipo => tipo.id === tipoId) || this.tiposDocumento[0];
@@ -140,6 +237,10 @@ export class RegistrarseComponent implements OnInit {
 
   cerrarModal() {
     this.dialogRef.close();
+  }
+
+  registrarseConGoogle(): void {
+    this.auth.loginWithGoogle();
   }
 
   openMensaje(mensajeT: string, openD?: string): void {
