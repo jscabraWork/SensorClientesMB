@@ -90,6 +90,58 @@ export class AuthService {
     });
   }
 
+  loginWithGoogle(): void {
+    // Guardar la URL actual antes de redirigir a Google
+    const currentUrl = window.location.pathname + window.location.search;
+    localStorage.setItem('redirectAfterLogin', currentUrl);
+    
+    // Enviar la URL original como parámetro al backend
+    const encodedUrl = encodeURIComponent(currentUrl);
+    window.location.href = API_URL_AUTH + '/auth2/authorization/google?originalUrl=' + encodedUrl;
+  }
+
+  /**
+   * Para validar el regToken de registro y obtener los datos de Google
+   */
+  validateRegistrationGoogleToken(regToken: string): Observable<any> {
+    const params = new URLSearchParams();
+    params.set('regToken', regToken);
+
+    const httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+
+    return this.http.post(API_URL_AUTH + '/auth2/validate-registration-token', params.toString(), {
+      headers: httpHeaders
+    });
+  }
+
+  googleLogin(idToken: string): Observable<any> {
+    const params = new URLSearchParams();
+    params.set('idToken', idToken);
+
+    const httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+
+    return this.http.post(API_URL_AUTH + '/auth2/web/google-login', params.toString(), {
+      headers: httpHeaders
+    });
+  }
+
+  validateLoginGoogleToken(regToken: string): Observable<any> {
+    const params = new URLSearchParams();
+    params.set('regToken', regToken);
+
+    const httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+
+    return this.http.post(API_URL_AUTH + '/auth2/validate-login-token', params.toString(), {
+      headers: httpHeaders
+    });
+  }
+
   guardarUsuario(accessToken: string): void {
     let objeto = this.obtenerDatosDelTocken(accessToken);
     this._usuario = new Usuario();
