@@ -44,18 +44,14 @@ private handleGoogleRegister(regToken: string): void {
   private handleGoogleLogin(regToken: string): void {
     this.auth.validateLoginGoogleToken(regToken).subscribe({
       next: response => {
-        console.log('Response from validateLoginGoogleToken:', response);
 
         if (response.action === 'ASSOCIATE_GOOGLE') {
           this.handleGoogleAssociation(response);
           return;
         }
 
-        console.log('Calling googleLogin with idToken:', response.idToken);
         this.auth.googleLogin(response.idToken).subscribe({
           next: loginResponse => {
-            console.log('LoginResponse from googleLogin:', loginResponse);
-            console.log('Access token:', loginResponse.accessToken);
             this.auth.guardarUsuario(loginResponse.accessToken);
             this.auth.guardarToken(loginResponse.accessToken);
             
@@ -99,11 +95,40 @@ private handleGoogleRegister(regToken: string): void {
         height: 'auto',
         data: { googleData }
       });
-      dialogRef.afterClosed().subscribe(() => {
-        // Solo limpiar parámetros y volver al home
-        // El autologin se maneja internamente en el componente de registro cuando es exitoso
-        this.limpiarParametrosUrl();
-        window.location.href = '/home';
+      dialogRef.afterClosed().subscribe((result) => {
+        // Solo hacer autologin si el registro fue exitoso (result = true)
+        if (result === true) {
+          // Después de cerrar el registro, hacer login automático con el idToken de Google
+          this.auth.googleLogin(googleData.idToken).subscribe({
+            next: loginResponse => {
+              this.auth.guardarUsuario(loginResponse.accessToken);
+              this.auth.guardarToken(loginResponse.accessToken);
+
+              const nombreUsuario = this.auth.usuario.nombre || this.auth.usuario.usuario;
+              const dialogRef = this.dialog.open(MensajeComponent, {
+                width: '500px',
+                maxWidth: '80vw',
+                height: 'auto',
+                data: {
+                  mensaje: `¡Bienvenido ${nombreUsuario}! Tu cuenta ha sido creada exitosamente.`
+                }
+              });
+
+              dialogRef.afterClosed().subscribe(() => {
+                this.limpiarParametrosUrl();
+                window.location.reload();
+              });
+            },
+            error: () => {
+              this.openMensaje('Error en el login automático. Por favor inicia sesión manualmente.');
+              this.limpiarParametrosUrl();
+            }
+          });
+        } else {
+          // Si se cerró sin completar el registro, solo limpiar y volver al home
+          this.limpiarParametrosUrl();
+          window.location.href = '/home';
+        }
       });
     }, 100);
   }

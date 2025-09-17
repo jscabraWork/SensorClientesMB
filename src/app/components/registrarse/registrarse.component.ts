@@ -154,7 +154,7 @@ export class RegistrarseComponent implements OnInit {
                           });
 
                           dialogRef.afterClosed().subscribe(() => {
-                            this.dialog.closeAll();
+                            this.dialogRef.close(true); // Retorna true para indicar registro exitoso
                           });
                         }
                       }
@@ -181,27 +181,8 @@ export class RegistrarseComponent implements OnInit {
                         this.openMensaje(response.mensaje);
                         this.usuario.contrasena = '';
                       } else {
-                        // Auto-login después del registro exitoso normal
-                        if (response.access_token) {
-                          this.auth.guardarUsuario(response.access_token);
-                          this.auth.guardarToken(response.access_token);
-
-                          // Mostrar mensaje y recargar cuando cierren el diálogo
-                          const dialogRef = this.dialog.open(MensajeComponent, {
-                            width: '500px',
-                            maxWidth: '80vw',
-                            height: 'auto',
-                            data: {
-                              mensaje: response.mensaje
-                            }
-                          });
-
-                          dialogRef.afterClosed().subscribe(() => {
-                            window.location.href = '/home';
-                          });
-                        } else {
-                          this.openMensaje(response.mensaje, 'closeAll');
-                        }
+                        // Mostrar mensaje de confirmación (NO hacer autologin, requiere confirmación por correo)
+                        this.openMensaje(response.mensaje, 'closeAll');
                       }
                     },
                     error: () => {
