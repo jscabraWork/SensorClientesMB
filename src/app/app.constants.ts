@@ -2,6 +2,7 @@
 const endpoint="http://localhost:8090"
 
 export const API_URL_USUARIOS=endpoint+"/api/usuarios"
+export const API_URL_USUARIO_PROVIDER=endpoint+"/api/usuario-provider"
 export const API_URL_PAGOS=endpoint+"/api/pagos"
 export const API_URL_PROMOTORES=endpoint+"/api/promotores"
 export const API_URL_AUTH=endpoint+"/api/security"

@@ -48,7 +48,7 @@ export class UsuariosDataService {
     params.set('accessToken', accessToken);
     params.set('tipoProvider', '0'); // 0 = Google
 
-    return this.http.post<any>(`${this.apiUsuarios}/asociar-provider?${params.toString()}`, null);
+    return this.http.post<any>(`${this.apiUsuarios}/usuario-provider/asociar-provider?${params.toString()}`, null);
   }
   
   registroGoogle(usuario: any, googleId: string, accessToken: string, refreshToken: string): Observable<any> {
@@ -60,7 +60,7 @@ export class UsuariosDataService {
       params.set('refreshToken', refreshToken);
     }
 
-    const url = `${this.apiUsuarios}/registro-provider?${params.toString()}`;
+    const url = `${this.apiUsuarios}/usuario-provider/registro-provider?${params.toString()}`;
     return this.http.post<any>(url, usuario);
   }
 
